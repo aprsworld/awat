@@ -10,6 +10,9 @@ import android.content.Intent;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 
+import android.view.Menu;
+import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
@@ -27,6 +30,7 @@ public class BigBrotherGPS extends Activity
     Intent srvint;
     ComponentName srv;
     Con servicecon;
+    LocBinder binder;
 
     /* Our UI components */
     private TextView main_info;
@@ -81,6 +85,39 @@ public class BigBrotherGPS extends Activity
 	unbindService(servicecon);
     }    
 
+    
+    @Override public boolean onCreateOptionsMenu(Menu menu)
+    {
+	menu.add(0, 0, 0, "Settings")
+	    .setIcon(android.R.drawable.ic_menu_preferences);
+	return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item)
+    {
+	switch(item.getItemId()) {
+	case 0:
+	    Intent prefs = new Intent(this, PreferencesActivity.class);
+	    startActivityForResult(prefs, 0);
+	    break;
+	}
+
+	return true;
+    }
+
+    @Override public void onActivityResult(int req, int res, Intent i)
+    {
+	/* Notify the service that preferences might have changed */
+	if (binder != null)
+	    binder.updatePrefs();
+    }
+
+
+
+
+    /************************************************************************ 
+     * Helper classes for communication with the service
+     ************************************************************************/
 
     /* Wrapper so we get connected to the service on bind */
     class Con implements ServiceConnection
@@ -89,6 +126,15 @@ public class BigBrotherGPS extends Activity
 						 IBinder service)
 	{
 	    LocBinder lb = (LocBinder)service;
+	    CallBackIF cb = new CallBackIF();
+
+	    /* Read last position from locator */
+	    cb.onLocation("init", lb.getLatitude(), lb.getLongitude(),
+			  lb.getAccuracy());
+	    
+
+	    /* Bind for updates */
+	    BigBrotherGPS.this.binder = lb;
 	    lb.setCallback(new CallBackIF());
 	}
 

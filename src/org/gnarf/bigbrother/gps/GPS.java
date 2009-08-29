@@ -25,6 +25,8 @@ public class GPS extends Service
     public double longitude;
     public float accuracy;
 
+    /* Prefs */
+    Preferences prefs;
 
     @Override public void onCreate()
     {
@@ -34,8 +36,10 @@ public class GPS extends Service
 	/* Set up the position listener */
 	ll = new LocListen();
 	lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-	lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 60000, 0, ll);
-	lm.requestLocationUpdates(lm.GPS_PROVIDER, 600000, 0, ll);
+
+	/* Get prefs */
+	prefs = new Preferences(this);
+	loadPrefs();
 
 	binder = new LocBinder(this);
     }
@@ -59,8 +63,26 @@ public class GPS extends Service
 	return false;
     }
 
+    public void loadPrefs()
+    {
+	prefs.load();
 
-    /* Location listener class */
+	/* Update the request times */
+	lm.removeUpdates(ll);
+	
+	if (prefs.provider == 1)
+	    lm.requestLocationUpdates(lm.GPS_PROVIDER, 
+				      prefs.update_interval * 60 * 1000, 0, 
+				      ll);
+	else
+	    lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 
+				      prefs.update_interval * 60 * 1000, 0, 
+				      ll);
+    }
+
+    /**************************************************************************
+     * Location listener class 
+     *************************************************************************/
     class LocListen implements LocationListener {
 	@Override public void onProviderDisabled(String prov)
 	{

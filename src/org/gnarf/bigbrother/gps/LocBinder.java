@@ -31,8 +31,13 @@ public class LocBinder extends Binder
 	return gps.longitude;
     }
 
-    public double getAccuracy()
+    public float getAccuracy()
     {
 	return gps.accuracy;
+    }
+
+    public void updatePrefs()
+    {
+	gps.loadPrefs();
     }
 }
