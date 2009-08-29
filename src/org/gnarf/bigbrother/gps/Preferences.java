@@ -29,6 +29,7 @@ public class Preferences
 
 	tmp = prefs.getString("update_interval","15");
 	update_interval = (new Integer(tmp)).intValue();
+	update_interval *= 60 * 1000;
 
 	tmp = prefs.getString("provider","0");
 	provider = (new Integer(tmp)).intValue();

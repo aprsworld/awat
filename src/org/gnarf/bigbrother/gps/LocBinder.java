@@ -40,4 +40,5 @@ public class LocBinder extends Binder
     {
 	gps.loadPrefs();
     }
+
 }
