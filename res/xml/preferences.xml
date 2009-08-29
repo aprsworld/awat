@@ -20,6 +20,7 @@
 	android:title="URL"
 	android:summary="Enter the target URL"
 	android:defaultValue=""
+	android:inputType="textUri"
 	android:key="target_url" />
   </PreferenceCategory>
 </PreferenceScreen>

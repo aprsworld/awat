@@ -17,6 +17,10 @@ import android.content.BroadcastReceiver;
 
 import android.location.*;
 
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
 import org.gnarf.bigbrother.gps.*;
 
 public class GPS extends Service
@@ -35,6 +39,7 @@ public class GPS extends Service
     /* RPC */
     LocBinder binder;
     public LocIF rpc_if;
+    URL target_url;
 
     /* Our position data from last read */
     public double latitude;
@@ -116,6 +121,76 @@ public class GPS extends Service
 	am.setRepeating(am.RTC_WAKEUP,
 			System.currentTimeMillis() + 1000,
 			prefs.update_interval, amintent);
+
+	/* Set URL */
+	target_url = null;
+	try {
+	    target_url = new URL(prefs.target_url);
+	}
+	catch (MalformedURLException e) {
+	    System.out.println("BigBrotherGPS: "+e.toString());
+	    target_url = null;
+	}
+	    
+    }
+
+    /* Send a request to the URL and post some data */
+    protected void postLocation()
+    {
+	/* No url, don't do anything */
+	if (target_url == null)
+	    return;
+
+	/* Prepare connection and request */
+	HttpURLConnection con;
+	try {
+	    con = (HttpURLConnection)target_url.openConnection();
+	}
+	catch (IOException e) {
+	    System.out.println("BigBrotherGPS: "+e.toString());
+	    if (rpc_if != null)
+		rpc_if.onError(e.toString());
+	    return;
+	}
+
+	try {
+	    con.setRequestMethod("POST");
+	}
+	catch (ProtocolException e) {
+	    System.out.println("BigBrotherGPS: "+e.toString());
+	    if (rpc_if != null)
+		rpc_if.onError(e.toString());
+	    return;
+	}
+
+	con.setUseCaches(false);
+	con.setDoOutput(true);
+	con.setDoInput(false);
+
+	/* Build request data */
+	String req = "latitude="+latitude;
+	req += "longitude="+longitude;
+	req += "accuracy="+accuracy;
+	con.setRequestProperty("Content-Length", ""+req.length());
+
+	/* Connect and write */
+	try {
+	    con.connect();
+	    DataOutputStream wr = 
+		new DataOutputStream(con.getOutputStream());
+	    wr.writeBytes(req);
+	    wr.flush();
+	    wr.close();
+	} 
+	catch (IOException e) {
+	    System.out.println("BigBrotherGPS: "+e.toString());
+	    if (rpc_if != null)
+		rpc_if.onError(e.toString());
+	    return;
+	}
+	con.disconnect();
+
+	System.out.println("BigBrotherGPS sent HTTP poke");
     }
 
     /**************************************************************************
@@ -144,34 +219,35 @@ public class GPS extends Service
     {
 	@Override public void onProviderDisabled(String prov)
 	{
-	    System.out.println("BBG ProviderDisabled: "+prov);
+	    System.out.println("BigBrotherGPS ProviderDisabled: "+prov);
 	}
 
 	@Override public void onProviderEnabled(String prov)
 	{
-	    System.out.println("BBG ProviderEnabled: "+prov);
+	    System.out.println("BigBrotherGPS ProviderEnabled: "+prov);
 	}
 
 	@Override public void onStatusChanged(String prov, int stat, 
 					      Bundle xtra)
 	{
-	    System.out.println("BBG Status change: "+prov+" -> "+stat);
+	    System.out.println("BigBrotherGPS Status change: "+prov+" -> "+stat);
 	    if (rpc_if != null)
 		rpc_if.onStateChange(prov, stat);
 	}
 
 	@Override public void onLocationChanged(Location loc)
 	{
-	    System.out.println("BBG got loc from "+loc.getProvider());
-	    latitude = loc.getLatitude();
-	    longitude = loc.getLongitude();
-	    accuracy = loc.getAccuracy();
+	    System.out.println("BigBrotherGPS got loc from "
+			       +loc.getProvider());
+	    GPS.this.latitude = loc.getLatitude();
+	    GPS.this.longitude = loc.getLongitude();
+	    GPS.this.accuracy = loc.getAccuracy();
 
 	    /* Stop waiting for locations. Will be restarted by alarm */
 	    GPS.this.lm.removeUpdates(ll);
 
 	    /* Change notification */
-	    String txt = latitude+", "+longitude+", "+accuracy+"m";
+	    String txt = latitude+", "+longitude+", "+(int)accuracy+"m";
 	    GPS.this.notif.when = System.currentTimeMillis();
 	    GPS.this.notif.setLatestEventInfo(GPS.this, 
 					      getString(R.string.app_name),
@@ -184,6 +260,8 @@ public class GPS extends Service
 				  accuracy);
 	    }
 
+	    /* Post to server */
+	    GPS.this.postLocation();
 	}
     }
 }
