@@ -30,6 +30,7 @@ public class GPS extends Service
     LocListen ll;
     AlarmManager am;
     PendingIntent amintent;
+    LocAlarm recvr;
 
     /* Notification */
     NotificationManager notman;
@@ -73,8 +74,8 @@ public class GPS extends Service
 	notman.notify(0, notif);
 	
 	/* Prepare alarm manager */
-	registerReceiver(new LocAlarm(), 
-			 new IntentFilter(LocAlarm.class.toString()),
+	recvr = new LocAlarm();
+	registerReceiver(recvr, new IntentFilter(LocAlarm.class.toString()),
 			 null, null);
 	am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);	
 	Intent i = new Intent(LocAlarm.class.toString());
@@ -95,6 +96,7 @@ public class GPS extends Service
 	/* Remove alarms and unhook locator */
 	am.cancel(amintent);
 	lm.removeUpdates(ll);
+	unregisterReceiver(recvr);
 
 	/* Remove notification */
 	notman.cancelAll();
@@ -169,8 +171,8 @@ public class GPS extends Service
 
 	/* Build request data */
 	String req = "latitude="+latitude;
-	req += "longitude="+longitude;
-	req += "accuracy="+accuracy;
+	req += "&longitude="+longitude;
+	req += "&accuracy="+accuracy;
 	con.setRequestProperty("Content-Length", ""+req.length());
 
 	/* Connect and write */
