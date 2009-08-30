@@ -67,12 +67,13 @@ public class BigBrotherGPS extends Activity
 
 	/* Hook the button */
         Button btn = (Button)findViewById(R.id.main_stop);
-        btn.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View v) {
-		    stopService(srvint);
-		    BigBrotherGPS.this.finish();
-		}
-            });
+	if (btn != null)
+	    btn.setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+			stopService(srvint);
+			BigBrotherGPS.this.finish();
+		    }
+		});
 
     }
 
@@ -88,7 +89,8 @@ public class BigBrotherGPS extends Activity
     
     @Override public boolean onCreateOptionsMenu(Menu menu)
     {
-	menu.add(0, 0, 0, "Settings")
+	menu.add(0, 0, 0, "Update location now");
+	menu.add(0, 100, 100, "Settings")
 	    .setIcon(android.R.drawable.ic_menu_preferences);
 	return true;
     }
@@ -97,6 +99,10 @@ public class BigBrotherGPS extends Activity
     {
 	switch(item.getItemId()) {
 	case 0:
+	    if (this.binder != null)
+		this.binder.triggerUpdate();
+	    break;
+	case 100:
 	    Intent prefs = new Intent(this, PreferencesActivity.class);
 	    startActivityForResult(prefs, 0);
 	    break;

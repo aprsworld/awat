@@ -41,4 +41,8 @@ public class LocBinder extends Binder
 	gps.loadPrefs();
     }
 
+    public void triggerUpdate()
+    {
+	gps.triggerUpdate();
+    }
 }

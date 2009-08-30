@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
   <PreferenceCategory android:title="Locator settings">
-    <ListPreference
-        android:title="Location provider"
-	android:summary="Select which source to use for location data"
-	android:entries="@array/pref_loc_name"
-	android:entryValues="@array/pref_loc_val"
-	android:defaultValue="0"
-	android:key="provider" />
     <EditTextPreference 
 	android:title="Update interval"
 	android:summary="How often (in minutes) to update the location"
 	android:numeric="integer"
 	android:defaultValue="15"
 	android:key="update_interval" />
+    <CheckBoxPreference
+        android:title="Use GPS"
+	android:summary="Wether to use GPS for positioning or the cellular networks"
+	android:defaultValue="1"
+	android:key="provider" />
+    <EditTextPreference 
+	android:title="GPS Timeout"
+	android:summary="Timeout, in seconds, for GPS location. If location isn't received within this time the program falls back to network."
+	android:numeric="integer"
+	android:defaultValue="10"
+	android:key="gps_timeout" />
   </PreferenceCategory>
   <PreferenceCategory android:title="Callback settings">
     <EditTextPreference 

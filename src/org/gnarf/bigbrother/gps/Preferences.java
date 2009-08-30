@@ -12,6 +12,7 @@ public class Preferences
     public String target_url;
     public int update_interval;
     public int provider;
+    public int gps_timeout;
 
     Preferences(Context ctx)
     {
@@ -31,8 +32,16 @@ public class Preferences
 	update_interval = (new Integer(tmp)).intValue();
 	update_interval *= 60 * 1000;
 
-	tmp = prefs.getString("provider","0");
-	provider = (new Integer(tmp)).intValue();
+	Boolean tb = prefs.getBoolean("provider", true);
+	if (tb)
+	    provider = 1;
+	else
+	    provider = 0;
+
+	tmp = prefs.getString("gps_timeout","10");
+	gps_timeout = (new Integer(tmp)).intValue();
+	gps_timeout *= 1000;
+
     }
 }
 

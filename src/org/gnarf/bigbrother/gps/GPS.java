@@ -31,6 +31,8 @@ public class GPS extends Service
     AlarmManager am;
     PendingIntent amintent;
     LocAlarm recvr;
+    boolean twiceTimeout;
+    long timeout;
 
     /* Notification */
     NotificationManager notman;
@@ -103,15 +105,67 @@ public class GPS extends Service
     }
 
 
-    @Override public IBinder onBind(Intent i) {
+    @Override public IBinder onBind(Intent i) 
+    {
 	return binder;
     }
 
-    @Override public boolean onUnbind(Intent i) {
+    @Override public boolean onUnbind(Intent i) 
+    {
 	rpc_if = null;
 	return false;
     }
 
+    public void triggerUpdate() 
+    {
+	Preferences prefs = GPS.this.prefs;
+	LocationManager lm = GPS.this.lm;
+	LocListen ll = GPS.this.ll;
+
+	lm.removeUpdates(ll);
+	
+	try {
+	    if (prefs.provider == 1)
+		lm.requestLocationUpdates(lm.GPS_PROVIDER, 0, 0, ll);
+	    else
+		lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 0, 0, ll);
+	}
+	catch (IllegalArgumentException e) {
+	    System.out.println("BigBrotherGPS: "+e.toString());
+	    return;
+	}
+
+	this.timeout = System.currentTimeMillis() + this.prefs.gps_timeout;
+	if (this.prefs.provider == 1)
+	    this.twiceTimeout = true;
+	else
+	    this.twiceTimeout = false;
+    }
+	
+    public void doTimeout()
+    {
+	if (System.currentTimeMillis() > this.timeout) {
+	    System.out.println("BigBrotherGPS: Doing timeout");
+	    if (this.twiceTimeout) {
+		System.out.println("BigBrotherGPS: Switching locator");
+		this.twiceTimeout = false;
+		this.timeout = 
+		    System.currentTimeMillis() + this.prefs.gps_timeout;
+		try {
+		    this.lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 0, 0,
+						   this.ll);
+		}
+		catch (IllegalArgumentException e) {
+		    System.out.println("BigBrotherGPS(timeout): "
+				       +e.toString());
+		    return;
+		}
+	    } else 
+		this.lm.removeUpdates(this.ll);
+	}
+    }
+
+	
     public void loadPrefs()
     {
 	prefs.load();
@@ -203,17 +257,7 @@ public class GPS extends Service
 	@Override public void onReceive(Context ctx, Intent i)
 	{
 	    System.out.println("GPS: Alarm!");
-
-	    Preferences prefs = GPS.this.prefs;
-	    LocationManager lm = GPS.this.lm;
-	    LocListen ll = GPS.this.ll;
-
-	    lm.removeUpdates(ll);
-	    
-	    if (prefs.provider == 1)
-		lm.requestLocationUpdates(lm.GPS_PROVIDER, 0, 0, ll);
-	    else
-		lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 0, 0, ll);
+	    GPS.this.triggerUpdate();
 	}
     }
 
@@ -222,11 +266,13 @@ public class GPS extends Service
 	@Override public void onProviderDisabled(String prov)
 	{
 	    System.out.println("BigBrotherGPS ProviderDisabled: "+prov);
+	    GPS.this.doTimeout();	    
 	}
 
 	@Override public void onProviderEnabled(String prov)
 	{
 	    System.out.println("BigBrotherGPS ProviderEnabled: "+prov);
+	    GPS.this.doTimeout();	    
 	}
 
 	@Override public void onStatusChanged(String prov, int stat, 
@@ -235,6 +281,8 @@ public class GPS extends Service
 	    System.out.println("BigBrotherGPS Status change: "+prov+" -> "+stat);
 	    if (rpc_if != null)
 		rpc_if.onStateChange(prov, stat);
+
+	    GPS.this.doTimeout();
 	}
 
 	@Override public void onLocationChanged(Location loc)
