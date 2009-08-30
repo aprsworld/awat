@@ -24,23 +24,23 @@ public class Preferences
 	String tmp;
 
 	SharedPreferences prefs = 
-	    PreferenceManager.getDefaultSharedPreferences(ctx);
+	    PreferenceManager.getDefaultSharedPreferences(this.ctx);
 
-	target_url = prefs.getString("target_url", null);
+	this.target_url = prefs.getString("target_url", null);
 
 	tmp = prefs.getString("update_interval","15");
-	update_interval = (new Integer(tmp)).intValue();
-	update_interval *= 60 * 1000;
+	this.update_interval = (new Integer(tmp)).intValue();
+	this.update_interval *= 60 * 1000;
 
 	Boolean tb = prefs.getBoolean("provider", true);
 	if (tb)
-	    provider = 1;
+	    this.provider = 1;
 	else
-	    provider = 0;
-
+	    this.provider = 0;
+	
 	tmp = prefs.getString("gps_timeout","10");
-	gps_timeout = (new Integer(tmp)).intValue();
-	gps_timeout *= 1000;
+	this.gps_timeout = (new Integer(tmp)).intValue();
+	this.gps_timeout *= 1000;
 
     }
 }

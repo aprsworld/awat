@@ -33,7 +33,6 @@ public class BigBrotherGPS extends Activity
     LocBinder binder;
 
     /* Our UI components */
-    private TextView main_info;
     private TextView lat, lon, acc;
 
 
@@ -43,14 +42,14 @@ public class BigBrotherGPS extends Activity
         super.onCreate(savedInstanceState);
 
 	System.out.println("onCreate called");
-	state = savedInstanceState;
+	this.state = savedInstanceState;
 
 	/* Start GPS service */
-	srvint = new Intent(this, GPS.class);
-	srv = startService(srvint);
-	servicecon = new Con();
-	boolean bind = bindService(srvint, servicecon, 0);
-	if (srv == null && bind) {
+	this.srvint = new Intent(this, GPS.class);
+	this.srv = startService(this.srvint);
+	this.servicecon = new Con();
+	boolean bind = bindService(this.srvint, this.servicecon, 0);
+	if (this.srv == null && bind) {
 	    Helper.ok_dialog(this, "Service", "Failed starting GPS service");
 	    finish();
 	}
@@ -60,17 +59,16 @@ public class BigBrotherGPS extends Activity
         setContentView(R.layout.main);
 
 	/* Lookup our text fields */
-	main_info = (TextView)findViewById(R.id.main_info);
-	lat = (TextView)findViewById(R.id.main_latitude);
-	lon = (TextView)findViewById(R.id.main_longitude);
-	acc = (TextView)findViewById(R.id.main_accuracy);
+	this.lat = (TextView)findViewById(R.id.main_latitude);
+	this.lon = (TextView)findViewById(R.id.main_longitude);
+	this.acc = (TextView)findViewById(R.id.main_accuracy);
 
 	/* Hook the button */
         Button btn = (Button)findViewById(R.id.main_stop);
 	if (btn != null)
 	    btn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
-			stopService(srvint);
+			stopService(BigBrotherGPS.this.srvint);
 			BigBrotherGPS.this.finish();
 		    }
 		});
@@ -83,7 +81,7 @@ public class BigBrotherGPS extends Activity
 	System.out.println("onDestroy called");
 
 	/* Disconnect from service */
-	unbindService(servicecon);
+	unbindService(this.servicecon);
     }    
 
     
@@ -114,8 +112,8 @@ public class BigBrotherGPS extends Activity
     @Override public void onActivityResult(int req, int res, Intent i)
     {
 	/* Notify the service that preferences might have changed */
-	if (binder != null)
-	    binder.updatePrefs();
+	if (this.binder != null)
+	    this.binder.updatePrefs();
     }
 
 
@@ -157,12 +155,8 @@ public class BigBrotherGPS extends Activity
 	    Helper.ok_dialog(BigBrotherGPS.this, "Error", err);
 	}
 	
-	@Override public void onStateChange(String prov, int state)
-	{
-	    BigBrotherGPS.this.main_info.setText(System.currentTimeMillis()
-						 + " "+prov+" -> "+state);
-	}
-	
+	@Override public void onStateChange(String prov, int state) {}
+
 	@Override public void onLocation(String prov, double latitude, 
 					 double longitude, float accuracy)
 	{

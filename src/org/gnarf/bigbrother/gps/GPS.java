@@ -58,36 +58,38 @@ public class GPS extends Service
 	System.out.println("GPS Service onCreate.");
 
 	/* Set up the position listener */
-	ll = new LocListen();
-	lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+	this.ll = new LocListen();
+	this.lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
 	/* Set up a persistent notification */
-	notman = (NotificationManager)
+	this.notman = (NotificationManager)
 	    getSystemService(Context.NOTIFICATION_SERVICE);
-	notif = new Notification(R.drawable.notif_icon,
-				 "BigBrother GPS Waiting for location",
-				 System.currentTimeMillis());
-	notif.flags = notif.FLAG_ONGOING_EVENT;
-	notintent = 
+	this.notif = new Notification(R.drawable.notif_icon,
+				      "BigBrother GPS Waiting for location",
+				      System.currentTimeMillis());
+	this.notif.flags = notif.FLAG_ONGOING_EVENT;
+	this.notintent = 
 	    PendingIntent.getActivity(this, 0, 
 				      new Intent(this, BigBrotherGPS.class),0);
-	notif.setLatestEventInfo(this, getString(R.string.app_name),
-				 "Waiting for initial location", notintent);
-	notman.notify(0, notif);
+	this.notif.setLatestEventInfo(this, getString(R.string.app_name),
+				      "Waiting for initial location", 
+				      notintent);
+	this.notman.notify(0, notif);
 	
 	/* Prepare alarm manager */
-	recvr = new LocAlarm();
-	registerReceiver(recvr, new IntentFilter(LocAlarm.class.toString()),
+	this.recvr = new LocAlarm();
+	registerReceiver(this.recvr, 
+			 new IntentFilter(LocAlarm.class.toString()),
 			 null, null);
-	am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);	
+	this.am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 	Intent i = new Intent(LocAlarm.class.toString());
-	amintent = PendingIntent.getBroadcast(this, 0, i, 0);
+	this.amintent = PendingIntent.getBroadcast(this, 0, i, 0);
 
 	/* Get prefs */
-	prefs = new Preferences(this);
+	this.prefs = new Preferences(this);
 	loadPrefs();
 
-	binder = new LocBinder(this);
+	this.binder = new LocBinder(this);
     }
 
     @Override public void onDestroy()
@@ -96,39 +98,37 @@ public class GPS extends Service
 	System.out.println("GPS Service onDestroy.");
 	
 	/* Remove alarms and unhook locator */
-	am.cancel(amintent);
-	lm.removeUpdates(ll);
-	unregisterReceiver(recvr);
+	this.am.cancel(this.amintent);
+	this.lm.removeUpdates(this.ll);
+	unregisterReceiver(this.recvr);
 
 	/* Remove notification */
-	notman.cancelAll();
+	this.notman.cancelAll();
     }
 
 
     @Override public IBinder onBind(Intent i) 
     {
-	return binder;
+	return this.binder;
     }
 
     @Override public boolean onUnbind(Intent i) 
     {
-	rpc_if = null;
+	this.rpc_if = null;
 	return false;
     }
 
     public void triggerUpdate() 
     {
-	Preferences prefs = GPS.this.prefs;
-	LocationManager lm = GPS.this.lm;
-	LocListen ll = GPS.this.ll;
-
-	lm.removeUpdates(ll);
+	this.lm.removeUpdates(this.ll);
 	
 	try {
-	    if (prefs.provider == 1)
-		lm.requestLocationUpdates(lm.GPS_PROVIDER, 0, 0, ll);
+	    if (this.prefs.provider == 1)
+		this.lm.requestLocationUpdates(this.lm.GPS_PROVIDER, 0, 0, 
+					       this.ll);
 	    else
-		lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 0, 0, ll);
+		this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 0, 0,
+					       this.ll);
 	}
 	catch (IllegalArgumentException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
@@ -152,8 +152,8 @@ public class GPS extends Service
 		this.timeout = 
 		    System.currentTimeMillis() + this.prefs.gps_timeout;
 		try {
-		    this.lm.requestLocationUpdates(lm.NETWORK_PROVIDER, 0, 0,
-						   this.ll);
+		    this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 
+						   0, 0, this.ll);
 		}
 		catch (IllegalArgumentException e) {
 		    System.out.println("BigBrotherGPS(timeout): "
@@ -168,24 +168,24 @@ public class GPS extends Service
 	
     public void loadPrefs()
     {
-	prefs.load();
+	this.prefs.load();
 
 	/* Update the request times */
-	lm.removeUpdates(ll);
+	this.lm.removeUpdates(ll);
 
 	/* Reset alarms */
-	am.setRepeating(am.RTC_WAKEUP,
-			System.currentTimeMillis() + 1000,
-			prefs.update_interval, amintent);
+	this.am.setRepeating(this.am.RTC_WAKEUP,
+			     System.currentTimeMillis() + 1000,
+			     this.prefs.update_interval, this.amintent);
 
 	/* Set URL */
-	target_url = null;
+	this.target_url = null;
 	try {
-	    target_url = new URL(prefs.target_url);
+	    this.target_url = new URL(this.prefs.target_url);
 	}
 	catch (MalformedURLException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
-	    target_url = null;
+	    this.target_url = null;
 	}
 	    
     }
@@ -194,18 +194,18 @@ public class GPS extends Service
     protected void postLocation()
     {
 	/* No url, don't do anything */
-	if (target_url == null)
+	if (this.target_url == null)
 	    return;
 
 	/* Prepare connection and request */
 	HttpURLConnection con;
 	try {
-	    con = (HttpURLConnection)target_url.openConnection();
+	    con = (HttpURLConnection)this.target_url.openConnection();
 	}
 	catch (IOException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
-	    if (rpc_if != null)
-		rpc_if.onError(e.toString());
+	    if (this.rpc_if != null)
+		this.rpc_if.onError(e.toString());
 	    return;
 	}
 
@@ -214,8 +214,8 @@ public class GPS extends Service
 	}
 	catch (ProtocolException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
-	    if (rpc_if != null)
-		rpc_if.onError(e.toString());
+	    if (this.rpc_if != null)
+		this.rpc_if.onError(e.toString());
 	    return;
 	}
 
@@ -224,9 +224,9 @@ public class GPS extends Service
 	con.setDoInput(false);
 
 	/* Build request data */
-	String req = "latitude="+latitude;
-	req += "&longitude="+longitude;
-	req += "&accuracy="+accuracy;
+	String req = "latitude="+this.latitude;
+	req += "&longitude="+this.longitude;
+	req += "&accuracy="+this.accuracy;
 	con.setRequestProperty("Content-Length", ""+req.length());
 
 	/* Connect and write */
@@ -240,8 +240,8 @@ public class GPS extends Service
 	} 
 	catch (IOException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
-	    if (rpc_if != null)
-		rpc_if.onError(e.toString());
+	    if (this.rpc_if != null)
+		this.rpc_if.onError(e.toString());
 	    return;
 	}
 	con.disconnect();
@@ -278,9 +278,10 @@ public class GPS extends Service
 	@Override public void onStatusChanged(String prov, int stat, 
 					      Bundle xtra)
 	{
-	    System.out.println("BigBrotherGPS Status change: "+prov+" -> "+stat);
-	    if (rpc_if != null)
-		rpc_if.onStateChange(prov, stat);
+	    System.out.println("BigBrotherGPS Status change: "
+			       +prov+" -> "+stat);
+	    if (GPS.this.rpc_if != null)
+		GPS.this.rpc_if.onStateChange(prov, stat);
 
 	    GPS.this.doTimeout();
 	}
@@ -294,20 +295,24 @@ public class GPS extends Service
 	    GPS.this.accuracy = loc.getAccuracy();
 
 	    /* Stop waiting for locations. Will be restarted by alarm */
-	    GPS.this.lm.removeUpdates(ll);
+	    GPS.this.lm.removeUpdates(GPS.this.ll);
 
 	    /* Change notification */
-	    String txt = latitude+", "+longitude+", "+(int)accuracy+"m";
+	    String txt = GPS.this.latitude+", "
+		+GPS.this.longitude+", "
+		+(int)GPS.this.accuracy+"m";
 	    GPS.this.notif.when = System.currentTimeMillis();
 	    GPS.this.notif.setLatestEventInfo(GPS.this, 
 					      getString(R.string.app_name),
 					      txt, GPS.this.notintent);
-	    notman.notify(0, notif);
+	    GPS.this.notman.notify(0, notif);
 
 	    /* Call to UI */
-	    if (rpc_if != null) {
-		rpc_if.onLocation(loc.getProvider(), latitude, longitude,
-				  accuracy);
+	    if (GPS.this.rpc_if != null) {
+		GPS.this.rpc_if.onLocation(loc.getProvider(), 
+					   GPS.this.latitude, 
+					   GPS.this.longitude,
+					   GPS.this.accuracy);
 	    }
 
 	    /* Post to server */

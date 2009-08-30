@@ -18,31 +18,31 @@ public class LocBinder extends Binder
 
     public void setCallback(LocIF the_if)
     {
-	gps.rpc_if = the_if;
+	this.gps.rpc_if = the_if;
     }
 
     public double getLatitude()
     {
-	return gps.latitude;
+	return this.gps.latitude;
     }
 
     public double getLongitude()
     {
-	return gps.longitude;
+	return this.gps.longitude;
     }
 
     public float getAccuracy()
     {
-	return gps.accuracy;
+	return this.gps.accuracy;
     }
 
     public void updatePrefs()
     {
-	gps.loadPrefs();
+	this.gps.loadPrefs();
     }
 
     public void triggerUpdate()
     {
-	gps.triggerUpdate();
+	this.gps.triggerUpdate();
     }
 }
