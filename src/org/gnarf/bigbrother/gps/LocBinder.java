@@ -38,7 +38,7 @@ public class LocBinder extends Binder
 
     public void updatePrefs()
     {
-	this.gps.loadPrefs();
+	this.gps.reloadPrefs();
     }
 
     public void triggerUpdate()

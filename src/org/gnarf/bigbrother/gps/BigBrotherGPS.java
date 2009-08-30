@@ -44,36 +44,11 @@ public class BigBrotherGPS extends Activity
 	System.out.println("onCreate called");
 	this.state = savedInstanceState;
 
-	/* Start GPS service */
-	this.srvint = new Intent(this, GPS.class);
-	this.srv = startService(this.srvint);
-	this.servicecon = new Con();
-	boolean bind = bindService(this.srvint, this.servicecon, 0);
-	if (this.srv == null && bind) {
-	    Helper.ok_dialog(this, "Service", "Failed starting GPS service");
-	    finish();
-	}
+	startTheGPS();
 
-
-	/* Create the UI */
-        setContentView(R.layout.main);
-
-	/* Lookup our text fields */
-	this.lat = (TextView)findViewById(R.id.main_latitude);
-	this.lon = (TextView)findViewById(R.id.main_longitude);
-	this.acc = (TextView)findViewById(R.id.main_accuracy);
-
-	/* Hook the button */
-        Button btn = (Button)findViewById(R.id.main_stop);
-	if (btn != null)
-	    btn.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View v) {
-			stopService(BigBrotherGPS.this.srvint);
-			BigBrotherGPS.this.finish();
-		    }
-		});
-
+	startUI();
     }
+
 
     @Override public void onDestroy()
     {
@@ -116,6 +91,39 @@ public class BigBrotherGPS extends Activity
 	    this.binder.updatePrefs();
     }
 
+    private void startTheGPS()
+    {
+	/* Start GPS service */
+	this.srvint = new Intent(this, GPS.class);
+	this.srv = startService(this.srvint);
+	this.servicecon = new Con();
+	boolean bind = bindService(this.srvint, this.servicecon, 0);
+	if (this.srv == null && bind) {
+	    Helper.ok_dialog(this, "Service", "Failed starting GPS service");
+	    finish();
+	}
+    }
+
+    private void startUI()
+    {
+	/* Create the UI */
+        setContentView(R.layout.main);
+
+	/* Lookup our text fields */
+	this.lat = (TextView)findViewById(R.id.main_latitude);
+	this.lon = (TextView)findViewById(R.id.main_longitude);
+	this.acc = (TextView)findViewById(R.id.main_accuracy);
+
+	/* Hook the button */
+        Button btn = (Button)findViewById(R.id.main_stop);
+	if (btn != null)
+	    btn.setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+			stopService(BigBrotherGPS.this.srvint);
+			BigBrotherGPS.this.finish();
+		    }
+		});
+    }
 
 
 

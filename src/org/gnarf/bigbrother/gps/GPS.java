@@ -57,38 +57,18 @@ public class GPS extends Service
 	super.onCreate();
 	System.out.println("GPS Service onCreate.");
 
-	/* Set up the position listener */
-	this.ll = new LocListen();
-	this.lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+	setupLocationListener();
 
-	/* Set up a persistent notification */
-	this.notman = (NotificationManager)
-	    getSystemService(Context.NOTIFICATION_SERVICE);
-	this.notif = new Notification(R.drawable.notif_icon,
-				      "BigBrother GPS Waiting for location",
-				      System.currentTimeMillis());
-	this.notif.flags = notif.FLAG_ONGOING_EVENT;
-	this.notintent = 
-	    PendingIntent.getActivity(this, 0, 
-				      new Intent(this, BigBrotherGPS.class),0);
-	this.notif.setLatestEventInfo(this, getString(R.string.app_name),
-				      "Waiting for initial location", 
-				      notintent);
-	this.notman.notify(0, notif);
-	
-	/* Prepare alarm manager */
-	this.recvr = new LocAlarm();
-	registerReceiver(this.recvr, 
-			 new IntentFilter(LocAlarm.class.toString()),
-			 null, null);
-	this.am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-	Intent i = new Intent(LocAlarm.class.toString());
-	this.amintent = PendingIntent.getBroadcast(this, 0, i, 0);
+	setupNotif();
+
+	setupAlarms();
 
 	/* Get prefs */
 	this.prefs = new Preferences(this);
-	loadPrefs();
+	this.prefs.load();
+	reconfigure();
 
+	/* Create binder */
 	this.binder = new LocBinder(this);
     }
 
@@ -141,7 +121,44 @@ public class GPS extends Service
 	else
 	    this.twiceTimeout = false;
     }
-	
+
+    private void setupLocationListener()
+    {
+	/* Set up the position listener */
+	this.ll = new LocListen();
+	this.lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+    }
+
+    private void setupNotif()
+    {
+	/* Set up a persistent notification */
+	this.notman = (NotificationManager)
+	    getSystemService(Context.NOTIFICATION_SERVICE);
+	this.notif = new Notification(R.drawable.notif_icon,
+				      "BigBrother GPS Waiting for location",
+				      System.currentTimeMillis());
+	this.notif.flags = notif.FLAG_ONGOING_EVENT;
+	this.notintent = 
+	    PendingIntent.getActivity(this, 0, 
+				      new Intent(this, BigBrotherGPS.class),0);
+	this.notif.setLatestEventInfo(this, getString(R.string.app_name),
+				      "Waiting for initial location", 
+				      notintent);
+	this.notman.notify(0, notif);
+    }
+
+    private void setupAlarms()
+    {
+	/* Prepare alarm manager */
+	this.recvr = new LocAlarm();
+	registerReceiver(this.recvr, 
+			 new IntentFilter(LocAlarm.class.toString()),
+			 null, null);
+	this.am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+	Intent i = new Intent(LocAlarm.class.toString());
+	this.amintent = PendingIntent.getBroadcast(this, 0, i, 0);
+    }
+
     public void doTimeout()
     {
 	if (System.currentTimeMillis() > this.timeout) {
@@ -166,10 +183,15 @@ public class GPS extends Service
     }
 
 	
-    public void loadPrefs()
+    public void reloadPrefs()
     {
 	this.prefs.load();
+	reconfigure();
+    }
 
+    private void reconfigure()
+    {
+	
 	/* Update the request times */
 	this.lm.removeUpdates(ll);
 
@@ -187,7 +209,6 @@ public class GPS extends Service
 	    System.out.println("BigBrotherGPS: "+e.toString());
 	    this.target_url = null;
 	}
-	    
     }
 
     /* Send a request to the URL and post some data */
