@@ -13,6 +13,7 @@ public class Preferences
     public int update_interval;
     public int provider;
     public int gps_timeout;
+    public boolean start_on_boot;
 
     Preferences(Context ctx)
     {
@@ -42,6 +43,7 @@ public class Preferences
 	this.gps_timeout = (new Integer(tmp)).intValue();
 	this.gps_timeout *= 1000;
 
+	start_on_boot = prefs.getBoolean("start_on_boot", false);
     }
 }
 

@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <PreferenceCategory android:title="Service settings">
+    <CheckBoxPreference
+        android:title="Start service on boot"
+	android:defaultValue="0"
+	android:key="start_on_boot" />
+  </PreferenceCategory>
   <PreferenceCategory android:title="Locator settings">
     <EditTextPreference 
 	android:title="Update interval"
