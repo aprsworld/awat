@@ -31,6 +31,8 @@ public class GPS extends Service
     AlarmManager am;
     PendingIntent amintent;
     LocAlarm recvr;
+    PendingIntent tointent;
+    LocTimeout recvTimeout;
     boolean twiceTimeout;
     long timeout;
 
@@ -79,6 +81,7 @@ public class GPS extends Service
 	
 	/* Remove alarms and unhook locator */
 	this.am.cancel(this.amintent);
+	this.am.cancel(this.tointent);
 	this.lm.removeUpdates(this.ll);
 	unregisterReceiver(this.recvr);
 
@@ -115,7 +118,12 @@ public class GPS extends Service
 	    return;
 	}
 
-	this.timeout = System.currentTimeMillis() + this.prefs.gps_timeout;
+	/* Start timeout alarm */
+	this.timeout = System.currentTimeMillis();
+	this.timeout += this.prefs.gps_timeout;
+	this.timeout += 100; /* delay a bit to avoid a race */
+	this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
+			     this.prefs.gps_timeout, this.tointent);
 	if (this.prefs.provider == 1)
 	    this.twiceTimeout = true;
 	else
@@ -150,13 +158,24 @@ public class GPS extends Service
     private void setupAlarms()
     {
 	/* Prepare alarm manager */
+	this.am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+
+	/* Setup location update alarm */
 	this.recvr = new LocAlarm();
 	registerReceiver(this.recvr, 
 			 new IntentFilter(LocAlarm.class.toString()),
 			 null, null);
-	this.am = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
 	Intent i = new Intent(LocAlarm.class.toString());
 	this.amintent = PendingIntent.getBroadcast(this, 0, i, 0);
+
+	/* Setup timeout alarm */
+	this.recvTimeout = new LocTimeout();
+	registerReceiver(this.recvTimeout, 
+			 new IntentFilter(LocTimeout.class.toString()),
+			 null, null);
+	i = new Intent(LocTimeout.class.toString());
+	this.tointent = PendingIntent.getBroadcast(this, 0, i, 0);
+
     }
 
     public void doTimeout()
@@ -177,8 +196,11 @@ public class GPS extends Service
 				       +e.toString());
 		    return;
 		}
-	    } else 
+	    } else {
+		/* Timeout reached */
 		this.lm.removeUpdates(this.ll);
+		this.am.cancel(this.tointent);
+	    }
 	}
     }
 
@@ -195,7 +217,7 @@ public class GPS extends Service
 	/* Update the request times */
 	this.lm.removeUpdates(ll);
 
-	/* Reset alarms */
+	/* Reset update alarms */
 	this.am.setRepeating(this.am.RTC_WAKEUP,
 			     System.currentTimeMillis() + 1000,
 			     this.prefs.update_interval, this.amintent);
@@ -277,8 +299,17 @@ public class GPS extends Service
     {
 	@Override public void onReceive(Context ctx, Intent i)
 	{
-	    System.out.println("GPS: Alarm!");
+	    System.out.println("BigBrotherGPS: Alarm!");
 	    GPS.this.triggerUpdate();
+	}
+    }
+
+    class LocTimeout extends BroadcastReceiver
+    {
+	@Override public void onReceive(Context ctx, Intent i)
+	{
+	    System.out.println("BigBrotherGPS: Timeout!");
+	    GPS.this.doTimeout();
 	}
     }
 
@@ -317,6 +348,7 @@ public class GPS extends Service
 
 	    /* Stop waiting for locations. Will be restarted by alarm */
 	    GPS.this.lm.removeUpdates(GPS.this.ll);
+	    GPS.this.am.cancel(GPS.this.tointent);
 
 	    /* Change notification */
 	    String txt = GPS.this.latitude+", "
