@@ -84,6 +84,7 @@ public class GPS extends Service
 	this.am.cancel(this.tointent);
 	this.lm.removeUpdates(this.ll);
 	unregisterReceiver(this.recvr);
+	unregisterReceiver(this.recvTimeout);
 
 	/* Remove notification */
 	this.notman.cancelAll();
