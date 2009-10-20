@@ -32,5 +32,10 @@
 	android:defaultValue=""
 	android:inputType="textUri"
 	android:key="target_url" />
+    <EditTextPreference 
+	android:title="Secret"
+	android:summary="A shared secret used to authenticate the phone to the server"
+	android:defaultValue=""
+	android:key="secret" />
   </PreferenceCategory>
 </PreferenceScreen>

@@ -271,6 +271,8 @@ public class GPS extends Service
 	String req = "latitude="+this.latitude;
 	req += "&longitude="+this.longitude;
 	req += "&accuracy="+this.accuracy;
+	if (this.prefs.secret != null)
+	    req += "&secret="+this.prefs.secret;
 	con.setRequestProperty("Content-Length", ""+req.length());
 
 	/* Connect and write */

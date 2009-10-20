@@ -10,6 +10,7 @@ public class Preferences
 
     /* The preference values */
     public String target_url;
+    public String secret;
     public int update_interval;
     public int provider;
     public int gps_timeout;
@@ -44,6 +45,10 @@ public class Preferences
 	this.gps_timeout *= 1000;
 
 	start_on_boot = prefs.getBoolean("start_on_boot", false);
+
+	secret = prefs.getString("secret", null);
+	if (secret == null || secret.length() < 1)
+	    secret = null;
     }
 }
 
