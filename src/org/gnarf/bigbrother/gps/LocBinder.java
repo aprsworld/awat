@@ -36,8 +36,20 @@ public class LocBinder extends Binder
 	return this.gps.accuracy;
     }
 
+    public int getBattery()
+    {
+	return this.gps.bat_level;
+    }
+
+    public boolean getCharger()
+    {
+	return this.gps.charger;
+    }
+
+
     public void updatePrefs()
     {
+	System.out.println("Doing updatePrefs");
 	this.gps.reloadPrefs();
     }
 

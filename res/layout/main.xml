@@ -44,7 +44,7 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    android:paddingBottom="30dp" >
+    android:paddingBottom="10dp" >
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
@@ -59,6 +59,33 @@
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
       android:text="m" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" 
+    android:paddingBottom="30dp" >
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingRight="10dp"
+      android:text="Battery:" />
+    <TextView  
+      android:id="@+id/main_bat_level"
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="wait..." />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingRight="10dp"
+      android:text="%" />
+    <TextView  
+      android:id="@+id/main_bat_charger"
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="" />
   </LinearLayout>
 
 

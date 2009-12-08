@@ -5,12 +5,16 @@
         android:title="Start service on boot"
 	android:defaultValue="0"
 	android:key="start_on_boot" />
+    <CheckBoxPreference
+        android:title="Show in notification bar"
+	android:defaultValue="1"
+	android:key="show_in_notif_bar" />
   </PreferenceCategory>
   <PreferenceCategory android:title="Locator settings">
     <EditTextPreference 
 	android:title="Update interval"
 	android:summary="How often (in minutes) to update the location"
-	android:numeric="integer"
+	android:numeric="decimal"
 	android:defaultValue="15"
 	android:key="update_interval" />
     <CheckBoxPreference
@@ -37,5 +41,10 @@
 	android:summary="A shared secret used to authenticate the phone to the server"
 	android:defaultValue=""
 	android:key="secret" />
+    <CheckBoxPreference
+        android:title="Send battery status"
+	android:summary="Select this if you want the battery status to be sent in the POST request."
+	android:defaultValue="0"
+	android:key="send_batt_status" />
   </PreferenceCategory>
 </PreferenceScreen>

@@ -15,6 +15,8 @@ public class Preferences
     public int provider;
     public int gps_timeout;
     public boolean start_on_boot;
+    public boolean show_in_notif_bar;
+    public boolean send_batt_status;
 
     Preferences(Context ctx)
     {
@@ -30,9 +32,11 @@ public class Preferences
 
 	this.target_url = prefs.getString("target_url", null);
 
+	float tmpf;
 	tmp = prefs.getString("update_interval","15");
-	this.update_interval = (new Integer(tmp)).intValue();
-	this.update_interval *= 60 * 1000;
+	tmpf = (new Float(tmp)).floatValue();
+	tmpf *= 60 * 1000;
+	this.update_interval = (int)tmpf;
 
 	Boolean tb = prefs.getBoolean("provider", true);
 	if (tb)
@@ -44,11 +48,14 @@ public class Preferences
 	this.gps_timeout = (new Integer(tmp)).intValue();
 	this.gps_timeout *= 1000;
 
-	start_on_boot = prefs.getBoolean("start_on_boot", false);
+	this.start_on_boot = prefs.getBoolean("start_on_boot", false);
+	this.show_in_notif_bar = prefs.getBoolean("show_in_notif_bar", true);
 
 	secret = prefs.getString("secret", null);
 	if (secret == null || secret.length() < 1)
 	    secret = null;
+
+	this.send_batt_status = prefs.getBoolean("send_batt_status", false);
     }
 }
 

@@ -33,7 +33,7 @@ public class BigBrotherGPS extends Activity
     LocBinder binder;
 
     /* Our UI components */
-    private TextView lat, lon, acc;
+    private TextView lat, lon, acc, batlev, chrgr;
 
 
     /** Called when the activity is first created. */
@@ -113,6 +113,8 @@ public class BigBrotherGPS extends Activity
 	this.lat = (TextView)findViewById(R.id.main_latitude);
 	this.lon = (TextView)findViewById(R.id.main_longitude);
 	this.acc = (TextView)findViewById(R.id.main_accuracy);
+	this.batlev = (TextView)findViewById(R.id.main_bat_level);
+	this.chrgr = (TextView)findViewById(R.id.main_bat_charger);
 
 	/* Hook the button */
         Button btn = (Button)findViewById(R.id.main_stop);
@@ -142,7 +144,7 @@ public class BigBrotherGPS extends Activity
 
 	    /* Read last position from locator */
 	    cb.onLocation("init", lb.getLatitude(), lb.getLongitude(),
-			  lb.getAccuracy());
+			  lb.getAccuracy(), lb.getBattery(), lb.getCharger());
 	    
 
 	    /* Bind for updates */
@@ -166,11 +168,17 @@ public class BigBrotherGPS extends Activity
 	@Override public void onStateChange(String prov, int state) {}
 
 	@Override public void onLocation(String prov, double latitude, 
-					 double longitude, float accuracy)
+					 double longitude, float accuracy,
+					 int bat_level, boolean charger)
 	{
 	    BigBrotherGPS.this.lat.setText((new Double(latitude)).toString());
 	    BigBrotherGPS.this.lon.setText((new Double(longitude)).toString());
 	    BigBrotherGPS.this.acc.setText((new Integer((int)accuracy)).toString());
+	    BigBrotherGPS.this.batlev.setText((new Integer(bat_level)).toString());
+	    if (charger)
+		BigBrotherGPS.this.chrgr.setText("(charging)");
+	    else
+		BigBrotherGPS.this.chrgr.setText("");
 	}
     }
 }

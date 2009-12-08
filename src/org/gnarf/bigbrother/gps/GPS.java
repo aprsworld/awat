@@ -10,6 +10,7 @@ import android.app.Notification;
 
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.BatteryManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -51,6 +52,11 @@ public class GPS extends Service
     public double longitude;
     public float accuracy;
 
+    /* Battery info */
+    BatteryState bat_rcvr;
+    int bat_level;
+    boolean charger;
+
     /* Prefs */
     Preferences prefs;
 
@@ -61,9 +67,9 @@ public class GPS extends Service
 
 	setupLocationListener();
 
-	setupNotif();
-
 	setupAlarms();
+
+	setupBattery();
 
 	/* Get prefs */
 	this.prefs = new Preferences(this);
@@ -84,10 +90,13 @@ public class GPS extends Service
 	this.am.cancel(this.tointent);
 	this.lm.removeUpdates(this.ll);
 	unregisterReceiver(this.recvr);
+	unregisterReceiver(this.bat_rcvr);
 	unregisterReceiver(this.recvTimeout);
 
-	/* Remove notification */
-	this.notman.cancelAll();
+	if (this.notman != null) {
+	    /* Remove notification */
+	    this.notman.cancelAll();
+	}
     }
 
 
@@ -140,20 +149,35 @@ public class GPS extends Service
 
     private void setupNotif()
     {
-	/* Set up a persistent notification */
-	this.notman = (NotificationManager)
-	    getSystemService(Context.NOTIFICATION_SERVICE);
-	this.notif = new Notification(R.drawable.notif_icon,
-				      "BigBrother GPS Waiting for location",
-				      System.currentTimeMillis());
-	this.notif.flags = notif.FLAG_ONGOING_EVENT;
-	this.notintent = 
-	    PendingIntent.getActivity(this, 0, 
-				      new Intent(this, BigBrotherGPS.class),0);
-	this.notif.setLatestEventInfo(this, getString(R.string.app_name),
-				      "Waiting for initial location", 
-				      notintent);
-	this.notman.notify(0, notif);
+	if (this.prefs.show_in_notif_bar) {
+	    /* Show state in notif bar */
+
+	    if (this.notman != null) {
+		/* Already set up */
+		return;
+	    }
+
+	    /* Set up a persistent notification */
+	    this.notman = (NotificationManager)
+		getSystemService(Context.NOTIFICATION_SERVICE);
+	    this.notif = new Notification(R.drawable.notif_icon,
+					  "BigBrother GPS Waiting for location",
+					  System.currentTimeMillis());
+	    this.notif.flags = notif.FLAG_ONGOING_EVENT;
+	    this.notintent = 
+		PendingIntent.getActivity(this, 0, 
+					  new Intent(this, BigBrotherGPS.class),0);
+	    this.notif.setLatestEventInfo(this, getString(R.string.app_name),
+					  "Waiting for initial location", 
+					  notintent);
+	    this.notman.notify(0, notif);
+	} else {
+	    if (this.notman != null) {
+		/* Remove notification */
+		this.notman.cancelAll();
+		this.notman = null;
+	    }	    
+	}
     }
 
     private void setupAlarms()
@@ -178,6 +202,16 @@ public class GPS extends Service
 	this.tointent = PendingIntent.getBroadcast(this, 0, i, 0);
 
     }
+
+    private void setupBattery()
+    {
+	/* Setup location update alarm */
+	this.bat_rcvr = new BatteryState();
+	registerReceiver(this.bat_rcvr, 
+			 new IntentFilter(Intent.ACTION_BATTERY_CHANGED),
+			 null, null);
+    }
+    
 
     public void doTimeout()
     {
@@ -214,7 +248,7 @@ public class GPS extends Service
 
     private void reconfigure()
     {
-	
+	System.out.println("BigBrotherGPS doing reconfig");
 	/* Update the request times */
 	this.lm.removeUpdates(ll);
 
@@ -222,6 +256,9 @@ public class GPS extends Service
 	this.am.setRepeating(this.am.RTC_WAKEUP,
 			     System.currentTimeMillis() + 1000,
 			     this.prefs.update_interval, this.amintent);
+
+	/* Fix notifs */
+	setupNotif();
 
 	/* Set URL */
 	this.target_url = null;
@@ -271,8 +308,20 @@ public class GPS extends Service
 	String req = "latitude="+this.latitude;
 	req += "&longitude="+this.longitude;
 	req += "&accuracy="+this.accuracy;
+
+	/* Add secret if configured */
 	if (this.prefs.secret != null)
 	    req += "&secret="+this.prefs.secret;
+
+	/* Add battery status if configured */
+	if (this.prefs.send_batt_status) {
+	    req += "&battlevel="+this.bat_level;
+	    if (this.charger)
+		req += "&charging=1";
+	    else
+		req += "&charging=0";
+	}
+
 	con.setRequestProperty("Content-Length", ""+req.length());
 
 	/* Connect and write */
@@ -316,6 +365,20 @@ public class GPS extends Service
 	}
     }
 
+    class BatteryState extends BroadcastReceiver
+    {
+	@Override public void onReceive(Context ctx, Intent i)
+	{
+	    float level;
+	    level = i.getIntExtra("level", 0);
+	    level /= i.getIntExtra("scale", 100);
+	    GPS.this.bat_level = (int)(level*100);
+	    GPS.this.charger = i.getIntExtra("plugged",1)!=0;
+	    System.out.printf("BigBrotherGPS: Battery state change: %d%% %b\n",
+			      GPS.this.bat_level, GPS.this.charger);
+	}
+    }
+
     class LocListen implements LocationListener 
     {
 	@Override public void onProviderDisabled(String prov)
@@ -354,21 +417,26 @@ public class GPS extends Service
 	    GPS.this.am.cancel(GPS.this.tointent);
 
 	    /* Change notification */
-	    String txt = GPS.this.latitude+", "
-		+GPS.this.longitude+", "
-		+(int)GPS.this.accuracy+"m";
-	    GPS.this.notif.when = System.currentTimeMillis();
-	    GPS.this.notif.setLatestEventInfo(GPS.this, 
-					      getString(R.string.app_name),
-					      txt, GPS.this.notintent);
-	    GPS.this.notman.notify(0, notif);
+	    if (GPS.this.prefs.show_in_notif_bar) {
+		GPS.this.setupNotif();
+		String txt = GPS.this.latitude+", "
+		    +GPS.this.longitude+", "
+		    +(int)GPS.this.accuracy+"m";
+		GPS.this.notif.when = System.currentTimeMillis();
+		GPS.this.notif.setLatestEventInfo(GPS.this, 
+						  getString(R.string.app_name),
+						  txt, GPS.this.notintent);
+		GPS.this.notman.notify(0, notif);
+	    }
 
 	    /* Call to UI */
 	    if (GPS.this.rpc_if != null) {
 		GPS.this.rpc_if.onLocation(loc.getProvider(), 
 					   GPS.this.latitude, 
 					   GPS.this.longitude,
-					   GPS.this.accuracy);
+					   GPS.this.accuracy,
+					   GPS.this.bat_level,
+					   GPS.this.charger);
 	    }
 
 	    /* Post to server */
