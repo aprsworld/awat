@@ -19,7 +19,7 @@
 	android:key="update_interval" />
     <CheckBoxPreference
         android:title="Use GPS"
-	android:summary="Wether to use GPS for positioning or the cellular networks"
+	android:summary="Whether to use GPS for positioning or the cellular networks"
 	android:defaultValue="1"
 	android:key="provider" />
     <EditTextPreference 
