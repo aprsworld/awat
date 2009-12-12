@@ -63,6 +63,7 @@ public class BigBrotherGPS extends Activity
     @Override public boolean onCreateOptionsMenu(Menu menu)
     {
 	menu.add(0, 0, 0, "Update location now");
+	menu.add(0, 1, 1, "Changelog");
 	menu.add(0, 100, 100, "Settings")
 	    .setIcon(android.R.drawable.ic_menu_preferences);
 	return true;
@@ -74,6 +75,10 @@ public class BigBrotherGPS extends Activity
 	case 0:
 	    if (this.binder != null)
 		this.binder.triggerUpdate();
+	    break;
+	case 1:
+	    Intent changelog = new Intent(this, Changelog.class);
+	    startActivity(changelog);
 	    break;
 	case 100:
 	    Intent prefs = new Intent(this, PreferencesActivity.class);

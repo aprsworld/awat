@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+
+    <!-- Ver 1.7 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.7" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Doesn't neuter sheep anymore.\n* Added this changelog that you are reading right now." />
+
+    <!-- Ver 1.6 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.6" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Added battery state notification.\n* Added preferences setting to hide app from notification bar\n* Changed update interval to allow decimal numbers for those that wish to update more often than once a minute." />
+
+    <!-- Ver 1.5 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.5" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Added a 'secret' parameter that (if set) will be sent to the server as part of the POST request. " />
+
+    <!-- Ver 1.4 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.4" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Fixes a forgotten call to unregisterReceiver() on app shutdown. App is now marked as singleInstance, since it can't really run more than one instance anyway." />
+
+    <!-- Ver 1.3 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.3" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Fixes a GPS timeout problem where the service sometimes didn't switch locator from GPS to network on timeout." />
+
+    <!-- Ver 1.0 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.0" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:text="* First version" />
+
+  </LinearLayout>
+</ScrollView>
