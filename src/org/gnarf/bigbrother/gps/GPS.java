@@ -308,6 +308,8 @@ public class GPS extends Service
 	req += "&longitude="+this.location.getLongitude();
 	req += "&altitude="+this.location.getAltitude();
 	req += "&accuracy="+this.location.getAccuracy();
+	req += "&bearing="+this.location.getBearing();
+	req += "&speed="+this.location.getSpeed();
 
 	/* Add secret if configured */
 	if (this.prefs.secret != null)

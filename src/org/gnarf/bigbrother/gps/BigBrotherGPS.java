@@ -33,7 +33,9 @@ public class BigBrotherGPS extends Activity
     LocBinder binder;
 
     /* Our UI components */
-    private TextView prov, lat, lon, alt, acc, batlev, chrgr;
+    private TextView prov, lat, lon, alt, acc;
+    private TextView brg, spd;
+    private TextView batlev, chrgr;
 
 
     /** Called when the activity is first created. */
@@ -120,6 +122,10 @@ public class BigBrotherGPS extends Activity
 	this.lon = (TextView)findViewById(R.id.main_longitude);
 	this.alt = (TextView)findViewById(R.id.main_altitude);
 	this.acc = (TextView)findViewById(R.id.main_accuracy);
+
+	this.brg = (TextView)findViewById(R.id.main_bearing);
+	this.spd = (TextView)findViewById(R.id.main_speed);
+
 	this.batlev = (TextView)findViewById(R.id.main_bat_level);
 	this.chrgr = (TextView)findViewById(R.id.main_bat_charger);
 
@@ -184,12 +190,16 @@ public class BigBrotherGPS extends Activity
 	    Double longitude = new Double(loc.getLongitude());
 	    Integer accuracy = new Integer((int)loc.getAccuracy());
 	    Double altitude = new Double(loc.getAltitude());
+	    Double bearing = new Double(loc.getBearing());
+	    Double speed = new Double(loc.getSpeed());
 	    
 	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
 	    BigBrotherGPS.this.lat.setText(latitude.toString());
 	    BigBrotherGPS.this.lon.setText(longitude.toString());
 	    BigBrotherGPS.this.alt.setText(altitude.toString());
 	    BigBrotherGPS.this.acc.setText(accuracy.toString());
+	    BigBrotherGPS.this.brg.setText(bearing.toString());
+	    BigBrotherGPS.this.spd.setText(speed.toString());
 	    BigBrotherGPS.this.batlev.setText((new Integer(bat_level)).toString());
 	    if (charger)
 		BigBrotherGPS.this.chrgr.setText("(charging)");
