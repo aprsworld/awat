@@ -79,7 +79,7 @@ public class GPS extends Service
 	reconfigure();
 
 	/* Create formatter */
-	dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SS'Z'");
+	dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
 
 	/* Create binder */
 	this.binder = new LocBinder(this);
