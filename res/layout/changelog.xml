@@ -8,6 +8,18 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
+    <!-- Ver 1.8 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="1.7" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Added 'provider' HTTP parameter to inform server of which location provider provided the position\n" />
+
     <!-- Ver 1.7 -->
     <TextView  
       android:layout_width="wrap_content" 

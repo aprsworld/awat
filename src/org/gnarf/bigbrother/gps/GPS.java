@@ -303,7 +303,8 @@ public class GPS extends Service
 	con.setDoInput(false);
 
 	/* Build request data */
-	String req = "latitude="+this.location.getLatitude();
+	String req = "provider="+this.location.getProvider();
+	req += "&latitude="+this.location.getLatitude();
 	req += "&longitude="+this.location.getLongitude();
 	req += "&accuracy="+this.location.getAccuracy();
 

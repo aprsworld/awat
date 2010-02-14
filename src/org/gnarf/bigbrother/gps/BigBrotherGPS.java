@@ -33,7 +33,7 @@ public class BigBrotherGPS extends Activity
     LocBinder binder;
 
     /* Our UI components */
-    private TextView lat, lon, acc, batlev, chrgr;
+    private TextView prov, lat, lon, acc, batlev, chrgr;
 
 
     /** Called when the activity is first created. */
@@ -115,6 +115,7 @@ public class BigBrotherGPS extends Activity
         setContentView(R.layout.main);
 
 	/* Lookup our text fields */
+	this.prov = (TextView)findViewById(R.id.main_provider);
 	this.lat = (TextView)findViewById(R.id.main_latitude);
 	this.lon = (TextView)findViewById(R.id.main_longitude);
 	this.acc = (TextView)findViewById(R.id.main_accuracy);
@@ -175,10 +176,14 @@ public class BigBrotherGPS extends Activity
 	@Override public void onLocation(String prov, Location loc,
 					 int bat_level, boolean charger)
 	{
+	    if (loc == null)
+		return;
+
 	    Double latitude = new Double(loc.getLatitude());
 	    Double longitude = new Double(loc.getLongitude());
 	    Integer accuracy = new Integer((int)loc.getAccuracy());
-
+	    
+	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
 	    BigBrotherGPS.this.lat.setText(latitude.toString());
 	    BigBrotherGPS.this.lon.setText(longitude.toString());
 	    BigBrotherGPS.this.acc.setText(accuracy.toString());
