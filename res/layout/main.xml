@@ -152,10 +152,17 @@
 
 
   <Button
+      android:id="@+id/main_triggerupdate"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:text="Update location" />
+
+  <Button
       android:id="@+id/main_stop"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content"
-      android:text="Stop bothering the locator" />
+      android:text="End Program" />
+
 
 </LinearLayout>
 

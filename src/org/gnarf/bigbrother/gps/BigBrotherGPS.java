@@ -130,12 +130,25 @@ public class BigBrotherGPS extends Activity
 	this.chrgr = (TextView)findViewById(R.id.main_bat_charger);
 
 	/* Hook the button */
-        Button btn = (Button)findViewById(R.id.main_stop);
+        Button btn;
+
+	/* end button */
+	btn = (Button)findViewById(R.id.main_stop);
 	if (btn != null)
 	    btn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
 			stopService(BigBrotherGPS.this.srvint);
 			BigBrotherGPS.this.finish();
+		    }
+		});
+
+	/* update button */
+        btn = (Button)findViewById(R.id.main_triggerupdate);
+	if (btn != null)
+	    btn.setOnClickListener(new View.OnClickListener() {
+		    public void onClick(View v) {
+			if (BigBrotherGPS.this.binder != null)
+			    BigBrotherGPS.this.binder.triggerUpdate();
 		    }
 		});
     }

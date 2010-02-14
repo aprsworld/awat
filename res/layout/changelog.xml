@@ -18,7 +18,7 @@
       android:layout_height="wrap_content" 
       android:paddingLeft="20dp"
       android:paddingBottom="20dp"
-      android:text="* Added 'provider' HTTP parameter to inform server of which location provider provided the position\n* Added altitude (Parameter-name: altitude).\n* Added speed and bearing (parameter-names: speed, bearing).\n* Added time(parameter-name: time).\n* Option to allow HTTP response to be displayed in the notification bar instead of current position." />
+      android:text="* Added 'provider' HTTP parameter to inform server of which location provider provided the position\n* Added altitude (Parameter-name: altitude).\n* Added speed and bearing (parameter-names: speed, bearing).\n* Added time(parameter-name: time).\n* Option to allow HTTP response to be displayed in the notification bar instead of current position.\n* Renamed end program button.\n* Added button to trigger location update." />
 
     <!-- Ver 1.7 -->
     <TextView  
