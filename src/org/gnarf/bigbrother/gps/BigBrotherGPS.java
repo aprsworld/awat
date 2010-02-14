@@ -192,7 +192,7 @@ public class BigBrotherGPS extends Activity
 	    Double altitude = new Double(loc.getAltitude());
 	    Double bearing = new Double(loc.getBearing());
 	    Double speed = new Double(loc.getSpeed());
-	    
+
 	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
 	    BigBrotherGPS.this.lat.setText(latitude.toString());
 	    BigBrotherGPS.this.lon.setText(longitude.toString());

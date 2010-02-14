@@ -21,6 +21,7 @@ import android.location.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.text.SimpleDateFormat;
 
 import org.gnarf.bigbrother.gps.*;
 
@@ -36,6 +37,9 @@ public class GPS extends Service
     LocTimeout recvTimeout;
     boolean twiceTimeout;
     long timeout;
+
+    /* Date formatting */
+    SimpleDateFormat dateformatter;
 
     /* Notification */
     NotificationManager notman;
@@ -74,8 +78,12 @@ public class GPS extends Service
 	this.prefs.load();
 	reconfigure();
 
+	/* Create formatter */
+	dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SS'Z'");
+
 	/* Create binder */
 	this.binder = new LocBinder(this);
+
     }
 
     @Override public void onDestroy()
@@ -303,6 +311,7 @@ public class GPS extends Service
 	con.setDoInput(false);
 
 	/* Build request data */
+	Date date = new Date(this.location.getTime());
 	String req = "provider="+this.location.getProvider();
 	req += "&latitude="+this.location.getLatitude();
 	req += "&longitude="+this.location.getLongitude();
@@ -310,6 +319,7 @@ public class GPS extends Service
 	req += "&accuracy="+this.location.getAccuracy();
 	req += "&bearing="+this.location.getBearing();
 	req += "&speed="+this.location.getSpeed();
+	req += "&time="+this.dateformatter.format(date);
 
 	/* Add secret if configured */
 	if (this.prefs.secret != null)
