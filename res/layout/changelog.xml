@@ -18,7 +18,7 @@
       android:layout_height="wrap_content" 
       android:paddingLeft="20dp"
       android:paddingBottom="20dp"
-      android:text="* Added 'provider' HTTP parameter to inform server of which location provider provided the position\n" />
+      android:text="* Added 'provider' HTTP parameter to inform server of which location provider provided the position\n* Added altitude." />
 
     <!-- Ver 1.7 -->
     <TextView  

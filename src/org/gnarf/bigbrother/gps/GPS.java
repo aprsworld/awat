@@ -306,6 +306,7 @@ public class GPS extends Service
 	String req = "provider="+this.location.getProvider();
 	req += "&latitude="+this.location.getLatitude();
 	req += "&longitude="+this.location.getLongitude();
+	req += "&altitude="+this.location.getAltitude();
 	req += "&accuracy="+this.location.getAccuracy();
 
 	/* Add secret if configured */
