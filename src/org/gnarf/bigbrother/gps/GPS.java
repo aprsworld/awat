@@ -48,9 +48,7 @@ public class GPS extends Service
     URL target_url;
 
     /* Our position data from last read */
-    public double latitude;
-    public double longitude;
-    public float accuracy;
+    Location location;
 
     /* Battery info */
     BatteryState bat_rcvr;
@@ -305,9 +303,9 @@ public class GPS extends Service
 	con.setDoInput(false);
 
 	/* Build request data */
-	String req = "latitude="+this.latitude;
-	req += "&longitude="+this.longitude;
-	req += "&accuracy="+this.accuracy;
+	String req = "latitude="+this.location.getLatitude();
+	req += "&longitude="+this.location.getLongitude();
+	req += "&accuracy="+this.location.getAccuracy();
 
 	/* Add secret if configured */
 	if (this.prefs.secret != null)
@@ -408,9 +406,7 @@ public class GPS extends Service
 	{
 	    System.out.println("BigBrotherGPS got loc from "
 			       +loc.getProvider());
-	    GPS.this.latitude = loc.getLatitude();
-	    GPS.this.longitude = loc.getLongitude();
-	    GPS.this.accuracy = loc.getAccuracy();
+	    GPS.this.location = loc;
 
 	    /* Stop waiting for locations. Will be restarted by alarm */
 	    GPS.this.lm.removeUpdates(GPS.this.ll);
@@ -419,9 +415,9 @@ public class GPS extends Service
 	    /* Change notification */
 	    if (GPS.this.prefs.show_in_notif_bar) {
 		GPS.this.setupNotif();
-		String txt = GPS.this.latitude+", "
-		    +GPS.this.longitude+", "
-		    +(int)GPS.this.accuracy+"m";
+		String txt = loc.getLatitude()+", "
+		    +loc.getLongitude()+", "
+		    +(int)loc.getAccuracy()+"m";
 		GPS.this.notif.when = System.currentTimeMillis();
 		GPS.this.notif.setLatestEventInfo(GPS.this, 
 						  getString(R.string.app_name),
@@ -431,10 +427,7 @@ public class GPS extends Service
 
 	    /* Call to UI */
 	    if (GPS.this.rpc_if != null) {
-		GPS.this.rpc_if.onLocation(loc.getProvider(), 
-					   GPS.this.latitude, 
-					   GPS.this.longitude,
-					   GPS.this.accuracy,
+		GPS.this.rpc_if.onLocation(loc.getProvider(), loc,
 					   GPS.this.bat_level,
 					   GPS.this.charger);
 	    }

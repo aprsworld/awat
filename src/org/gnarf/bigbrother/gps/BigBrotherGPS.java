@@ -148,8 +148,8 @@ public class BigBrotherGPS extends Activity
 	    CallBackIF cb = new CallBackIF();
 
 	    /* Read last position from locator */
-	    cb.onLocation("init", lb.getLatitude(), lb.getLongitude(),
-			  lb.getAccuracy(), lb.getBattery(), lb.getCharger());
+	    cb.onLocation("init", lb.getLocation(),
+			  lb.getBattery(), lb.getCharger());
 	    
 
 	    /* Bind for updates */
@@ -172,13 +172,16 @@ public class BigBrotherGPS extends Activity
 	
 	@Override public void onStateChange(String prov, int state) {}
 
-	@Override public void onLocation(String prov, double latitude, 
-					 double longitude, float accuracy,
+	@Override public void onLocation(String prov, Location loc,
 					 int bat_level, boolean charger)
 	{
-	    BigBrotherGPS.this.lat.setText((new Double(latitude)).toString());
-	    BigBrotherGPS.this.lon.setText((new Double(longitude)).toString());
-	    BigBrotherGPS.this.acc.setText((new Integer((int)accuracy)).toString());
+	    Double latitude = new Double(loc.getLatitude());
+	    Double longitude = new Double(loc.getLongitude());
+	    Integer accuracy = new Integer((int)loc.getAccuracy());
+
+	    BigBrotherGPS.this.lat.setText(latitude.toString());
+	    BigBrotherGPS.this.lon.setText(longitude.toString());
+	    BigBrotherGPS.this.acc.setText(accuracy.toString());
 	    BigBrotherGPS.this.batlev.setText((new Integer(bat_level)).toString());
 	    if (charger)
 		BigBrotherGPS.this.chrgr.setText("(charging)");

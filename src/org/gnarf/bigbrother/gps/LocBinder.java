@@ -1,4 +1,5 @@
 package org.gnarf.bigbrother.gps;
+import android.location.*;
 
 import android.os.Binder;
 
@@ -21,19 +22,9 @@ public class LocBinder extends Binder
 	this.gps.rpc_if = the_if;
     }
 
-    public double getLatitude()
+    public Location getLocation()
     {
-	return this.gps.latitude;
-    }
-
-    public double getLongitude()
-    {
-	return this.gps.longitude;
-    }
-
-    public float getAccuracy()
-    {
-	return this.gps.accuracy;
+	return this.gps.location;
     }
 
     public int getBattery()
