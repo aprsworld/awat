@@ -280,6 +280,8 @@ public class GPS extends Service
     /* Send a request to the URL and post some data */
     protected void postLocation()
     {
+	boolean do_notif = false;
+
 	/* No url, don't do anything */
 	if (this.target_url == null)
 	    return;
@@ -308,7 +310,16 @@ public class GPS extends Service
 
 	con.setUseCaches(false);
 	con.setDoOutput(true);
-	con.setDoInput(false);
+
+	/* If HTTP response is to be used in notif bar */
+	if (this.prefs.show_in_notif_bar && 
+	    this.prefs.http_resp_in_notif_bar) {
+	    this.setupNotif();
+	    con.setDoInput(true);
+	    do_notif = true;
+	} else {
+	    con.setDoInput(false);
+	}
 
 	/* Build request data */
 	Date date = new Date(this.location.getTime());
@@ -337,13 +348,22 @@ public class GPS extends Service
 	con.setRequestProperty("Content-Length", ""+req.length());
 
 	/* Connect and write */
+	StringBuffer response = new StringBuffer();
 	try {
 	    con.connect();
-	    DataOutputStream wr = 
-		new DataOutputStream(con.getOutputStream());
+
+	    DataOutputStream wr;
+	    wr = new DataOutputStream(con.getOutputStream());
 	    wr.writeBytes(req);
 	    wr.flush();
 	    wr.close();
+	    
+	    DataInputStream rd = null;
+	    if (do_notif) {
+		rd = new DataInputStream(con.getInputStream());
+		response.append(rd.readLine());
+		rd.close();
+	    }
 	} 
 	catch (IOException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
@@ -354,6 +374,16 @@ public class GPS extends Service
 	con.disconnect();
 
 	System.out.println("BigBrotherGPS sent HTTP poke");
+
+	/* Set notification if we have it */
+	if (this.notif != null && do_notif) {
+	    this.notif.when = System.currentTimeMillis();
+	    this.notif.setLatestEventInfo(this, 
+					  getString(R.string.app_name),
+					  response.toString(), 
+					  this.notintent);
+	    this.notman.notify(0, this.notif);
+	}
     }
 
     /**************************************************************************
@@ -427,7 +457,8 @@ public class GPS extends Service
 	    GPS.this.am.cancel(GPS.this.tointent);
 
 	    /* Change notification */
-	    if (GPS.this.prefs.show_in_notif_bar) {
+	    if (GPS.this.prefs.show_in_notif_bar && 
+		!GPS.this.prefs.http_resp_in_notif_bar) {
 		GPS.this.setupNotif();
 		String txt = loc.getLatitude()+", "
 		    +loc.getLongitude()+", "
@@ -436,7 +467,7 @@ public class GPS extends Service
 		GPS.this.notif.setLatestEventInfo(GPS.this, 
 						  getString(R.string.app_name),
 						  txt, GPS.this.notintent);
-		GPS.this.notman.notify(0, notif);
+		GPS.this.notman.notify(0, GPS.this.notif);
 	    }
 
 	    /* Call to UI */

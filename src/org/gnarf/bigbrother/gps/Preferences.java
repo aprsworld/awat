@@ -16,6 +16,7 @@ public class Preferences
     public int gps_timeout;
     public boolean start_on_boot;
     public boolean show_in_notif_bar;
+    public boolean http_resp_in_notif_bar;
     public boolean send_batt_status;
 
     Preferences(Context ctx)
@@ -50,6 +51,8 @@ public class Preferences
 
 	this.start_on_boot = prefs.getBoolean("start_on_boot", false);
 	this.show_in_notif_bar = prefs.getBoolean("show_in_notif_bar", true);
+	this.http_resp_in_notif_bar = 
+	    prefs.getBoolean("http_resp_in_notif_bar", false);
 
 	secret = prefs.getString("secret", null);
 	if (secret == null || secret.length() < 1)

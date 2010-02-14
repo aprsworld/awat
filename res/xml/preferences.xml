@@ -46,5 +46,10 @@
 	android:summary="Select this if you want the battery status to be sent in the POST request."
 	android:defaultValue="0"
 	android:key="send_batt_status" />
+    <CheckBoxPreference
+        android:title="Use HTTP response for notif. bar."
+	android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
+	android:defaultValue="0"
+	android:key="http_resp_in_notif_bar" />
   </PreferenceCategory>
 </PreferenceScreen>
