@@ -85,6 +85,10 @@
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
       android:text="wait..." />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="m" />
   </LinearLayout>
   <LinearLayout
     android:orientation="horizontal"
@@ -137,6 +141,10 @@
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
       android:text="wait..." />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="m/s" />
   </LinearLayout>
 
   <LinearLayout

@@ -38,6 +38,11 @@
 	android:numeric="integer"
 	android:defaultValue="10"
 	android:key="gps_timeout" />
+    <CheckBoxPreference 
+	android:title="Continous Operation"
+	android:summary="Keep the locator running. Better accuracy, but bad for battery"
+	android:defaultValue="0"
+	android:key="continous_mode" />
   </PreferenceCategory>
 
   <PreferenceCategory android:title="Callback settings">

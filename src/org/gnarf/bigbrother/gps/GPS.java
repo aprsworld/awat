@@ -118,33 +118,49 @@ public class GPS extends Service
 	return false;
     }
 
+
+    private void startLocator()
+	throws IllegalArgumentException
+    {
+	if (this.prefs.provider == 1)
+	    this.lm.requestLocationUpdates(this.lm.GPS_PROVIDER, 0, 0, 
+					   this.ll);
+	else
+	    this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 0, 0,
+					   this.ll);
+    }
+
     public void triggerUpdate() 
     {
-	this.lm.removeUpdates(this.ll);
+	if (this.prefs.continous_mode) {
+	    /* If we are in continous mode just send last location */
+	    locationUpdate();
+	} 
 	
-	try {
-	    if (this.prefs.provider == 1)
-		this.lm.requestLocationUpdates(this.lm.GPS_PROVIDER, 0, 0, 
-					       this.ll);
-	    else
-		this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 0, 0,
-					       this.ll);
-	}
-	catch (IllegalArgumentException e) {
-	    System.out.println("BigBrotherGPS: "+e.toString());
-	    return;
-	}
+	else {
+	    /* Polling mode */
 
-	/* Start timeout alarm */
-	this.timeout = System.currentTimeMillis();
-	this.timeout += this.prefs.gps_timeout;
-	this.timeout += 100; /* delay a bit to avoid a race */
-	this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
-			     this.prefs.gps_timeout, this.tointent);
-	if (this.prefs.provider == 1)
-	    this.twiceTimeout = true;
-	else
-	    this.twiceTimeout = false;
+	    this.lm.removeUpdates(this.ll);
+	    
+	    try {
+		startLocator();
+	    }
+	    catch (IllegalArgumentException e) {
+		System.out.println("BigBrotherGPS: "+e.toString());
+		return;
+	    }
+
+	    /* Start timeout alarm */
+	    this.timeout = System.currentTimeMillis();
+	    this.timeout += this.prefs.gps_timeout;
+	    this.timeout += 100; /* delay a bit to avoid a race */
+	    this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
+				 this.prefs.gps_timeout, this.tointent);
+	    if (this.prefs.provider == 1)
+		this.twiceTimeout = true;
+	    else
+		this.twiceTimeout = false;
+	}
     }
 
     private void setupLocationListener()
@@ -275,6 +291,19 @@ public class GPS extends Service
 	catch (MalformedURLException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
 	    this.target_url = null;
+	}
+
+	/* For continous mode, start updating */
+	if (this.prefs.continous_mode) {
+	    try {
+		startLocator();
+	    }
+	    catch (IllegalArgumentException e) {
+		System.out.println("BigBrotherGPS: "
+				   +"Can't start locator in continous mode: "
+				   +e.toString());
+		return;
+	    }
 	}
     }
 
@@ -417,6 +446,38 @@ public class GPS extends Service
 	}
     }
 
+    private void locationUpdate()
+    {
+	/* Location update triggered */
+	Location loc = this.location;
+	if (loc == null)
+	    return;
+
+	/* Change notification */
+	if (this.prefs.show_in_notif_bar && 
+	    !this.prefs.http_resp_in_notif_bar) {
+	    this.setupNotif();
+	    String txt = loc.getLatitude()+", "
+		+loc.getLongitude()+", "
+		+(int)loc.getAccuracy()+"m";
+	    this.notif.when = System.currentTimeMillis();
+	    this.notif.setLatestEventInfo(GPS.this, 
+					      getString(R.string.app_name),
+					      txt, GPS.this.notintent);
+	    this.notman.notify(0, GPS.this.notif);
+	}
+	
+	/* Call to UI */
+	if (this.rpc_if != null) {
+	    this.rpc_if.onLocation(loc.getProvider(), loc,
+				   this.bat_level,
+				   this.charger);
+	}
+	
+	/* Post to server */
+	this.postLocation();
+    }
+
     /**************************************************************************
      * Helper classes for timed locator interaction
      *************************************************************************/
@@ -433,8 +494,12 @@ public class GPS extends Service
     {
 	@Override public void onReceive(Context ctx, Intent i)
 	{
-	    System.out.println("BigBrotherGPS: Timeout!");
-	    GPS.this.doTimeout();
+	    if (GPS.this.prefs.continous_mode) {
+		System.out.println("BigBrotherGPS: Ignored timeout");
+	    } else {
+		System.out.println("BigBrotherGPS: Received Timeout!");
+		GPS.this.doTimeout();
+	    }
 	}
     }
 
@@ -457,13 +522,19 @@ public class GPS extends Service
 	@Override public void onProviderDisabled(String prov)
 	{
 	    System.out.println("BigBrotherGPS ProviderDisabled: "+prov);
-	    GPS.this.doTimeout();	    
+	    if (GPS.this.prefs.continous_mode) 
+		GPS.this.startLocator();
+	    else
+		GPS.this.doTimeout();	    
 	}
 
 	@Override public void onProviderEnabled(String prov)
 	{
 	    System.out.println("BigBrotherGPS ProviderEnabled: "+prov);
-	    GPS.this.doTimeout();	    
+	    if (GPS.this.prefs.continous_mode) 
+		GPS.this.startLocator();
+	    else
+		GPS.this.doTimeout();	    
 	}
 
 	@Override public void onStatusChanged(String prov, int stat, 
@@ -474,7 +545,10 @@ public class GPS extends Service
 	    if (GPS.this.rpc_if != null)
 		GPS.this.rpc_if.onStateChange(prov, stat);
 
-	    GPS.this.doTimeout();
+	    if (GPS.this.prefs.continous_mode) 
+		GPS.this.startLocator();
+	    else
+		GPS.this.doTimeout();
 	}
 
 	@Override public void onLocationChanged(Location loc)
@@ -483,33 +557,13 @@ public class GPS extends Service
 			       +loc.getProvider());
 	    GPS.this.location = loc;
 
-	    /* Stop waiting for locations. Will be restarted by alarm */
-	    GPS.this.lm.removeUpdates(GPS.this.ll);
-	    GPS.this.am.cancel(GPS.this.tointent);
+	    if (!GPS.this.prefs.continous_mode) {
+		/* Stop waiting for locations. Will be restarted by alarm */
+		GPS.this.lm.removeUpdates(GPS.this.ll);
+		GPS.this.am.cancel(GPS.this.tointent);
 
-	    /* Change notification */
-	    if (GPS.this.prefs.show_in_notif_bar && 
-		!GPS.this.prefs.http_resp_in_notif_bar) {
-		GPS.this.setupNotif();
-		String txt = loc.getLatitude()+", "
-		    +loc.getLongitude()+", "
-		    +(int)loc.getAccuracy()+"m";
-		GPS.this.notif.when = System.currentTimeMillis();
-		GPS.this.notif.setLatestEventInfo(GPS.this, 
-						  getString(R.string.app_name),
-						  txt, GPS.this.notintent);
-		GPS.this.notman.notify(0, GPS.this.notif);
+		GPS.this.locationUpdate();
 	    }
-
-	    /* Call to UI */
-	    if (GPS.this.rpc_if != null) {
-		GPS.this.rpc_if.onLocation(loc.getProvider(), loc,
-					   GPS.this.bat_level,
-					   GPS.this.charger);
-	    }
-
-	    /* Post to server */
-	    GPS.this.postLocation();
 	}
     }
 }

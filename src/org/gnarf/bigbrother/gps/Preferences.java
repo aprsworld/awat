@@ -16,6 +16,7 @@ public class Preferences
     public int gps_timeout;
     public int coordinate_format;
     public boolean start_on_boot;
+    public boolean continous_mode;
     public boolean show_in_notif_bar;
     public boolean http_resp_in_notif_bar;
     public boolean send_provider;
@@ -51,6 +52,8 @@ public class Preferences
 	else
 	    this.provider = 0;
 	
+	this.continous_mode = prefs.getBoolean("continous_mode", false);
+
 	tmp = prefs.getString("gps_timeout","10");
 	this.gps_timeout = (new Integer(tmp)).intValue();
 	this.gps_timeout *= 1000;
