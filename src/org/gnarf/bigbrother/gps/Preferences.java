@@ -17,6 +17,11 @@ public class Preferences
     public boolean start_on_boot;
     public boolean show_in_notif_bar;
     public boolean http_resp_in_notif_bar;
+    public boolean send_provider;
+    public boolean send_altitude;
+    public boolean send_bearing;
+    public boolean send_speed;
+    public boolean send_time;
     public boolean send_batt_status;
 
     Preferences(Context ctx)
@@ -58,6 +63,11 @@ public class Preferences
 	if (secret == null || secret.length() < 1)
 	    secret = null;
 
+	this.send_provider = prefs.getBoolean("send_provider", true);
+	this.send_altitude = prefs.getBoolean("send_altitude", true);
+	this.send_bearing = prefs.getBoolean("send_bearing", true);
+	this.send_speed = prefs.getBoolean("send_speed", true);
+	this.send_time = prefs.getBoolean("send_time", true);
 	this.send_batt_status = prefs.getBoolean("send_batt_status", false);
     }
 }

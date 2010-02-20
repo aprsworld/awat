@@ -323,27 +323,57 @@ public class GPS extends Service
 	}
 
 	/* Build request data */
-	Date date = new Date(this.location.getTime());
-	String req = "provider="+this.location.getProvider();
-	req += "&latitude="+this.location.getLatitude();
-	req += "&longitude="+this.location.getLongitude();
-	req += "&altitude="+this.location.getAltitude();
-	req += "&accuracy="+this.location.getAccuracy();
-	req += "&bearing="+this.location.getBearing();
-	req += "&speed="+this.location.getSpeed();
-	req += "&time="+this.dateformatter.format(date);
+	StringBuffer req = new StringBuffer();
+	req.append("latitude=");
+	req.append(this.location.getLatitude());
 
-	/* Add secret if configured */
-	if (this.prefs.secret != null)
-	    req += "&secret="+this.prefs.secret;
+	req.append("&longitude=");
+	req.append(this.location.getLongitude());
+
+	req.append("&accuracy=");
+	req.append(this.location.getAccuracy());
+
+	if (this.prefs.send_altitude) {
+	    req.append("&altitude=");
+	    req.append(this.location.getAltitude());
+	}
+		
+	if (this.prefs.send_provider) {
+	    req.append("&provider=");
+	    req.append(this.location.getProvider());
+	}
+
+	if (this.prefs.send_bearing) {
+	    req.append("&bearing=");
+	    req.append(this.location.getBearing());
+	}
+
+	if (this.prefs.send_speed) {
+	    req.append("&speed=");
+	    req.append(this.location.getSpeed());
+	}
+
+	if (this.prefs.send_time) {
+	    Date date = new Date(this.location.getTime());
+	    req.append("&time=");
+	    req.append(this.dateformatter.format(date));
+	}
 
 	/* Add battery status if configured */
 	if (this.prefs.send_batt_status) {
-	    req += "&battlevel="+this.bat_level;
-	    if (this.charger)
-		req += "&charging=1";
-	    else
-		req += "&charging=0";
+	    req.append("&battlevel=");
+	    req.append(this.bat_level);
+	    if (this.charger) {
+		req.append("&charging=1");
+	    } else {
+		req.append("&charging=0");
+	    }
+	}
+
+	/* Add secret if configured */
+	if (this.prefs.secret != null) {
+	    req.append("&secret=");
+	    req.append(this.prefs.secret);
 	}
 
 	con.setRequestProperty("Content-Length", ""+req.length());
@@ -355,7 +385,7 @@ public class GPS extends Service
 
 	    DataOutputStream wr;
 	    wr = new DataOutputStream(con.getOutputStream());
-	    wr.writeBytes(req);
+	    wr.writeBytes(req.toString());
 	    wr.flush();
 	    wr.close();
 	    

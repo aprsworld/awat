@@ -42,6 +42,31 @@
 	android:defaultValue=""
 	android:key="secret" />
     <CheckBoxPreference
+        android:title="Send provider"
+	android:summary="Select this if you wish to send information about the provider of the location data."
+	android:defaultValue="1"
+	android:key="send_provider" />
+    <CheckBoxPreference
+        android:title="Send altitude"
+	android:summary="Select this if you wish to send the altitude."
+	android:defaultValue="1"
+	android:key="send_altitude" />
+    <CheckBoxPreference
+        android:title="Send time"
+	android:summary="Select this if you wish to send the time of the fix to the server."
+	android:defaultValue="1"
+	android:key="send_time" />
+    <CheckBoxPreference
+        android:title="Send bearing"
+	android:summary="Select this if you wish to send the bearing."
+	android:defaultValue="1"
+	android:key="send_bearing" />
+    <CheckBoxPreference
+        android:title="Send speed"
+	android:summary="Select this if you wish to send the speed."
+	android:defaultValue="1"
+	android:key="send_speed" />
+    <CheckBoxPreference
         android:title="Send battery status"
 	android:summary="Select this if you want the battery status to be sent in the POST request."
 	android:defaultValue="0"
