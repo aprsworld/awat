@@ -18,7 +18,7 @@
       android:layout_height="wrap_content" 
       android:paddingLeft="20dp"
       android:paddingBottom="20dp"
-      android:text="* Fixed time zone on position date so it really is UTC.\n* Added options for sending/excluding most parameters from the HTTP request." />
+      android:text="* Fixed time zone on position date so it really is UTC.\n* Added options for sending/excluding most parameters from the HTTP request.\n* Added time of last fix to display." />
 
     <!-- Ver 1.9 -->
     <TextView  

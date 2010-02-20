@@ -2,6 +2,8 @@ package org.gnarf.bigbrother.gps;
 
 import java.util.*;
 
+import java.text.SimpleDateFormat;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -33,9 +35,12 @@ public class BigBrotherGPS extends Activity
     LocBinder binder;
 
     /* Our UI components */
+    private TextView time;
     private TextView prov, lat, lon, alt, acc;
     private TextView brg, spd;
     private TextView batlev, chrgr;
+
+    SimpleDateFormat dateformatter;
 
 
     /** Called when the activity is first created. */
@@ -116,7 +121,12 @@ public class BigBrotherGPS extends Activity
 	/* Create the UI */
         setContentView(R.layout.main);
 
+	/* Date/time formatting */
+	this.dateformatter = new SimpleDateFormat("HH:mm:ss.SS");
+
 	/* Lookup our text fields */
+	this.time = (TextView)findViewById(R.id.main_time);
+
 	this.prov = (TextView)findViewById(R.id.main_provider);
 	this.lat = (TextView)findViewById(R.id.main_latitude);
 	this.lon = (TextView)findViewById(R.id.main_longitude);
@@ -206,6 +216,10 @@ public class BigBrotherGPS extends Activity
 	    Double bearing = new Double(loc.getBearing());
 	    Double speed = new Double(loc.getSpeed());
 
+	    Date date = new Date(loc.getTime());
+	    String df = BigBrotherGPS.this.dateformatter.format(date);
+	    
+	    BigBrotherGPS.this.time.setText(df);
 	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
 	    BigBrotherGPS.this.lat.setText(latitude.toString());
 	    BigBrotherGPS.this.lon.setText(longitude.toString());
