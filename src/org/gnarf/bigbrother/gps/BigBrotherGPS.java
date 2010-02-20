@@ -27,6 +27,9 @@ import org.gnarf.bigbrother.gps.*;
 public class BigBrotherGPS extends Activity
 {
     Bundle state;
+
+    /* Prefs */
+    Preferences prefs;
     
     /* References to our service */
     Intent srvint;
@@ -50,6 +53,10 @@ public class BigBrotherGPS extends Activity
 
 	System.out.println("onCreate called");
 	this.state = savedInstanceState;
+
+	/* Get prefs */
+	this.prefs = new Preferences(this);
+	this.prefs.load();
 
 	startTheGPS();
 
@@ -88,8 +95,8 @@ public class BigBrotherGPS extends Activity
 	    startActivity(changelog);
 	    break;
 	case 100:
-	    Intent prefs = new Intent(this, PreferencesActivity.class);
-	    startActivityForResult(prefs, 0);
+	    Intent prefA = new Intent(this, PreferencesActivity.class);
+	    startActivityForResult(prefA, 0);
 	    break;
 	}
 
@@ -98,6 +105,9 @@ public class BigBrotherGPS extends Activity
 
     @Override public void onActivityResult(int req, int res, Intent i)
     {
+	/* Get prefs */
+	this.prefs.load();
+
 	/* Notify the service that preferences might have changed */
 	if (this.binder != null)
 	    this.binder.updatePrefs();
@@ -218,11 +228,25 @@ public class BigBrotherGPS extends Activity
 
 	    Date date = new Date(loc.getTime());
 	    String df = BigBrotherGPS.this.dateformatter.format(date);
-	    
+
+	    /* Set format */
+	    int cf;
+	    switch (BigBrotherGPS.this.prefs.coordinate_format) {
+	    case 2:
+		cf = loc.FORMAT_MINUTES;
+		break;
+	    case 3:
+		cf = loc.FORMAT_SECONDS;
+		break;
+	    default:
+		cf = loc.FORMAT_DEGREES;
+		break;
+	    }
+
 	    BigBrotherGPS.this.time.setText(df);
 	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
-	    BigBrotherGPS.this.lat.setText(latitude.toString());
-	    BigBrotherGPS.this.lon.setText(longitude.toString());
+	    BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
+	    BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
 	    BigBrotherGPS.this.alt.setText(altitude.toString());
 	    BigBrotherGPS.this.acc.setText(accuracy.toString());
 	    BigBrotherGPS.this.brg.setText(bearing.toString());

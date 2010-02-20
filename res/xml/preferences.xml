@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:title="Service settings">
+  <PreferenceCategory android:title="Program settings">
     <CheckBoxPreference
         android:title="Start service on boot"
 	android:defaultValue="0"
@@ -9,7 +9,17 @@
         android:title="Show in notification bar"
 	android:defaultValue="1"
 	android:key="show_in_notif_bar" />
+    <ListPreference 
+        android:title="Coordinate format"
+	android:summary="The format of the coordinates shown on screen"
+        android:key="coordinate_format"
+        android:entries="@array/coordinate_format_names"
+        android:entryValues="@array/coordinate_format"
+        android:defaultValue="1"
+    />
+
   </PreferenceCategory>
+
   <PreferenceCategory android:title="Locator settings">
     <EditTextPreference 
 	android:title="Update interval"
@@ -29,6 +39,7 @@
 	android:defaultValue="10"
 	android:key="gps_timeout" />
   </PreferenceCategory>
+
   <PreferenceCategory android:title="Callback settings">
     <EditTextPreference 
 	android:title="URL"

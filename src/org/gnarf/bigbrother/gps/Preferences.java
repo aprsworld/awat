@@ -14,6 +14,7 @@ public class Preferences
     public int update_interval;
     public int provider;
     public int gps_timeout;
+    public int coordinate_format;
     public boolean start_on_boot;
     public boolean show_in_notif_bar;
     public boolean http_resp_in_notif_bar;
@@ -62,6 +63,9 @@ public class Preferences
 	secret = prefs.getString("secret", null);
 	if (secret == null || secret.length() < 1)
 	    secret = null;
+
+	tmp = prefs.getString("coordinate_format", "1");
+	this.coordinate_format = (new Integer(tmp)).intValue();
 
 	this.send_provider = prefs.getBoolean("send_provider", true);
 	this.send_altitude = prefs.getBoolean("send_altitude", true);
