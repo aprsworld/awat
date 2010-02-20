@@ -80,6 +80,7 @@ public class GPS extends Service
 
 	/* Create formatter */
 	dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
+	dateformatter.setTimeZone(new SimpleTimeZone(0, "UTC"));
 
 	/* Create binder */
 	this.binder = new LocBinder(this);

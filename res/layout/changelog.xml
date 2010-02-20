@@ -8,6 +8,18 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
+    <!-- Ver 2.0 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="2.0" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dp"
+      android:paddingBottom="20dp"
+      android:text="* Fixed time zone on position date so it really is UTC." />
+
     <!-- Ver 1.9 -->
     <TextView  
       android:layout_width="wrap_content" 
