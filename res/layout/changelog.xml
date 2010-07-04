@@ -18,7 +18,7 @@
       android:layout_height="wrap_content" 
       android:paddingLeft="20dp"
       android:paddingBottom="20dp"
-      android:text="* Updated app so it can be moved to SD-card on android 2.2 devices\n" />
+      android:text="* Updated app so it can be moved to SD-card on android 2.2 devices\n* Sending of device id (IMEI/MEID) as 'deviceid=' POST parameter.\n* Sending of subscriber id (IMSI) as 'subscriberid=' POST parameter." />
 
     <!-- Ver 2.0 -->
     <TextView  

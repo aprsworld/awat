@@ -25,6 +25,8 @@ public class Preferences
     public boolean send_speed;
     public boolean send_time;
     public boolean send_batt_status;
+    public boolean send_devid;
+    public boolean send_subscrid;
 
     Preferences(Context ctx)
     {
@@ -76,6 +78,8 @@ public class Preferences
 	this.send_speed = prefs.getBoolean("send_speed", true);
 	this.send_time = prefs.getBoolean("send_time", true);
 	this.send_batt_status = prefs.getBoolean("send_batt_status", false);
+	this.send_devid = prefs.getBoolean("send_devid", false);
+	this.send_subscrid = prefs.getBoolean("send_subscrid", false);
     }
 }
 

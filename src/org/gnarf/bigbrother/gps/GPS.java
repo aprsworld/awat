@@ -17,6 +17,7 @@ import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 
 import android.location.*;
+import android.telephony.TelephonyManager;
 
 import java.io.*;
 import java.net.*;
@@ -403,6 +404,20 @@ public class GPS extends Service
 	if (this.prefs.secret != null) {
 	    req.append("&secret=");
 	    req.append(this.prefs.secret);
+	}
+
+	/* Add device id */
+	if (this.prefs.send_devid) {
+	    TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+	    req.append("&deviceid=");
+	    req.append(tm.getDeviceId());
+	}
+
+	/* Add subscriber id */
+	if (this.prefs.send_subscrid) {
+	    TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
+	    req.append("&subscriberid=");
+	    req.append(tm.getSubscriberId());
 	}
 
 	con.setRequestProperty("Content-Length", ""+req.length());

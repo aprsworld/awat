@@ -88,6 +88,16 @@
 	android:defaultValue="0"
 	android:key="send_batt_status" />
     <CheckBoxPreference
+        android:title="Send device id"
+	android:summary="Sends device id (IMEI / MEID) in POST request."
+	android:defaultValue="0"
+	android:key="send_devid" />
+    <CheckBoxPreference
+        android:title="Send subscriber id"
+	android:summary="Sends subscriber id (IMSI) in POST request."
+	android:defaultValue="0"
+	android:key="send_subscrid" />
+    <CheckBoxPreference
         android:title="Use HTTP response for notif. bar."
 	android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
 	android:defaultValue="0"
