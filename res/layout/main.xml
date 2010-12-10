@@ -4,21 +4,21 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
   <ImageView
-      android:layout_width="fill_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:src="@drawable/bbg_logo"
       android:scaleType="center"
-      android:paddingBottom="10dp" />
+      android:paddingBottom="10dip" />
 
   <LinearLayout
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    android:paddingBottom="10dp" >
+    android:paddingBottom="10dip" >
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Time:" />
     <TextView  
       android:id="@+id/main_time"
@@ -33,7 +33,7 @@
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Provider:" />
     <TextView  
       android:id="@+id/main_provider"
@@ -48,7 +48,7 @@
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Latitude:" />
     <TextView  
       android:id="@+id/main_latitude"
@@ -63,7 +63,7 @@
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Longitude:" />
     <TextView  
       android:id="@+id/main_longitude"
@@ -78,7 +78,7 @@
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Altitude:" />
     <TextView  
       android:id="@+id/main_altitude"
@@ -94,11 +94,11 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    android:paddingBottom="10dp" >
+    android:paddingBottom="10dip" >
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Accuracy:" />
     <TextView  
       android:id="@+id/main_accuracy"
@@ -118,7 +118,7 @@
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Bearing:" />
     <TextView  
       android:id="@+id/main_bearing"
@@ -130,11 +130,11 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    android:paddingBottom="10dp" >
+    android:paddingBottom="10dip" >
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Speed:" />
     <TextView  
       android:id="@+id/main_speed"
@@ -151,11 +151,11 @@
     android:orientation="horizontal"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" 
-    android:paddingBottom="30dp" >
+    android:paddingBottom="30dip" >
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="Battery:" />
     <TextView  
       android:id="@+id/main_bat_level"
@@ -165,7 +165,7 @@
     <TextView  
       android:layout_width="wrap_content" 
       android:layout_height="wrap_content" 
-      android:paddingRight="10dp"
+      android:paddingRight="10dip"
       android:text="%" />
     <TextView  
       android:id="@+id/main_bat_charger"
