@@ -8,6 +8,18 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
+    <!-- Ver 2.3 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="2.3" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dip"
+      android:paddingBottom="20dip"
+      android:text="* Quicker failover if GPS is disabled." />
+
     <!-- Ver 2.2 -->
     <TextView  
       android:layout_width="wrap_content" 

@@ -539,8 +539,11 @@ public class GPS extends Service
 	    System.out.println("BigBrotherGPS ProviderDisabled: "+prov);
 	    if (GPS.this.prefs.continous_mode) 
 		GPS.this.startLocator();
-	    else
-		GPS.this.doTimeout();	    
+	    else {
+		/* Stop waiting for timeout since this locator is off */
+		GPS.this.timeout = System.currentTimeMillis()-1;
+		GPS.this.doTimeout();
+	    }
 	}
 
 	@Override public void onProviderEnabled(String prov)
