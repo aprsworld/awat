@@ -18,7 +18,7 @@
       android:layout_height="wrap_content" 
       android:paddingLeft="20dip"
       android:paddingBottom="20dip"
-      android:text="* Quicker failover if GPS is disabled." />
+      android:text="* Quicker failover if GPS is disabled.\n* Connection errors are now logged on bottom of main screen instead of displaying a popup.\n* Main screen has been made scrollable so as to be usable with low-res devices." />
 
     <!-- Ver 2.2 -->
     <TextView  

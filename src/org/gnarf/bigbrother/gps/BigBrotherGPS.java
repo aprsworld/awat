@@ -42,6 +42,7 @@ public class BigBrotherGPS extends Activity
     private TextView prov, lat, lon, alt, acc;
     private TextView brg, spd;
     private TextView batlev, chrgr;
+    private TextView log;
 
     SimpleDateFormat dateformatter;
 
@@ -149,6 +150,8 @@ public class BigBrotherGPS extends Activity
 	this.batlev = (TextView)findViewById(R.id.main_bat_level);
 	this.chrgr = (TextView)findViewById(R.id.main_bat_charger);
 
+	this.log = (TextView)findViewById(R.id.main_log);
+
 	/* Hook the button */
         Button btn;
 
@@ -173,6 +176,22 @@ public class BigBrotherGPS extends Activity
 		});
     }
 
+    void logError(String err)
+    {
+	/* Add error message at top. */
+	this.log.setText(err+"\n"+this.log.getText());
+
+	/* Keep only last 10 */
+	String oldlog = this.log.getText().toString();
+	String log[] = oldlog.split("\n"); 
+	if (log.length > 10) {
+	    StringBuffer newlog = new StringBuffer();
+	    for (int i = 0; i < 10; i++) 
+		newlog.append(log[i]+"\n");
+	    this.log.setText(newlog);
+	}
+	
+    }
 
 
     /************************************************************************ 
@@ -208,7 +227,7 @@ public class BigBrotherGPS extends Activity
     {
 	@Override public void onError(String err)
 	{
-	    Helper.ok_dialog(BigBrotherGPS.this, "Error", err);
+	    BigBrotherGPS.this.logError(err);
 	}
 	
 	@Override public void onStateChange(String prov, int state) {}
