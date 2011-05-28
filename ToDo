@@ -1,0 +1,12 @@
+User requests:
+* the app should test for network and battery before doing anything
+  else. Network because it's useless to try and get a GPS position if
+  you cannot send it. Battery because you don't want to spend your
+  last percents of battery doing anything else than reading
+  emails
+
+* After getting a position, it should compare it with the last one,
+  and doesn't send it if it differs less than, let say, half a
+  kilometer. I know it would be easy to do that server-side, but if I
+  can limit the connexion usage.
+
