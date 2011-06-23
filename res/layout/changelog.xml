@@ -8,6 +8,19 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
+    <!-- Ver 2.4 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="2.4" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dip"
+      android:paddingBottom="20dip"
+      android:text="* Fixed issue where sending data to web server failed with newer android (2.3+)." />
+
+
     <!-- Ver 2.3 -->
     <TextView  
       android:layout_width="wrap_content" 

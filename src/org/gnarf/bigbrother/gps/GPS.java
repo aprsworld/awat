@@ -341,15 +341,13 @@ public class GPS extends Service
 
 	con.setUseCaches(false);
 	con.setDoOutput(true);
+	con.setDoInput(true);
 
 	/* If HTTP response is to be used in notif bar */
 	if (this.prefs.show_in_notif_bar && 
 	    this.prefs.http_resp_in_notif_bar) {
 	    this.setupNotif();
-	    con.setDoInput(true);
 	    do_notif = true;
-	} else {
-	    con.setDoInput(false);
 	}
 
 	/* Build request data */
@@ -433,12 +431,12 @@ public class GPS extends Service
 	    wr.flush();
 	    wr.close();
 	    
-	    DataInputStream rd = null;
+	    DataInputStream rd;
+	    rd = new DataInputStream(con.getInputStream());
 	    if (do_notif) {
-		rd = new DataInputStream(con.getInputStream());
 		response.append(rd.readLine());
-		rd.close();
 	    }
+	    rd.close();
 	} 
 	catch (IOException e) {
 	    System.out.println("BigBrotherGPS: "+e.toString());
