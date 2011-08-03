@@ -8,6 +8,18 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
+    <!-- Ver 2.5 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="2.5" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dip"
+      android:paddingBottom="20dip"
+      android:text="* Set correct content-type header on post. This only seems to appear on 3.0 or newer. Older android versions were unaffected" />
+
     <!-- Ver 2.4 -->
     <TextView  
       android:layout_width="wrap_content" 

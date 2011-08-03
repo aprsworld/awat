@@ -418,6 +418,7 @@ public class GPS extends Service
 	    req.append(tm.getSubscriberId());
 	}
 
+	con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 	con.setRequestProperty("Content-Length", ""+req.length());
 
 	/* Connect and write */
