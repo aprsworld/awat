@@ -10,3 +10,4 @@ User requests:
   kilometer. I know it would be easy to do that server-side, but if I
   can limit the connexion usage.
 
+* If the position cannot be sent immediately, save it for the future.
