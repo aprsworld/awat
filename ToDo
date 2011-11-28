@@ -11,3 +11,11 @@ User requests:
   can limit the connexion usage.
 
 * If the position cannot be sent immediately, save it for the future.
+
+* It would be good to have different profiles for if it
+  is plugged in to the power or on batteries, that way it could update
+  a lot more often if it was on external power.  We are using it on
+  our motorbikes for keeping track of where we are. In this case it is
+  on the bike and powered by the bike battery, so I set it to update
+  once a minute, when it is off the bike I change it back to every 30
+  minutes to save the phone battery.
