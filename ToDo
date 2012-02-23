@@ -19,3 +19,8 @@ User requests:
   on the bike and powered by the bike battery, so I set it to update
   once a minute, when it is off the bike I change it back to every 30
   minutes to save the phone battery.
+
+* Time slots ? to get different update rates, for example. a time
+  range with a higher update rate and a time slot during the night
+  where it is not broadcasting the coordinates or only with at low
+  fervency.
