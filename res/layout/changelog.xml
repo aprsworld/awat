@@ -8,6 +8,18 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content" >
 
+    <!-- Ver 2.6 -->
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:text="2.6" />
+    <TextView  
+      android:layout_width="wrap_content" 
+      android:layout_height="wrap_content" 
+      android:paddingLeft="20dip"
+      android:paddingBottom="20dip"
+      android:text="* Added permission RECEIVE_BOOT_COMPLETED so newer (4.x?) androids can start BBG on boot" />
+
     <!-- Ver 2.5 -->
     <TextView  
       android:layout_width="wrap_content" 
