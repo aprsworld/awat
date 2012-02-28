@@ -24,3 +24,5 @@ User requests:
   range with a higher update rate and a time slot during the night
   where it is not broadcasting the coordinates or only with at low
   fervency.
+
+* Send position via SMS periodically. Allow querying of position with an SMS.
