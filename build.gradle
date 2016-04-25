@@ -1,0 +1,25 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.0.0'
+    }
+}
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 'android-8'
+    buildToolsVersion '23.0.3'
+
+    buildTypes {
+        debug {
+            minifyEnabled true
+            useProguard false
+        }
+        release {
+            minifyEnabled true
+            useProguard true // this is a default setting
+        }
+    }
+}

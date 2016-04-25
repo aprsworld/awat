@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.gnarf.bigbrother.gps"
-      android:versionCode="207"
-      android:versionName="2.7"
+      android:versionCode="300"
+      android:versionName="3.0"
       android:installLocation="auto">
-    <uses-sdk android:minSdkVersion="3"></uses-sdk>
+    <uses-sdk android:minSdkVersion="8"></uses-sdk>
     <supports-screens
         android:smallScreens="true"
         android:normalScreens="true"
@@ -24,8 +24,8 @@
 	<activity android:name=".PreferencesActivity" />
 	<activity android:name=".Changelog" />
 	<service android:name=".GPS" />
-        <receiver android:name=".GPSBooter" 
-	          android:enabled="true" 
+        <receiver android:name=".GPSBooter"
+	          android:enabled="true"
                   android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -40,4 +40,4 @@
     <uses-feature android:name="android.hardware.location" android:required="true" />
     <uses-feature android:name="android.hardware.location.network" android:required="false" />
     <uses-feature android:name="android.hardware.location.gps" android:required="false" />
-</manifest> 
+</manifest>
