@@ -26,3 +26,5 @@ User requests:
   fervency.
 
 * Send position via SMS periodically. Allow querying of position with an SMS.
+
+* Better fix for android.os.NetworkOnMainThreadException.
