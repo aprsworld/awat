@@ -9,7 +9,7 @@ buildscript {
 apply plugin: 'android'
 
 android {
-    compileSdkVersion 'android-8'
+    compileSdkVersion 'android-18'
     buildToolsVersion '23.0.3'
 
     buildTypes {

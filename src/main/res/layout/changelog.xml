@@ -18,7 +18,7 @@
       android:layout_height="wrap_content"
       android:paddingLeft="20dip"
       android:paddingBottom="20dip"
-      android:text="* Migrated to gradle build system.\n* Updated to require android 2.2+." />
+      android:text="* Migrated to gradle build system.\n* Updated to require android 3.2+ to hopefully fix some issues on newer devices." />
 
     <!-- Ver 2.7 -->
     <TextView
