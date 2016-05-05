@@ -9,6 +9,7 @@
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
     <ImageView
+        android:contentDescription="BBG Logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/bbg_logo"
@@ -24,6 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Time.colon" />
       <TextView
         android:id="@+id/main_time"
@@ -39,6 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Provider.colon" />
       <TextView
         android:id="@+id/main_provider"
@@ -54,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Latitude.colon" />
       <TextView
         android:id="@+id/main_latitude"
@@ -69,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Longitude.colon" />
       <TextView
         android:id="@+id/main_longitude"
@@ -84,6 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Altitude.colon" />
       <TextView
         android:id="@+id/main_altitude"
@@ -104,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Accuracy.colon" />
       <TextView
         android:id="@+id/main_accuracy"
@@ -124,6 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Bearing.colon" />
       <TextView
         android:id="@+id/main_bearing"
@@ -140,6 +148,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Speed.colon" />
       <TextView
         android:id="@+id/main_speed"
@@ -161,6 +170,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="@string/Battery.colon" />
       <TextView
         android:id="@+id/main_bat_level"
@@ -171,6 +181,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
+        android:paddingLeft="10dip"
         android:text="%" />
       <TextView
         android:id="@+id/main_bat_charger"

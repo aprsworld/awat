@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
   <string name="app_name">Big Brother GPS</string>
-  <string name="wait">wait...</string>
+  <string name="wait">wait&#8230;</string>
   <string name="Battery.colon">Battery:</string>
   <string name="Update_location">Update location</string>
   <string name="Time.colon">Time:</string>
