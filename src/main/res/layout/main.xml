@@ -24,12 +24,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Time:" />
+        android:text="@string/Time.colon" />
       <TextView
         android:id="@+id/main_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
@@ -39,12 +39,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Provider:" />
+        android:text="@string/Provider.colon" />
       <TextView
         android:id="@+id/main_provider"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
@@ -54,12 +54,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Latitude:" />
+        android:text="@string/Latitude.colon" />
       <TextView
         android:id="@+id/main_latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
@@ -69,12 +69,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Longitude:" />
+        android:text="@string/Longitude.colon" />
       <TextView
         android:id="@+id/main_longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
@@ -84,12 +84,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Altitude:" />
+        android:text="@string/Altitude.colon" />
       <TextView
         android:id="@+id/main_altitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -104,12 +104,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Accuracy:" />
+        android:text="@string/Accuracy.colon" />
       <TextView
         android:id="@+id/main_accuracy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -124,12 +124,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Bearing:" />
+        android:text="@string/Bearing.colon" />
       <TextView
         android:id="@+id/main_bearing"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
@@ -140,12 +140,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Speed:" />
+        android:text="@string/Speed.colon" />
       <TextView
         android:id="@+id/main_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -161,12 +161,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingRight="10dip"
-        android:text="Battery:" />
+        android:text="@string/Battery.colon" />
       <TextView
         android:id="@+id/main_bat_level"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wait..." />
+        android:text="@string/wait" />
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -183,13 +183,13 @@
         android:id="@+id/main_triggerupdate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Update location" />
+        android:text="@string/Update_location" />
 
     <Button
         android:id="@+id/main_stop"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="End Program" />
+        android:text="@string/End_Program" />
 
     <TextView
         android:id="@+id/main_log"
