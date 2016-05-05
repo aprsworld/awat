@@ -3,11 +3,11 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
-  <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  <LinearLayout
       android:orientation="vertical"
       android:isScrollContainer="true"
       android:layout_width="fill_parent"
-      android:layout_height="fill_parent" >
+      android:layout_height="wrap_content" >
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -18,101 +18,101 @@
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content" 
+      android:layout_height="wrap_content"
       android:paddingBottom="10dip" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Time:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_time"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Provider:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_provider"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Latitude:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_latitude"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Longitude:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_longitude"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Altitude:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_altitude"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="m" />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content" 
+      android:layout_height="wrap_content"
       android:paddingBottom="10dip" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Accuracy:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_accuracy"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="m" />
     </LinearLayout>
 
@@ -120,62 +120,62 @@
       android:orientation="horizontal"
       android:layout_width="fill_parent"
       android:layout_height="wrap_content" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Bearing:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_bearing"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
     </LinearLayout>
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content" 
+      android:layout_height="wrap_content"
       android:paddingBottom="10dip" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Speed:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_speed"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="wait..." />
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="m/s" />
     </LinearLayout>
 
     <LinearLayout
       android:orientation="horizontal"
       android:layout_width="fill_parent"
-      android:layout_height="wrap_content" 
+      android:layout_height="wrap_content"
       android:paddingBottom="30dip" >
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="Battery:" />
-      <TextView  
+      <TextView
         android:id="@+id/main_bat_level"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:text="wait..." />
-      <TextView  
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingRight="10dip"
         android:text="%" />
-      <TextView  
+      <TextView
         android:id="@+id/main_bat_charger"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="" />
     </LinearLayout>
 
@@ -191,12 +191,11 @@
         android:layout_height="wrap_content"
         android:text="End Program" />
 
-    <TextView 
+    <TextView
         android:id="@+id/main_log"
-        android:layout_width="wrap_content" 
-        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="" />
 
   </LinearLayout>
 </ScrollView>
-
