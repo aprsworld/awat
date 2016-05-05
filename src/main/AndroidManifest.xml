@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.gnarf.bigbrother.gps"
-      android:versionCode="301"
-      android:versionName="3.1"
+      android:versionCode="039900"
+      android:versionName="4.0-SNAPSHOT"
       android:installLocation="auto">
   <uses-sdk android:minSdkVersion="9"
-            android:targetSdkVersion="13"
+            android:targetSdkVersion="20"
             >
   </uses-sdk>
   <supports-screens
