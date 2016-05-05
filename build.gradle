@@ -22,4 +22,8 @@ android {
             useProguard true // this is a default setting
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
