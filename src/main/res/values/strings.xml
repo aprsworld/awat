@@ -13,6 +13,7 @@
   <string name="Bearing.colon">Bearing:</string>
   <string name="Speed.colon">Speed:</string>
   <string name="End_Program">End Program</string>
+  <string name="ChangelogV4.0">* Upgrade sdk / android versions. Now requires android 4.0.3 or newer.</string>
   <string name="ChangelogV3.1">* Work around network issue in newer androids.</string>
   <string name="ChangelogV3.0">* Migrated to gradle build system.\n* Updated to require android 3.2+ to hopefully fix some issues on newer devices.</string>
   <string name="ChangelogV2.7">* Added feature information so as to be compatible with more devices.</string>
