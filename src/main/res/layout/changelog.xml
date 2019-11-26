@@ -10,6 +10,19 @@
 
     <!-- Ver 4.0 -->
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="4.0-APRS-1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dip"
+        android:paddingRight="30dip"
+        android:paddingBottom="20dip"
+        android:text="@string/ChangelogV4.0.APRS.1" />
+
+    <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="4.0" />

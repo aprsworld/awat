@@ -37,6 +37,12 @@ public class LocBinder extends Binder
 	return this.gps.charger;
     }
 
+    public float getTemp() { return this.gps.bat_temp; }
+
+    public long getUptime() { return this.gps.uptime; }
+
+    public long getFreespace() { return this.gps.freespace; }
+
 
     public void updatePrefs()
     {

@@ -13,6 +13,7 @@
   <string name="Bearing.colon">Bearing:</string>
   <string name="Speed.colon">Speed:</string>
   <string name="End_Program">End Program</string>
+  <string name="ChangelogV4.0.APRS.1">* Added uptime, battery temperature, and free internal disk space readings.</string>
   <string name="ChangelogV4.0">* Upgrade sdk / android versions. Now requires android 4.0.3 or newer.</string>
   <string name="ChangelogV3.1">* Work around network issue in newer androids.</string>
   <string name="ChangelogV3.0">* Migrated to gradle build system.\n* Updated to require android 3.2+ to hopefully fix some issues on newer devices.</string>
@@ -32,4 +33,7 @@
   <string name="ChangelogV1.4">* Fixes a forgotten call to unregisterReceiver() on app shutdown. App is now marked as singleInstance, since it can\'t really run more than one instance anyway.</string>
   <string name="ChangelogV1.3">* Fixes a GPS timeout problem where the service sometimes didn\'t switch locator from GPS to network on timeout.</string>
   <string name="ChangelogV1.0">* First version</string>
+    <string name="Temperature.colon">Temperature:</string>
+    <string name="Uptime.colon">Uptime:</string>
+    <string name="FreeSpace.colon">Free Disk Space:</string>
 </resources>

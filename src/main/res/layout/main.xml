@@ -188,6 +188,85 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingBottom="10dip">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingLeft="10dip"
+          android:paddingRight="10dip"
+          android:text="@string/Temperature.colon" />
+
+      <TextView
+          android:id="@+id/main_temperature"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="wait..." />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:text="C" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingBottom="10dip">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingLeft="10dip"
+          android:paddingRight="10dip"
+          android:text="@string/Uptime.colon" />
+
+      <TextView
+          android:id="@+id/main_uptime"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="wait..." />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:text="ms" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:paddingBottom="10dip">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingLeft="10dip"
+          android:paddingRight="10dip"
+          android:text="@string/FreeSpace.colon" />
+
+      <TextView
+          android:id="@+id/main_freespace"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="wait..." />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:layout_weight="0"
+          android:text="MB" />
     </LinearLayout>
 
     <Button

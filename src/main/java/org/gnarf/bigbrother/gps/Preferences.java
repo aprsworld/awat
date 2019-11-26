@@ -27,6 +27,12 @@ public class Preferences
     public boolean send_batt_status;
     public boolean send_devid;
     public boolean send_subscrid;
+    // DAR
+    public boolean send_temp;
+    public boolean send_uptime;
+    public boolean send_freespace;
+    public boolean send_signal;
+    // !DAR
 
     Preferences(Context ctx)
     {
@@ -80,6 +86,12 @@ public class Preferences
 	this.send_batt_status = prefs.getBoolean("send_batt_status", false);
 	this.send_devid = prefs.getBoolean("send_devid", false);
 	this.send_subscrid = prefs.getBoolean("send_subscrid", false);
+	// DAR
+	this.send_temp = prefs.getBoolean("send_temp", false);
+	this.send_uptime = prefs.getBoolean( "send_uptime", false);
+	this.send_freespace = prefs.getBoolean("send_freespace", false);
+	this.send_signal = prefs.getBoolean("send_signal", false);
+	// !DAR
     }
 }
 

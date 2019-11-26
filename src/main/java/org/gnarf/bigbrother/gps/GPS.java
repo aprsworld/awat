@@ -2,6 +2,9 @@ package org.gnarf.bigbrother.gps;
 
 import java.util.*;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.StrictMode;
 import android.app.Service;
 import android.app.AlarmManager;
@@ -18,6 +21,7 @@ import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 
 import android.location.*;
+import android.os.SystemClock;
 import android.telephony.TelephonyManager;
 
 import java.io.*;
@@ -26,6 +30,10 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 import org.gnarf.bigbrother.gps.*;
+
+// DAR
+import android.os.*;
+// !DAR
 
 public class GPS extends Service
 {
@@ -60,6 +68,14 @@ public class GPS extends Service
     BatteryState bat_rcvr;
     int bat_level;
     boolean charger;
+
+
+    /* DAR Other info */
+	float bat_temp;
+	long uptime;
+	long freespace;
+	int signal;
+	// !DAR
 
     /* Prefs */
     Preferences prefs;
@@ -422,6 +438,32 @@ public class GPS extends Service
 			req.append(tm.getSubscriberId());
 		}
 
+		// DAR
+		/* Add temperature */
+		if (this.prefs.send_temp) {
+			req.append("&temperatureBatteryC=");
+			req.append(this.bat_temp);
+		}
+
+		/* Add System Uptime */
+		if (this.prefs.send_uptime) {
+			req.append("&uptimeMilliseconds=");
+			req.append(this.uptime);
+		}
+
+		/* Add Free Space */
+		if (this.prefs.send_freespace) {
+			req.append("&freespaceInternalMegabytes=");
+			req.append(this.freespace);
+		}
+
+		/* Add Signal Strength */
+		if (this.prefs.send_signal) {
+			req.append("&signalStrengthLevel=");
+			req.append(this.signal);
+		}
+		// !DAR
+
 		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 		con.setRequestProperty("Content-Length", ""+req.length());
 
@@ -471,6 +513,11 @@ public class GPS extends Service
 		if (loc == null)
 			return;
 
+		/* Update extra info */
+		this.uptime = SystemClock.uptimeMillis();
+		StatFs stats =  new StatFs((Environment.getDataDirectory().getAbsolutePath()));
+		this.freespace = stats.getAvailableBlocksLong() * stats.getBlockSizeLong() / 1024 / 1024;
+
 		/* Change notification */
 		if (this.prefs.show_in_notif_bar &&
 			!this.prefs.http_resp_in_notif_bar) {
@@ -489,7 +536,10 @@ public class GPS extends Service
 		if (this.rpc_if != null) {
 			this.rpc_if.onLocation(loc.getProvider(), loc,
 								   this.bat_level,
-								   this.charger);
+								   this.charger,
+									this.bat_temp,
+									this.uptime,
+									this.freespace);
 		}
 
 		/* Post to server */
@@ -532,8 +582,14 @@ public class GPS extends Service
 			GPS.this.charger = i.getIntExtra("plugged",1)!=0;
 			System.out.printf("BigBrotherGPS: Battery state change: %d%% %b\n",
 							  GPS.this.bat_level, GPS.this.charger);
+
+			// DAR
+			GPS.this.bat_temp = i.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -999)/10.0f;
+			System.out.printf("BigBrotherGPS: Battery temp: %f%%\n", GPS.this.bat_temp);
+			// !DAR
 		}
     }
+
 
     class LocListen implements LocationListener
     {

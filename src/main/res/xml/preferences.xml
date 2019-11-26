@@ -97,7 +97,27 @@
 	android:summary="Sends subscriber id (IMSI) in POST request."
 	android:defaultValue="0"
 	android:key="send_subscrid" />
-    <CheckBoxPreference
+	  <CheckBoxPreference
+		  android:defaultValue="false"
+		  android:key="send_temp"
+		  android:summary="Sends battery temperature data in POST request"
+		  android:title="Send temperature" />
+	  <CheckBoxPreference
+		  android:defaultValue="false"
+		  android:key="send_uptime"
+		  android:summary="Sends device uptime data in POST request"
+		  android:title="Send uptime" />
+	  <CheckBoxPreference
+		  android:defaultValue="false"
+		  android:key="send_signal"
+		  android:summary="Sends the signal strength data in POST request"
+		  android:title="Send signal strength" />
+	  <CheckBoxPreference
+		  android:defaultValue="false"
+		  android:key="send_freespace"
+		  android:summary="Send size of free disk space in POST request"
+		  android:title="Send free disk space" />
+	  <CheckBoxPreference
         android:title="Use HTTP response for notif. bar."
 	android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
 	android:defaultValue="0"

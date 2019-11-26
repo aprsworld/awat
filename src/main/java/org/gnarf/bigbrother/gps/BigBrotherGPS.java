@@ -43,6 +43,11 @@ public class BigBrotherGPS extends Activity
     private TextView brg, spd;
     private TextView batlev, chrgr;
     private TextView log;
+    // DAR
+	private TextView temp;
+	private TextView uptime;
+	private TextView freespace;
+	// !DAR
 
     SimpleDateFormat dateformatter;
 
@@ -152,6 +157,12 @@ public class BigBrotherGPS extends Activity
 
 	this.log = (TextView)findViewById(R.id.main_log);
 
+	// DAR
+	this.temp = (TextView)findViewById(R.id.main_temperature);
+	this.uptime = (TextView)findViewById(R.id.main_uptime);
+	this.freespace = (TextView)findViewById(R.id.main_freespace);
+	// !DAR
+
 	/* Hook the button */
         Button btn;
 
@@ -209,7 +220,7 @@ public class BigBrotherGPS extends Activity
 
 	    /* Read last position from locator */
 	    cb.onLocation("init", lb.getLocation(),
-			  lb.getBattery(), lb.getCharger());
+			  lb.getBattery(), lb.getCharger(), lb.getTemp(), lb.getUptime(), lb.getFreespace());
 	    
 
 	    /* Bind for updates */
@@ -233,7 +244,7 @@ public class BigBrotherGPS extends Activity
 	@Override public void onStateChange(String prov, int state) {}
 
 	@Override public void onLocation(String prov, Location loc,
-					 int bat_level, boolean charger)
+					 int bat_level, boolean charger, float temp, long uptime, long freespace)
 	{
 	    if (loc == null)
 		return;
@@ -275,6 +286,9 @@ public class BigBrotherGPS extends Activity
 		BigBrotherGPS.this.chrgr.setText("(charging)");
 	    else
 		BigBrotherGPS.this.chrgr.setText("");
+	    BigBrotherGPS.this.temp.setText(String.format("%.1f", temp));
+	    BigBrotherGPS.this.uptime.setText((new Long(uptime)).toString());
+	    BigBrotherGPS.this.freespace.setText((new Long(freespace)).toString());
 	}
     }
 }
