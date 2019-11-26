@@ -2,9 +2,6 @@ package org.gnarf.bigbrother.gps;
 
 import java.util.*;
 
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.StrictMode;
 import android.app.Service;
 import android.app.AlarmManager;
