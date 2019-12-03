@@ -211,12 +211,14 @@ public class GPS extends Service
 			this.notif.setLatestEventInfo(this, getString(R.string.app_name),
 										  "Waiting for initial location",
 										  notintent);
-			this.notman.notify(0, notif);
-//            this.startForeground(1, this.notif);  // start as foreground service DAR
+			this.notman.notify(1, notif);
+			if (this.prefs.continous_mode) {
+                this.startForeground(1, this.notif);
+            }
 		} else {
 			if (this.notman != null) {
 				/* Remove notification */
-//                this.stopForeground(false); // DAR
+                this.stopForeground(true);
 				this.notman.cancelAll();
 				this.notman = null;
 			}
@@ -501,7 +503,7 @@ public class GPS extends Service
 										  getString(R.string.app_name),
 										  response.toString(),
 										  this.notintent);
-			this.notman.notify(0, this.notif);
+			this.notman.notify(1, this.notif);
 		}
     }
 
@@ -532,7 +534,7 @@ public class GPS extends Service
 			this.notif.setLatestEventInfo(GPS.this,
 										  getString(R.string.app_name),
 										  txt, GPS.this.notintent);
-			this.notman.notify(0, GPS.this.notif);
+			this.notman.notify(1, GPS.this.notif);
 		}
 
 		/* Call to UI */
