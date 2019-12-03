@@ -212,9 +212,11 @@ public class GPS extends Service
 										  "Waiting for initial location",
 										  notintent);
 			this.notman.notify(0, notif);
+//            this.startForeground(1, this.notif);  // start as foreground service DAR
 		} else {
 			if (this.notman != null) {
 				/* Remove notification */
+//                this.stopForeground(false); // DAR
 				this.notman.cancelAll();
 				this.notman = null;
 			}
@@ -513,7 +515,11 @@ public class GPS extends Service
 		/* Update extra info */
 		this.uptime = SystemClock.uptimeMillis();
 		StatFs stats =  new StatFs((Environment.getDataDirectory().getAbsolutePath()));
-		this.freespace = stats.getAvailableBlocksLong() * stats.getBlockSizeLong() / 1024 / 1024;
+		if (Build.VERSION.SDK_INT >= 18) {
+            this.freespace = stats.getAvailableBlocksLong() * stats.getBlockSizeLong() / 1024 / 1024;
+        } else {
+            this.freespace = stats.getAvailableBlocks() * stats.getBlockSize() / 1024 / 1024;
+        }
 
 		/* Change notification */
 		if (this.prefs.show_in_notif_bar &&
