@@ -160,6 +160,7 @@ public class GPS extends Service {
             /* Polling mode */
 
             this.lm.removeUpdates(this.ll);
+            this.location = null;
 
             try {
                 startLocator();
@@ -210,7 +211,7 @@ public class GPS extends Service {
                     "Waiting for initial location",
                     notintent);
             this.notman.notify(1, notif);
-            if (this.prefs.continous_mode) {
+            if (this.prefs.continous_mode || this.prefs.improve_accuracy) {
                 this.startForeground(1, this.notif);
             }
         } else {
@@ -264,6 +265,12 @@ public class GPS extends Service {
     {
 		if (System.currentTimeMillis() > this.timeout) {
 			System.out.println("BigBrotherGPS: Doing timeout");
+			if (this.prefs.improve_accuracy && this.location != null) {
+				locationUpdate();
+				this.lm.removeUpdates(this.ll);
+				this.am.cancel(this.tointent);
+				return;
+			}
 			if (this.twiceTimeout) {
 				System.out.println("BigBrotherGPS: Switching locator");
 				this.twiceTimeout = false;
@@ -646,9 +653,13 @@ public class GPS extends Service {
 		{
 			System.out.println("BigBrotherGPS got loc from "
 							   +loc.getProvider());
+			if (GPS.this.prefs.improve_accuracy && !GPS.this.prefs.continous_mode) {
+				if (GPS.this.location != null && GPS.this.location.getAccuracy() < loc.getAccuracy())
+					return;
+			}
 			GPS.this.location = loc;
 
-			if (!GPS.this.prefs.continous_mode) {
+			if (!GPS.this.prefs.continous_mode && !GPS.this.prefs.improve_accuracy) {
 				/* Stop waiting for locations. Will be restarted by alarm */
 				GPS.this.lm.removeUpdates(GPS.this.ll);
 				GPS.this.am.cancel(GPS.this.tointent);

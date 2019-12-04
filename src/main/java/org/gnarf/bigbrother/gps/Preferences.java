@@ -16,6 +16,7 @@ public class Preferences
     public int gps_timeout;
     public int coordinate_format;
     public boolean start_on_boot;
+    public boolean improve_accuracy;
     public boolean continous_mode;
     public boolean show_in_notif_bar;
     public boolean http_resp_in_notif_bar;
@@ -59,15 +60,20 @@ public class Preferences
 	    this.provider = 1;
 	else
 	    this.provider = 0;
-	
+
+	this.improve_accuracy = prefs.getBoolean("improve_accuracy", false);
 	this.continous_mode = prefs.getBoolean("continous_mode", false);
 
 	tmp = prefs.getString("gps_timeout","10");
 	this.gps_timeout = (new Integer(tmp)).intValue();
 	this.gps_timeout *= 1000;
 
+	if (this.gps_timeout * 3 > this.update_interval) {
+		this.gps_timeout = this.update_interval / 3;
+	}
+
 	this.start_on_boot = prefs.getBoolean("start_on_boot", false);
-	if (this.continous_mode) {
+	if (this.continous_mode || this.improve_accuracy) {
 		this.show_in_notif_bar = true;
 	} else {
 		this.show_in_notif_bar = prefs.getBoolean("show_in_notif_bar", true);

@@ -32,7 +32,12 @@
 	android:summary="Whether to use GPS for positioning or the cellular networks"
 	android:defaultValue="1"
 	android:key="provider" />
-    <EditTextPreference 
+	  <CheckBoxPreference
+		  android:defaultValue="false"
+		  android:key="improve_accuracy"
+		  android:summary="Improve the GPS accuracy by running the GPS continously until the GPS Timeout occures and selecting the most accurate reading during that time."
+		  android:title="Improve GPS Accuracy" />
+	  <EditTextPreference
 	android:title="GPS Timeout"
 	android:summary="Timeout, in seconds, for GPS location. If location isn't received within this time the program falls back to network."
 	android:numeric="integer"
