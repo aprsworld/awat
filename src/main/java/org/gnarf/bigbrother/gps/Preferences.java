@@ -33,6 +33,7 @@ public class Preferences
     public boolean send_uptime;
     public boolean send_freespace;
     public boolean send_signal;
+    public boolean send_extras;
     // !DAR
 
     Preferences(Context ctx)
@@ -101,6 +102,7 @@ public class Preferences
 	this.send_uptime = prefs.getBoolean( "send_uptime", false);
 	this.send_freespace = prefs.getBoolean("send_freespace", false);
 	this.send_signal = prefs.getBoolean("send_signal", false);
+	this.send_extras = prefs.getBoolean("send_extras", false);
 	// !DAR
     }
 }

@@ -87,7 +87,12 @@
 	android:summary="Select this if you wish to send the speed."
 	android:defaultValue="1"
 	android:key="send_speed" />
-    <CheckBoxPreference
+	  <CheckBoxPreference
+		  android:title="Send GPS Extra Info"
+		  android:summary="Select this if you wish to send the extra GPS info."
+		  android:defaultValue="0"
+		  android:key="send_extras" />
+	  <CheckBoxPreference
         android:title="Send battery status"
 	android:summary="Select this if you want the battery status to be sent in the POST request."
 	android:defaultValue="0"

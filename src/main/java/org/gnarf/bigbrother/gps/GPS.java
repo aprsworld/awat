@@ -417,6 +417,19 @@ public class GPS extends Service {
 			req.append(this.dateformatter.format(date));
 		}
 
+		if (this.prefs.send_extras) {
+			Bundle extras = this.location.getExtras();
+			for (String key : extras.keySet()) {
+				try {
+					req.append("&extra_");
+					req.append(URLEncoder.encode(key, "utf-8"));
+					req.append("=");
+					req.append(URLEncoder.encode(extras.get(key).toString(), "utf-8"));
+				} catch (UnsupportedEncodingException e)  {
+				}
+			}
+		}
+
 		/* Add battery status if configured */
 		if (this.prefs.send_batt_status) {
 			req.append("&battlevel=");
