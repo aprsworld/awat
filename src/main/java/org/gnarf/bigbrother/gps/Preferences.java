@@ -70,8 +70,8 @@ public class Preferences
 	this.gps_timeout = (new Integer(tmp)).intValue();
 	this.gps_timeout *= 1000;
 
-	if (this.gps_timeout * 3 > this.update_interval) {
-		this.gps_timeout = this.update_interval / 3;
+	if (this.gps_timeout > this.update_interval) {
+		this.gps_timeout = this.update_interval - 1000;
 	}
 
 	this.start_on_boot = prefs.getBoolean("start_on_boot", false);
