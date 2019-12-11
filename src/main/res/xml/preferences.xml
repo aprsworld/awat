@@ -93,6 +93,11 @@
 		  android:defaultValue="0"
 		  android:key="send_extras" />
 	  <CheckBoxPreference
+		  android:title="Send system time"
+		  android:summary="Select this if you want the system time to be sent in the POST request."
+		  android:defaultValue="0"
+		  android:key="send_systime" />
+	  <CheckBoxPreference
         android:title="Send battery status"
 	android:summary="Select this if you want the battery status to be sent in the POST request."
 	android:defaultValue="0"

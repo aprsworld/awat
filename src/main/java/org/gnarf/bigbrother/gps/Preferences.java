@@ -34,6 +34,7 @@ public class Preferences
     public boolean send_freespace;
     public boolean send_signal;
     public boolean send_extras;
+    public boolean send_systime;
     // !DAR
 
     Preferences(Context ctx)
@@ -103,6 +104,7 @@ public class Preferences
 	this.send_freespace = prefs.getBoolean("send_freespace", false);
 	this.send_signal = prefs.getBoolean("send_signal", false);
 	this.send_extras = prefs.getBoolean("send_extras", false);
+	this.send_systime = prefs.getBoolean("send_systime", false);
 	// !DAR
     }
 }

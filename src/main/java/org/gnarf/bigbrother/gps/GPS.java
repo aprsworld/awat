@@ -265,7 +265,7 @@ public class GPS extends Service {
     {
 		if (System.currentTimeMillis() > this.timeout) {
 			System.out.println("BigBrotherGPS: Doing timeout");
-			if (this.prefs.improve_accuracy && this.location != null) {
+			if (this.prefs.improve_accuracy) {
 				locationUpdate();
 				this.lm.removeUpdates(this.ll);
 				this.am.cancel(this.tointent);
@@ -382,52 +382,60 @@ public class GPS extends Service {
 
 		/* Build request data */
 		StringBuffer req = new StringBuffer();
-		req.append("latitude=");
-		req.append(this.location.getLatitude());
 
-		req.append("&longitude=");
-		req.append(this.location.getLongitude());
+		if (this.location != null) {
+			req.append("latitude=");
+			req.append(this.location.getLatitude());
 
-		req.append("&accuracy=");
-		req.append(this.location.getAccuracy());
+			req.append("&longitude=");
+			req.append(this.location.getLongitude());
 
-		if (this.prefs.send_altitude) {
-			req.append("&altitude=");
-			req.append(this.location.getAltitude());
-		}
+			req.append("&accuracy=");
+			req.append(this.location.getAccuracy());
 
-		if (this.prefs.send_provider) {
-			req.append("&provider=");
-			req.append(this.location.getProvider());
-		}
+			if (this.prefs.send_altitude) {
+				req.append("&altitude=");
+				req.append(this.location.getAltitude());
+			}
 
-		if (this.prefs.send_bearing) {
-			req.append("&bearing=");
-			req.append(this.location.getBearing());
-		}
+			if (this.prefs.send_provider) {
+				req.append("&provider=");
+				req.append(this.location.getProvider());
+			}
 
-		if (this.prefs.send_speed) {
-			req.append("&speed=");
-			req.append(this.location.getSpeed());
-		}
+			if (this.prefs.send_bearing) {
+				req.append("&bearing=");
+				req.append(this.location.getBearing());
+			}
 
-		if (this.prefs.send_time) {
-			Date date = new Date(this.location.getTime());
-			req.append("&time=");
-			req.append(this.dateformatter.format(date));
-		}
+			if (this.prefs.send_speed) {
+				req.append("&speed=");
+				req.append(this.location.getSpeed());
+			}
 
-		if (this.prefs.send_extras) {
-			Bundle extras = this.location.getExtras();
-			for (String key : extras.keySet()) {
-				try {
-					req.append("&extra_");
-					req.append(URLEncoder.encode(key, "utf-8"));
-					req.append("=");
-					req.append(URLEncoder.encode(extras.get(key).toString(), "utf-8"));
-				} catch (UnsupportedEncodingException e)  {
+			if (this.prefs.send_time) {
+				Date date = new Date(this.location.getTime());
+				req.append("&time=");
+				req.append(this.dateformatter.format(date));
+			}
+
+			if (this.prefs.send_extras) {
+				Bundle extras = this.location.getExtras();
+				for (String key : extras.keySet()) {
+					try {
+						req.append("&gnss_");
+						req.append(URLEncoder.encode(key, "utf-8"));
+						req.append("=");
+						req.append(URLEncoder.encode(extras.get(key).toString(), "utf-8"));
+					} catch (UnsupportedEncodingException e) {
+					}
 				}
 			}
+		}
+
+		if (this.prefs.send_systime) {
+			req.append("&systime=");
+			req.append(this.dateformatter.format(new Date()));
 		}
 
 		/* Add battery status if configured */
@@ -527,14 +535,16 @@ public class GPS extends Service {
 										  this.notintent);
 			this.notman.notify(1, this.notif);
 		}
+
+		this.location = null;
     }
 
     private void locationUpdate()
     {
 		/* Location update triggered */
 		Location loc = this.location;
-		if (loc == null)
-			return;
+		//if (loc == null)
+		//	return;
 
 		/* Update extra info */
 		this.uptime = SystemClock.uptimeMillis();
@@ -546,7 +556,7 @@ public class GPS extends Service {
         }
 
 		/* Change notification */
-		if (this.prefs.show_in_notif_bar &&
+		if (loc != null && this.prefs.show_in_notif_bar &&
 			!this.prefs.http_resp_in_notif_bar) {
 			this.setupNotif();
 			String txt = loc.getLatitude()+", "
@@ -560,7 +570,7 @@ public class GPS extends Service {
 		}
 
 		/* Call to UI */
-		if (this.rpc_if != null) {
+		if (this.rpc_if != null && loc != null) { // XXX Change onLocation
 			this.rpc_if.onLocation(loc.getProvider(), loc,
 								   this.bat_level,
 								   this.charger,
@@ -666,10 +676,6 @@ public class GPS extends Service {
 		{
 			System.out.println("BigBrotherGPS got loc from "
 							   +loc.getProvider());
-			if (GPS.this.prefs.improve_accuracy && !GPS.this.prefs.continous_mode) {
-				if (GPS.this.location != null && GPS.this.location.getAccuracy() < loc.getAccuracy())
-					return;
-			}
 			GPS.this.location = loc;
 
 			if (!GPS.this.prefs.continous_mode && !GPS.this.prefs.improve_accuracy) {
