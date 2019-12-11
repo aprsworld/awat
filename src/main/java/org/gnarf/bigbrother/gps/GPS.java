@@ -382,9 +382,10 @@ public class GPS extends Service {
 
 		/* Build request data */
 		StringBuffer req = new StringBuffer();
+		req.append("update=1");
 
 		if (this.location != null) {
-			req.append("latitude=");
+			req.append("&latitude=");
 			req.append(this.location.getLatitude());
 
 			req.append("&longitude=");
