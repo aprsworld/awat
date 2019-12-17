@@ -307,9 +307,14 @@ public class GPS extends Service {
 		this.lm.removeUpdates(ll);
 
 		/* Reset update alarms */
-		this.am.setRepeating(this.am.RTC_WAKEUP,
-							 System.currentTimeMillis() + 1000,
-							 this.prefs.update_interval, this.amintent);
+		long current = System.currentTimeMillis();
+		long timeout = this.prefs.update_interval;
+		long next = current + timeout - current % timeout;
+		if (Build.VERSION.SDK_INT >= 19) {
+			this.am.setExact(this.am.RTC_WAKEUP, next, this.amintent);
+		} else {
+			this.am.set(this.am.RTC_WAKEUP, next, this.amintent);
+		}
 
 		/* Fix notifs */
 		setupNotif();
@@ -346,6 +351,8 @@ public class GPS extends Service {
 		/* No url, don't do anything */
 		if (this.target_url == null)
 			return;
+
+		System.out.println("BigBrotherGPS sending HTTP poke");
 
 		/* Prepare connection and request */
 		HttpURLConnection con;
@@ -593,6 +600,16 @@ public class GPS extends Service {
 		{
 			System.out.println("BigBrotherGPS: Alarm!");
 			GPS.this.triggerUpdate();
+
+			// setup next alarm
+			long current = System.currentTimeMillis();
+			long timeout = GPS.this.prefs.update_interval;
+			long next = current + timeout - current % timeout;
+			if (Build.VERSION.SDK_INT >= 19) {
+				GPS.this.am.setExact(GPS.this.am.RTC_WAKEUP, next, GPS.this.amintent);
+			} else {
+				GPS.this.am.set(GPS.this.am.RTC_WAKEUP, next, GPS.this.amintent);
+			}
 		}
     }
 
