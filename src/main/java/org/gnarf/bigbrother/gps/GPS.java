@@ -170,11 +170,22 @@ public class GPS extends Service {
             }
 
             /* Start timeout alarm */
-            this.timeout = System.currentTimeMillis();
-            this.timeout += this.prefs.gps_timeout;
-            this.timeout += 100; /* delay a bit to avoid a race */
-            this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
-                    this.prefs.gps_timeout, this.tointent);
+			long current = System.currentTimeMillis();
+			if (current >= this.timeout) {
+				this.timeout = System.currentTimeMillis();
+				this.timeout += this.prefs.gps_timeout;
+				this.timeout += 100; /* delay a bit to avoid a race */
+			}
+			if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
+				if (Build.VERSION.SDK_INT >= 19) {
+					this.am.setExact(this.am.RTC_WAKEUP, this.timeout, this.tointent);
+				} else {
+					this.am.set(this.am.RTC_WAKEUP, this.timeout, this.tointent);
+				}
+			} else {
+				this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
+						this.prefs.gps_timeout, this.tointent);
+			}
             if (this.prefs.provider == 1)
                 this.twiceTimeout = true;
             else
@@ -261,14 +272,38 @@ public class GPS extends Service {
         this.tManager.listen(this.signal_rcvr, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
     }
 
+    public void setupAlarm()
+	{
+		long current = System.currentTimeMillis();
+		long timeout = this.prefs.update_interval;
+		long next = current + timeout - current % timeout;
+		if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
+			this.timeout = next;
+			next -= this.prefs.gps_timeout;
+			if (next <= current) {
+				next = current + timeout * 2 - current % timeout;
+				if (this.timeout <= current) {
+					this.timeout = next;
+				}
+				next -= this.prefs.gps_timeout;
+			}
+		}
+
+		if (Build.VERSION.SDK_INT >= 19) {
+			this.am.setExact(this.am.RTC_WAKEUP, next, this.amintent);
+		} else {
+			this.am.set(this.am.RTC_WAKEUP, next, this.amintent);
+		}
+	}
+
     public void doTimeout()
     {
-		if (System.currentTimeMillis() > this.timeout) {
+		if (System.currentTimeMillis() >= this.timeout) {
 			System.out.println("BigBrotherGPS: Doing timeout");
 			if (this.prefs.improve_accuracy) {
 				locationUpdate();
 				this.lm.removeUpdates(this.ll);
-				this.am.cancel(this.tointent);
+				//this.am.cancel(this.tointent);
 				return;
 			}
 			if (this.twiceTimeout) {
@@ -307,14 +342,7 @@ public class GPS extends Service {
 		this.lm.removeUpdates(ll);
 
 		/* Reset update alarms */
-		long current = System.currentTimeMillis();
-		long timeout = this.prefs.update_interval;
-		long next = current + timeout - current % timeout;
-		if (Build.VERSION.SDK_INT >= 19) {
-			this.am.setExact(this.am.RTC_WAKEUP, next, this.amintent);
-		} else {
-			this.am.set(this.am.RTC_WAKEUP, next, this.amintent);
-		}
+		this.setupAlarm();
 
 		/* Fix notifs */
 		setupNotif();
@@ -599,17 +627,8 @@ public class GPS extends Service {
 		@Override public void onReceive(Context ctx, Intent i)
 		{
 			System.out.println("BigBrotherGPS: Alarm!");
+			GPS.this.setupAlarm();
 			GPS.this.triggerUpdate();
-
-			// setup next alarm
-			long current = System.currentTimeMillis();
-			long timeout = GPS.this.prefs.update_interval;
-			long next = current + timeout - current % timeout;
-			if (Build.VERSION.SDK_INT >= 19) {
-				GPS.this.am.setExact(GPS.this.am.RTC_WAKEUP, next, GPS.this.amintent);
-			} else {
-				GPS.this.am.set(GPS.this.am.RTC_WAKEUP, next, GPS.this.amintent);
-			}
 		}
     }
 
