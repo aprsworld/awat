@@ -1,38 +1,27 @@
 package org.gnarf.bigbrother.gps;
 
-import java.util.*;
-
-import android.os.StrictMode;
 import android.app.Service;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Notification;
 
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.BatteryManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 
 import android.location.*;
-import android.os.SystemClock;
-import android.telephony.TelephonyManager;
 
 import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
-import org.gnarf.bigbrother.gps.*;
-
-// DAR
 import android.os.*;
 import android.telephony.*;
-// !DAR
 
+@SuppressWarnings("AccessStaticViaInstance")
 public class GPS extends Service {
     /* Location manager params */
     LocationManager lm;
@@ -102,7 +91,7 @@ public class GPS extends Service {
         reconfigure();
 
         /* Create formatter */
-        dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'");
+        dateformatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Locale.US);
         dateformatter.setTimeZone(new SimpleTimeZone(0, "UTC"));
 
         /* Create binder */
@@ -186,10 +175,7 @@ public class GPS extends Service {
 				this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
 						this.prefs.gps_timeout, this.tointent);
 			}
-            if (this.prefs.provider == 1)
-                this.twiceTimeout = true;
-            else
-                this.twiceTimeout = false;
+			this.twiceTimeout = (this.prefs.provider == 1);
         }
     }
 
@@ -416,7 +402,7 @@ public class GPS extends Service {
 		}
 
 		/* Build request data */
-		StringBuffer req = new StringBuffer();
+		StringBuilder req = new StringBuilder();
 		req.append("update=1");
 
 		if (this.location != null) {
@@ -458,6 +444,7 @@ public class GPS extends Service {
 			if (this.prefs.send_extras) {
 				Bundle extras = this.location.getExtras();
 				for (String key : extras.keySet()) {
+					//noinspection CatchMayIgnoreException,CatchMayIgnoreException
 					try {
 						req.append("&gnss_");
 						req.append(URLEncoder.encode(key, "utf-8"));
@@ -535,7 +522,7 @@ public class GPS extends Service {
 		con.setRequestProperty("Content-Length", ""+req.length());
 
 		/* Connect and write */
-		StringBuffer response = new StringBuffer();
+		StringBuilder response = new StringBuilder();
 		try {
 			con.connect();
 

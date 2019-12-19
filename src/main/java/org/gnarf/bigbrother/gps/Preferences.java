@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 public class Preferences
 {
-    Context ctx;
+    final Context ctx;
 
     /* The preference values */
     public String target_url;
@@ -53,11 +53,11 @@ public class Preferences
 
 	float tmpf;
 	tmp = prefs.getString("update_interval","15");
-	tmpf = (new Float(tmp)).floatValue();
+	tmpf = new Float(tmp);
 	tmpf *= 60 * 1000;
 	this.update_interval = (int)tmpf;
 
-	Boolean tb = prefs.getBoolean("provider", true);
+	boolean tb = prefs.getBoolean("provider", true);
 	if (tb)
 	    this.provider = 1;
 	else
@@ -67,7 +67,7 @@ public class Preferences
 	this.continous_mode = prefs.getBoolean("continous_mode", false);
 
 	tmp = prefs.getString("gps_timeout","10");
-	this.gps_timeout = (new Integer(tmp)).intValue();
+	this.gps_timeout = new Integer(tmp);
 	this.gps_timeout *= 1000;
 
 	if (this.gps_timeout * 2 > this.update_interval || this.update_interval <= 60 * 1000) {
@@ -88,7 +88,7 @@ public class Preferences
 	    secret = null;
 
 	tmp = prefs.getString("coordinate_format", "1");
-	this.coordinate_format = (new Integer(tmp)).intValue();
+	this.coordinate_format = new Integer(tmp);
 
 	this.send_provider = prefs.getBoolean("send_provider", true);
 	this.send_altitude = prefs.getBoolean("send_altitude", true);

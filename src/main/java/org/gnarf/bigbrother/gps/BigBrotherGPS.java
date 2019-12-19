@@ -5,10 +5,8 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -23,7 +21,6 @@ import android.widget.Button;
 import android.location.*;
 
 import org.gnarf.android.Helper;
-import org.gnarf.bigbrother.gps.*;
 
 public class BigBrotherGPS extends Activity
 {
@@ -139,7 +136,7 @@ public class BigBrotherGPS extends Activity
         setContentView(R.layout.main);
 
 	/* Date/time formatting */
-	this.dateformatter = new SimpleDateFormat("HH:mm:ss.SS");
+	this.dateformatter = new SimpleDateFormat("HH:mm:ss.SS", Locale.US);
 
 	/* Lookup our text fields */
 	this.time = (TextView)findViewById(R.id.main_time);
@@ -195,11 +192,11 @@ public class BigBrotherGPS extends Activity
 
 	/* Keep only last 10 */
 	String oldlog = this.log.getText().toString();
-	String log[] = oldlog.split("\n"); 
+	String[] log = oldlog.split("\n");
 	if (log.length > 10) {
 	    StringBuffer newlog = new StringBuffer();
 	    for (int i = 0; i < 10; i++) 
-		newlog.append(log[i]+"\n");
+		newlog.append(log[i]).append("\n");
 	    this.log.setText(newlog);
 	}
 	
@@ -229,13 +226,14 @@ public class BigBrotherGPS extends Activity
 	    lb.setCallback(new CallBackIF());
 	}
 
-	@Override public void onServiceDisconnected(ComponentName name) {};
+	@Override public void onServiceDisconnected(ComponentName name) {}
     }
     
 
 
     /* The actual connection interface class */
-    class CallBackIF implements LocIF
+	@SuppressWarnings("AccessStaticViaInstance")
+	class CallBackIF implements LocIF
     {
 	@Override public void onError(String err)
 	{
@@ -250,12 +248,12 @@ public class BigBrotherGPS extends Activity
 	    if (loc == null)
 		return;
 
-	    Double latitude = new Double(loc.getLatitude());
-	    Double longitude = new Double(loc.getLongitude());
-	    Integer accuracy = new Integer((int)loc.getAccuracy());
-	    Double altitude = new Double(loc.getAltitude());
-	    Double bearing = new Double(loc.getBearing());
-	    Double speed = new Double(loc.getSpeed());
+	    double latitude = loc.getLatitude();
+	    double longitude = loc.getLongitude();
+	    int accuracy = (int) loc.getAccuracy();
+	    double altitude = loc.getAltitude();
+	    double bearing = (double) loc.getBearing();
+	    double speed = (double) loc.getSpeed();
 
 	    Date date = new Date(loc.getTime());
 	    String df = BigBrotherGPS.this.dateformatter.format(date);
@@ -278,16 +276,16 @@ public class BigBrotherGPS extends Activity
 	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
 	    BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
 	    BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
-	    BigBrotherGPS.this.alt.setText(altitude.toString());
-	    BigBrotherGPS.this.acc.setText(accuracy.toString());
-	    BigBrotherGPS.this.brg.setText(bearing.toString());
-	    BigBrotherGPS.this.spd.setText(speed.toString());
+	    BigBrotherGPS.this.alt.setText(Double.toString(altitude));
+	    BigBrotherGPS.this.acc.setText(Integer.toString(accuracy));
+	    BigBrotherGPS.this.brg.setText(Double.toString(bearing));
+	    BigBrotherGPS.this.spd.setText(Double.toString(speed));
 	    BigBrotherGPS.this.batlev.setText((new Integer(bat_level)).toString());
 	    if (charger)
 		BigBrotherGPS.this.chrgr.setText("(charging)");
 	    else
 		BigBrotherGPS.this.chrgr.setText("");
-	    BigBrotherGPS.this.temp.setText(String.format("%.1f", temp));
+	    BigBrotherGPS.this.temp.setText(String.format(Locale.US, "%.1f", temp));
 	    BigBrotherGPS.this.uptime.setText((new Long(uptime)).toString());
 	    BigBrotherGPS.this.freespace.setText((new Long(freespace)).toString());
 	}

@@ -9,7 +9,7 @@ import org.gnarf.bigbrother.gps.*;
  * the GPS class and returned in onBind() */
 public class LocBinder extends Binder
 {
-    private GPS gps;
+    private final GPS gps;
 
     LocBinder(GPS gps)
     {

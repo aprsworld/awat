@@ -24,7 +24,7 @@
     <EditTextPreference 
 	android:title="Update interval"
 	android:summary="How often (in minutes) to update the location"
-	android:numeric="decimal"
+	android:inputType="numberDecimal"
 	android:defaultValue="15"
 	android:key="update_interval" />
     <CheckBoxPreference
@@ -40,7 +40,7 @@
 	  <EditTextPreference
 	android:title="GPS Timeout"
 	android:summary="Timeout, in seconds, for GPS location. If location isn't received within this time the program falls back to network."
-	android:numeric="integer"
+	android:inputType="number"
 	android:defaultValue="10"
 	android:key="gps_timeout" />
     <CheckBoxPreference 
@@ -54,13 +54,11 @@
     <EditTextPreference 
 	android:title="URL"
 	android:summary="Enter the target URL"
-	android:defaultValue=""
 	android:inputType="textUri"
 	android:key="target_url" />
     <EditTextPreference 
 	android:title="Secret"
 	android:summary="A shared secret used to authenticate the phone to the server"
-	android:defaultValue=""
 	android:key="secret" />
     <CheckBoxPreference
         android:title="Send provider"

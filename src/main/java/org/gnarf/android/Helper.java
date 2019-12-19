@@ -2,7 +2,6 @@ package org.gnarf.android;
 
 import android.content.Context;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 
 public class Helper
 {

@@ -1,18 +1,13 @@
 package org.gnarf.bigbrother.gps;
 
-import java.util.*;
-
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 
-import org.gnarf.bigbrother.gps.*;
-
 public class GPSBooter extends BroadcastReceiver
 {
-    public static final String TAG = "GPSBooter";
+	public static final String TAG = "GPSBooter";
     
     @Override public void onReceive(Context ctx, Intent i) 
     {

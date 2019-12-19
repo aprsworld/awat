@@ -1,10 +1,6 @@
 package org.gnarf.bigbrother.gps;
-
 import android.app.Activity;
-
 import android.os.Bundle;
-
-import android.content.Intent;
 
 
 public class Changelog extends Activity
