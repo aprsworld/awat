@@ -303,7 +303,7 @@ public class GPS extends Service {
 			if (this.prefs.improve_accuracy) {
 				locationUpdate();
 				this.lm.removeUpdates(this.ll);
-				//this.am.cancel(this.tointent);
+				//this.am.cancel(this.tointent);//
 				return;
 			}
 			if (this.twiceTimeout) {
