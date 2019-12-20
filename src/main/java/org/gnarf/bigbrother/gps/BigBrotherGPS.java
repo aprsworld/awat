@@ -280,14 +280,14 @@ public class BigBrotherGPS extends Activity
 	    BigBrotherGPS.this.acc.setText(Integer.toString(accuracy));
 	    BigBrotherGPS.this.brg.setText(Double.toString(bearing));
 	    BigBrotherGPS.this.spd.setText(Double.toString(speed));
-	    BigBrotherGPS.this.batlev.setText((new Integer(bat_level)).toString());
+	    BigBrotherGPS.this.batlev.setText((Integer.valueOf(bat_level)).toString());
 	    if (charger)
 		BigBrotherGPS.this.chrgr.setText("(charging)");
 	    else
 		BigBrotherGPS.this.chrgr.setText("");
 	    BigBrotherGPS.this.temp.setText(String.format(Locale.US, "%.1f", temp));
-	    BigBrotherGPS.this.uptime.setText((new Long(uptime)).toString());
-	    BigBrotherGPS.this.freespace.setText((new Long(freespace)).toString());
+	    BigBrotherGPS.this.uptime.setText((Long.valueOf(uptime)).toString());
+	    BigBrotherGPS.this.freespace.setText((Long.valueOf(freespace)).toString());
 	}
     }
 }

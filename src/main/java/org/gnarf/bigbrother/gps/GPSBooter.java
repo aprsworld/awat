@@ -22,8 +22,9 @@ public class GPSBooter extends BroadcastReceiver
 	    else
 		System.out.println("BigBrotherGPS: Started service");
 
-	} else
-	    System.out.println("BigBrotherGPS: Not starting on boot");
+	} else {
+		System.out.println("BigBrotherGPS: Not starting on boot");
+	}
     }
 
 }

@@ -1,5 +1,6 @@
 package org.gnarf.bigbrother.gps;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
@@ -304,6 +305,7 @@ public class GPS extends Service {
 				catch (IllegalArgumentException e) {
 					System.out.println("BigBrotherGPS(timeout): "
 									   +e.toString());
+					//noinspection UnnecessaryReturnStatement
 					return;
 				}
 			} else {
@@ -352,13 +354,15 @@ public class GPS extends Service {
 				System.out.println("BigBrotherGPS: "
 								   +"Can't start locator in continous mode: "
 								   +e.toString());
+				//noinspection UnnecessaryReturnStatement
 				return;
 			}
 		}
     }
 
     /* Send a request to the URL and post some data */
-    protected void postLocation()
+    @SuppressLint("HardwareIds")
+	protected void postLocation()
     {
 		boolean do_notif = false;
 
@@ -444,13 +448,21 @@ public class GPS extends Service {
 			if (this.prefs.send_extras) {
 				Bundle extras = this.location.getExtras();
 				for (String key : extras.keySet()) {
-					//noinspection CatchMayIgnoreException,CatchMayIgnoreException
+					//noinspection CatchMayIgnoreException
 					try {
+						Object value_obj;
+						String value;
 						req.append("&gnss_");
 						req.append(URLEncoder.encode(key, "utf-8"));
 						req.append("=");
-						req.append(URLEncoder.encode(extras.get(key).toString(), "utf-8"));
-					} catch (UnsupportedEncodingException e) {
+						value_obj = extras.get(key);
+						if (value_obj != null) {
+							value = value_obj.toString();
+						} else {
+							value = "";
+						}
+						req.append(URLEncoder.encode(value, "utf-8"));
+					} catch (Exception e) {
 					}
 				}
 			}
@@ -481,15 +493,19 @@ public class GPS extends Service {
 		/* Add device id */
 		if (this.prefs.send_devid) {
 			TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-			req.append("&deviceid=");
-			req.append(tm.getDeviceId());
+			if (tm != null) {
+				req.append("&deviceid=");
+				req.append(tm.getDeviceId());
+			}
 		}
 
 		/* Add subscriber id */
 		if (this.prefs.send_subscrid) {
 			TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-			req.append("&subscriberid=");
-			req.append(tm.getSubscriberId());
+			if (tm != null) {
+				req.append("&subscriberid=");
+				req.append(tm.getSubscriberId());
+			}
 		}
 
 		// DAR

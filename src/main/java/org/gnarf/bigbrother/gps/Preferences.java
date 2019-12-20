@@ -51,11 +51,8 @@ public class Preferences
 
 	this.target_url = prefs.getString("target_url", null);
 
-	float tmpf;
 	tmp = prefs.getString("update_interval","15");
-	tmpf = new Float(tmp);
-	tmpf *= 60 * 1000;
-	this.update_interval = (int)tmpf;
+	this.update_interval = Integer.valueOf(tmp) * 60 * 1000;
 
 	boolean tb = prefs.getBoolean("provider", true);
 	if (tb)
@@ -67,7 +64,7 @@ public class Preferences
 	this.continous_mode = prefs.getBoolean("continous_mode", false);
 
 	tmp = prefs.getString("gps_timeout","10");
-	this.gps_timeout = new Integer(tmp);
+	this.gps_timeout = Integer.valueOf(tmp);
 	this.gps_timeout *= 1000;
 
 	if (this.gps_timeout * 2 > this.update_interval || this.update_interval <= 60 * 1000) {
@@ -88,7 +85,7 @@ public class Preferences
 	    secret = null;
 
 	tmp = prefs.getString("coordinate_format", "1");
-	this.coordinate_format = new Integer(tmp);
+	this.coordinate_format = Integer.valueOf(tmp);
 
 	this.send_provider = prefs.getBoolean("send_provider", true);
 	this.send_altitude = prefs.getBoolean("send_altitude", true);
