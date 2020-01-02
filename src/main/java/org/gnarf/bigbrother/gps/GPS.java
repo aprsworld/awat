@@ -160,23 +160,23 @@ public class GPS extends Service {
             }
 
             /* Start timeout alarm */
-			long current = System.currentTimeMillis();
-			if (current >= this.timeout) {
-				this.timeout = System.currentTimeMillis();
-				this.timeout += this.prefs.gps_timeout;
-				this.timeout += 100; /* delay a bit to avoid a race */
-			}
-			if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
-				if (Build.VERSION.SDK_INT >= 19) {
-					this.am.setExact(this.am.RTC_WAKEUP, this.timeout, this.tointent);
-				} else {
-					this.am.set(this.am.RTC_WAKEUP, this.timeout, this.tointent);
-				}
-			} else {
-				this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
-						this.prefs.gps_timeout, this.tointent);
-			}
-			this.twiceTimeout = (this.prefs.provider == 1);
+            long current = System.currentTimeMillis();
+            if (current >= this.timeout) {
+                this.timeout = System.currentTimeMillis();
+                this.timeout += this.prefs.gps_timeout;
+                this.timeout += 100; /* delay a bit to avoid a race */
+            }
+            if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
+                if (Build.VERSION.SDK_INT >= 19) {
+                    this.am.setExact(this.am.RTC_WAKEUP, this.timeout, this.tointent);
+                } else {
+                    this.am.set(this.am.RTC_WAKEUP, this.timeout, this.tointent);
+                }
+            } else {
+                this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
+                        this.prefs.gps_timeout, this.tointent);
+            }
+            this.twiceTimeout = (this.prefs.provider == 1);
         }
     }
 
@@ -252,479 +252,463 @@ public class GPS extends Service {
                 null, null);
     }
 
-    private void setupSignal()
-    {
+    private void setupSignal() {
         this.tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
         this.signal_rcvr = new SignalState();
         this.tManager.listen(this.signal_rcvr, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
     }
 
-    public void setupAlarm()
-	{
-		long current = System.currentTimeMillis();
-		long timeout = this.prefs.update_interval;
-		long next = current + timeout - current % timeout;
-		if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
-			this.timeout = next;
-			next -= this.prefs.gps_timeout;
-			if (next <= current) {
-				next = current + timeout * 2 - current % timeout;
-				if (this.timeout <= current) {
-					this.timeout = next;
-				}
-				next -= this.prefs.gps_timeout;
-			}
-		}
+    public void setupAlarm() {
+        long current = System.currentTimeMillis();
+        long timeout = this.prefs.update_interval;
+        long next = current + timeout - current % timeout;
+        if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
+            this.timeout = next;
+            next -= this.prefs.gps_timeout;
+            if (next <= current) {
+                next = current + timeout * 2 - current % timeout;
+                if (this.timeout <= current) {
+                    this.timeout = next;
+                }
+                next -= this.prefs.gps_timeout;
+            }
+        }
 
-		if (Build.VERSION.SDK_INT >= 19) {
-			this.am.setExact(this.am.RTC_WAKEUP, next, this.amintent);
-		} else {
-			this.am.set(this.am.RTC_WAKEUP, next, this.amintent);
-		}
-	}
+        if (Build.VERSION.SDK_INT >= 19) {
+            this.am.setExact(this.am.RTC_WAKEUP, next, this.amintent);
+        } else {
+            this.am.set(this.am.RTC_WAKEUP, next, this.amintent);
+        }
+    }
 
-    public void doTimeout()
-    {
-		if (System.currentTimeMillis() >= this.timeout) {
-			System.out.println("BigBrotherGPS: Doing timeout");
-			if (this.prefs.improve_accuracy) {
-				locationUpdate();
-				this.lm.removeUpdates(this.ll);
-				//this.am.cancel(this.tointent);//
-				return;
-			}
-			if (this.twiceTimeout) {
-				System.out.println("BigBrotherGPS: Switching locator");
-				this.twiceTimeout = false;
-				this.timeout =
-					System.currentTimeMillis() + this.prefs.gps_timeout;
-				try {
-					this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER,
-												   0, 0, this.ll);
-				}
-				catch (IllegalArgumentException e) {
-					System.out.println("BigBrotherGPS(timeout): "
-									   +e.toString());
-					//noinspection UnnecessaryReturnStatement
-					return;
-				}
-			} else {
-				/* Timeout reached */
-				this.lm.removeUpdates(this.ll);
-				this.am.cancel(this.tointent);
-			}
-		}
+    public void doTimeout() {
+        if (System.currentTimeMillis() >= this.timeout) {
+            System.out.println("BigBrotherGPS: Doing timeout");
+            if (this.prefs.improve_accuracy) {
+                locationUpdate();
+                this.lm.removeUpdates(this.ll);
+                //this.am.cancel(this.tointent);//
+                return;
+            }
+            if (this.twiceTimeout) {
+                System.out.println("BigBrotherGPS: Switching locator");
+                this.twiceTimeout = false;
+                this.timeout =
+                        System.currentTimeMillis() + this.prefs.gps_timeout;
+                try {
+                    this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER,
+                            0, 0, this.ll);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("BigBrotherGPS(timeout): "
+                            + e.toString());
+                    //noinspection UnnecessaryReturnStatement
+                    return;
+                }
+            } else {
+                /* Timeout reached */
+                this.lm.removeUpdates(this.ll);
+                this.am.cancel(this.tointent);
+            }
+        }
     }
 
 
-    public void reloadPrefs()
-    {
-		this.prefs.load();
-		reconfigure();
+    public void reloadPrefs() {
+        this.prefs.load();
+        reconfigure();
     }
 
-    private void reconfigure()
-    {
-		System.out.println("BigBrotherGPS doing reconfig");
-		/* Update the request times */
-		this.lm.removeUpdates(ll);
+    private void reconfigure() {
+        System.out.println("BigBrotherGPS doing reconfig");
+        /* Update the request times */
+        this.lm.removeUpdates(ll);
 
-		/* Reset update alarms */
-		this.setupAlarm();
+        /* Reset update alarms */
+        this.setupAlarm();
 
-		/* Fix notifs */
-		setupNotif();
+        /* Fix notifs */
+        setupNotif();
 
-		/* Set URL */
-		this.target_url = null;
-		try {
-			this.target_url = new URL(this.prefs.target_url);
-		}
-		catch (MalformedURLException e) {
-			System.out.println("BigBrotherGPS: "+e.toString());
-			this.target_url = null;
-		}
+        /* Set URL */
+        this.target_url = null;
+        try {
+            this.target_url = new URL(this.prefs.target_url);
+        } catch (MalformedURLException e) {
+            System.out.println("BigBrotherGPS: " + e.toString());
+            this.target_url = null;
+        }
 
-		/* For continous mode, start updating */
-		if (this.prefs.continous_mode) {
-			try {
-				startLocator();
-			}
-			catch (IllegalArgumentException e) {
-				System.out.println("BigBrotherGPS: "
-								   +"Can't start locator in continous mode: "
-								   +e.toString());
-				//noinspection UnnecessaryReturnStatement
-				return;
-			}
-		}
+        /* For continous mode, start updating */
+        if (this.prefs.continous_mode) {
+            try {
+                startLocator();
+            } catch (IllegalArgumentException e) {
+                System.out.println("BigBrotherGPS: "
+                        + "Can't start locator in continous mode: "
+                        + e.toString());
+                //noinspection UnnecessaryReturnStatement
+                return;
+            }
+        }
     }
 
     /* Send a request to the URL and post some data */
     @SuppressLint("HardwareIds")
-	protected void postLocation()
-    {
-		boolean do_notif = false;
+    protected void postLocation() {
+        boolean do_notif = false;
 
-		/* No url, don't do anything */
-		if (this.target_url == null)
-			return;
+        /* No url, don't do anything */
+        if (this.target_url == null)
+            return;
 
-		System.out.println("BigBrotherGPS sending HTTP poke");
+        System.out.println("BigBrotherGPS sending HTTP poke");
 
-		/* Prepare connection and request */
-		HttpURLConnection con;
-		try {
-			con = (HttpURLConnection)this.target_url.openConnection();
-		}
-		catch (IOException e) {
-			System.out.println("BigBrotherGPS: "+e.toString());
-			if (this.rpc_if != null)
-				this.rpc_if.onError(e.toString());
-			return;
-		}
+        /* Prepare connection and request */
+        HttpURLConnection con;
+        try {
+            con = (HttpURLConnection) this.target_url.openConnection();
+        } catch (IOException e) {
+            System.out.println("BigBrotherGPS: " + e.toString());
+            if (this.rpc_if != null)
+                this.rpc_if.onError(e.toString());
+            return;
+        }
 
-		try {
-			con.setRequestMethod("POST");
-		}
-		catch (ProtocolException e) {
-			System.out.println("BigBrotherGPS: "+e.toString());
-			if (this.rpc_if != null)
-				this.rpc_if.onError(e.toString());
-			return;
-		}
+        try {
+            con.setRequestMethod("POST");
+        } catch (ProtocolException e) {
+            System.out.println("BigBrotherGPS: " + e.toString());
+            if (this.rpc_if != null)
+                this.rpc_if.onError(e.toString());
+            return;
+        }
 
-		con.setUseCaches(false);
-		con.setDoOutput(true);
-		con.setDoInput(true);
+        con.setUseCaches(false);
+        con.setDoOutput(true);
+        con.setDoInput(true);
 
-		/* If HTTP response is to be used in notif bar */
-		if (this.prefs.show_in_notif_bar &&
-			this.prefs.http_resp_in_notif_bar) {
-			this.setupNotif();
-			do_notif = true;
-		}
+        /* If HTTP response is to be used in notif bar */
+        if (this.prefs.show_in_notif_bar &&
+                this.prefs.http_resp_in_notif_bar) {
+            this.setupNotif();
+            do_notif = true;
+        }
 
-		/* Build request data */
-		StringBuilder req = new StringBuilder();
-		req.append("update=1");
+        /* Build request data */
+        StringBuilder req = new StringBuilder();
+        req.append("update=1");
 
-		if (this.location != null) {
-			req.append("&latitude=");
-			req.append(this.location.getLatitude());
+        if (this.location != null) {
+            req.append("&latitude=");
+            req.append(this.location.getLatitude());
 
-			req.append("&longitude=");
-			req.append(this.location.getLongitude());
+            req.append("&longitude=");
+            req.append(this.location.getLongitude());
 
-			req.append("&accuracy=");
-			req.append(this.location.getAccuracy());
+            req.append("&accuracy=");
+            req.append(this.location.getAccuracy());
 
-			if (this.prefs.send_altitude) {
-				req.append("&altitude=");
-				req.append(this.location.getAltitude());
-			}
+            if (this.prefs.send_altitude) {
+                req.append("&altitude=");
+                req.append(this.location.getAltitude());
+            }
 
-			if (this.prefs.send_provider) {
-				req.append("&provider=");
-				req.append(this.location.getProvider());
-			}
+            if (this.prefs.send_provider) {
+                req.append("&provider=");
+                req.append(this.location.getProvider());
+            }
 
-			if (this.prefs.send_bearing) {
-				req.append("&bearing=");
-				req.append(this.location.getBearing());
-			}
+            if (this.prefs.send_bearing) {
+                req.append("&bearing=");
+                req.append(this.location.getBearing());
+            }
 
-			if (this.prefs.send_speed) {
-				req.append("&speed=");
-				req.append(this.location.getSpeed());
-			}
+            if (this.prefs.send_speed) {
+                req.append("&speed=");
+                req.append(this.location.getSpeed());
+            }
 
-			if (this.prefs.send_time) {
-				Date date = new Date(this.location.getTime());
-				req.append("&time=");
-				req.append(this.dateformatter.format(date));
-			}
+            if (this.prefs.send_time) {
+                Date date = new Date(this.location.getTime());
+                req.append("&time=");
+                req.append(this.dateformatter.format(date));
+            }
 
-			if (this.prefs.send_extras) {
-				Bundle extras = this.location.getExtras();
-				for (String key : extras.keySet()) {
-					//noinspection CatchMayIgnoreException
-					try {
-						Object value_obj;
-						String value;
-						req.append("&gnss_");
-						req.append(URLEncoder.encode(key, "utf-8"));
-						req.append("=");
-						value_obj = extras.get(key);
-						if (value_obj != null) {
-							value = value_obj.toString();
-						} else {
-							value = "";
-						}
-						req.append(URLEncoder.encode(value, "utf-8"));
-					} catch (Exception e) {
-					}
-				}
-			}
-		}
+            if (this.prefs.send_extras) {
+                Bundle extras = this.location.getExtras();
+                for (String key : extras.keySet()) {
+                    //noinspection CatchMayIgnoreException
+                    try {
+                        Object value_obj;
+                        String value;
+                        req.append("&gnss_");
+                        req.append(URLEncoder.encode(key, "utf-8"));
+                        req.append("=");
+                        value_obj = extras.get(key);
+                        if (value_obj != null) {
+                            value = value_obj.toString();
+                        } else {
+                            value = "";
+                        }
+                        req.append(URLEncoder.encode(value, "utf-8"));
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        }
 
-		if (this.prefs.send_systime) {
-			req.append("&systime=");
-			req.append(this.dateformatter.format(new Date()));
-		}
+        if (this.prefs.send_systime) {
+            req.append("&systime=");
+            req.append(this.dateformatter.format(new Date()));
+        }
 
-		/* Add battery status if configured */
-		if (this.prefs.send_batt_status) {
-			req.append("&battlevel=");
-			req.append(this.bat_level);
-			if (this.charger) {
-				req.append("&charging=1");
-			} else {
-				req.append("&charging=0");
-			}
-		}
+        /* Add battery status if configured */
+        if (this.prefs.send_batt_status) {
+            req.append("&battlevel=");
+            req.append(this.bat_level);
+            if (this.charger) {
+                req.append("&charging=1");
+            } else {
+                req.append("&charging=0");
+            }
+        }
 
-		/* Add secret if configured */
-		if (this.prefs.secret != null) {
-			req.append("&secret=");
-			req.append(this.prefs.secret);
-		}
+        /* Add secret if configured */
+        if (this.prefs.secret != null) {
+            req.append("&secret=");
+            req.append(this.prefs.secret);
+        }
 
-		/* Add device id */
-		if (this.prefs.send_devid) {
-			TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-			if (tm != null) {
-				req.append("&deviceid=");
-				req.append(tm.getDeviceId());
-			}
-		}
+        /* Add device id */
+        if (this.prefs.send_devid) {
+            TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            if (tm != null) {
+                req.append("&deviceid=");
+                req.append(tm.getDeviceId());
+            }
+        }
 
-		/* Add subscriber id */
-		if (this.prefs.send_subscrid) {
-			TelephonyManager tm = (TelephonyManager)getSystemService(TELEPHONY_SERVICE);
-			if (tm != null) {
-				req.append("&subscriberid=");
-				req.append(tm.getSubscriberId());
-			}
-		}
+        /* Add subscriber id */
+        if (this.prefs.send_subscrid) {
+            TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+            if (tm != null) {
+                req.append("&subscriberid=");
+                req.append(tm.getSubscriberId());
+            }
+        }
 
-		// DAR
-		/* Add temperature */
-		if (this.prefs.send_temp) {
-			req.append("&temperatureBatteryC=");
-			req.append(this.bat_temp);
-		}
+        // DAR
+        /* Add temperature */
+        if (this.prefs.send_temp) {
+            req.append("&temperatureBatteryC=");
+            req.append(this.bat_temp);
+        }
 
-		/* Add System Uptime */
-		if (this.prefs.send_uptime) {
-			req.append("&uptimeMilliseconds=");
-			req.append(this.uptime);
-		}
+        /* Add System Uptime */
+        if (this.prefs.send_uptime) {
+            req.append("&uptimeMilliseconds=");
+            req.append(this.uptime);
+        }
 
-		/* Add Free Space */
-		if (this.prefs.send_freespace) {
-			req.append("&freespaceInternalMegabytes=");
-			req.append(this.freespace);
-		}
+        /* Add Free Space */
+        if (this.prefs.send_freespace) {
+            req.append("&freespaceInternalMegabytes=");
+            req.append(this.freespace);
+        }
 
-		/* Add Signal Strength */
-		if (this.prefs.send_signal) {
-			req.append("&signalStrengthLevel=");
-			req.append(this.signal);
-		}
-		// !DAR
+        /* Add Signal Strength */
+        if (this.prefs.send_signal) {
+            req.append("&signalStrengthLevel=");
+            req.append(this.signal);
+        }
+        // !DAR
 
-		con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		con.setRequestProperty("Content-Length", ""+req.length());
+        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+        con.setRequestProperty("Content-Length", "" + req.length());
 
-		/* Connect and write */
-		StringBuilder response = new StringBuilder();
-		try {
-			con.connect();
+        /* Connect and write */
+        StringBuilder response = new StringBuilder();
+        try {
+            con.connect();
 
-			DataOutputStream wr;
-			wr = new DataOutputStream(con.getOutputStream());
-			wr.writeBytes(req.toString());
-			wr.flush();
-			wr.close();
+            DataOutputStream wr;
+            wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(req.toString());
+            wr.flush();
+            wr.close();
 
-			DataInputStream rd;
-			rd = new DataInputStream(con.getInputStream());
-			if (do_notif) {
-				response.append(rd.readLine());
-			}
-			rd.close();
-		}
-		catch (IOException e) {
-			System.out.println("BigBrotherGPS: "+e.toString());
-			if (this.rpc_if != null)
-				this.rpc_if.onError(e.toString());
-			return;
-		}
-		con.disconnect();
+            DataInputStream rd;
+            rd = new DataInputStream(con.getInputStream());
+            if (do_notif) {
+                response.append(rd.readLine());
+            }
+            rd.close();
+        } catch (IOException e) {
+            System.out.println("BigBrotherGPS: " + e.toString());
+            if (this.rpc_if != null)
+                this.rpc_if.onError(e.toString());
+            return;
+        }
+        con.disconnect();
 
-		System.out.println("BigBrotherGPS sent HTTP poke");
+        System.out.println("BigBrotherGPS sent HTTP poke");
 
-		/* Set notification if we have it */
-		if (this.notif != null && do_notif) {
-			this.notif.when = System.currentTimeMillis();
-			this.notif.setLatestEventInfo(this,
-										  getString(R.string.app_name),
-										  response.toString(),
-										  this.notintent);
-			this.notman.notify(1, this.notif);
-		}
+        /* Set notification if we have it */
+        if (this.notif != null && do_notif) {
+            this.notif.when = System.currentTimeMillis();
+            this.notif.setLatestEventInfo(this,
+                    getString(R.string.app_name),
+                    response.toString(),
+                    this.notintent);
+            this.notman.notify(1, this.notif);
+        }
 
-		this.location = null;
+        this.location = null;
     }
 
-    private void locationUpdate()
-    {
-		/* Location update triggered */
-		Location loc = this.location;
-		//if (loc == null)
-		//	return;
+    private void locationUpdate() {
+        /* Location update triggered */
+        Location loc = this.location;
+        //if (loc == null)
+        //	return;
 
-		/* Update extra info */
-		this.uptime = SystemClock.uptimeMillis();
-		StatFs stats =  new StatFs((Environment.getDataDirectory().getAbsolutePath()));
-		if (Build.VERSION.SDK_INT >= 18) {
+        /* Update extra info */
+        this.uptime = SystemClock.uptimeMillis();
+        StatFs stats = new StatFs((Environment.getDataDirectory().getAbsolutePath()));
+        if (Build.VERSION.SDK_INT >= 18) {
             this.freespace = stats.getAvailableBlocksLong() * stats.getBlockSizeLong() / 1024 / 1024;
         } else {
             this.freespace = stats.getAvailableBlocks() * stats.getBlockSize() / 1024 / 1024;
         }
 
-		/* Change notification */
-		if (loc != null && this.prefs.show_in_notif_bar &&
-			!this.prefs.http_resp_in_notif_bar) {
-			this.setupNotif();
-			String txt = loc.getLatitude()+", "
-				+loc.getLongitude()+", "
-				+(int)loc.getAccuracy()+"m";
-			this.notif.when = System.currentTimeMillis();
-			this.notif.setLatestEventInfo(GPS.this,
-										  getString(R.string.app_name),
-										  txt, GPS.this.notintent);
-			this.notman.notify(1, GPS.this.notif);
-		}
+        /* Change notification */
+        if (loc != null && this.prefs.show_in_notif_bar &&
+                !this.prefs.http_resp_in_notif_bar) {
+            this.setupNotif();
+            String txt = loc.getLatitude() + ", "
+                    + loc.getLongitude() + ", "
+                    + (int) loc.getAccuracy() + "m";
+            this.notif.when = System.currentTimeMillis();
+            this.notif.setLatestEventInfo(GPS.this,
+                    getString(R.string.app_name),
+                    txt, GPS.this.notintent);
+            this.notman.notify(1, GPS.this.notif);
+        }
 
-		/* Call to UI */
-		if (this.rpc_if != null && loc != null) { // XXX Change onLocation
-			this.rpc_if.onLocation(loc.getProvider(), loc,
-								   this.bat_level,
-								   this.charger,
-									this.bat_temp,
-									this.uptime,
-									this.freespace);
-		}
+        /* Call to UI */
+        if (this.rpc_if != null && loc != null) { // XXX Change onLocation
+            this.rpc_if.onLocation(loc.getProvider(), loc,
+                    this.bat_level,
+                    this.charger,
+                    this.bat_temp,
+                    this.uptime,
+                    this.freespace);
+        }
 
-		/* Post to server */
-		this.postLocation();
+        /* Post to server */
+        this.postLocation();
     }
 
     /**************************************************************************
      * Helper classes for timed locator interaction
      *************************************************************************/
-    class LocAlarm extends BroadcastReceiver
-    {
-		@Override public void onReceive(Context ctx, Intent i)
-		{
-			System.out.println("BigBrotherGPS: Alarm!");
-			GPS.this.setupAlarm();
-			GPS.this.triggerUpdate();
-		}
+    class LocAlarm extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context ctx, Intent i) {
+            System.out.println("BigBrotherGPS: Alarm!");
+            GPS.this.setupAlarm();
+            GPS.this.triggerUpdate();
+        }
     }
 
-    class LocTimeout extends BroadcastReceiver
-    {
-		@Override public void onReceive(Context ctx, Intent i)
-		{
-			if (GPS.this.prefs.continous_mode) {
-				System.out.println("BigBrotherGPS: Ignored timeout");
-			} else {
-				System.out.println("BigBrotherGPS: Received Timeout!");
-				GPS.this.doTimeout();
-			}
-		}
+    class LocTimeout extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context ctx, Intent i) {
+            if (GPS.this.prefs.continous_mode) {
+                System.out.println("BigBrotherGPS: Ignored timeout");
+            } else {
+                System.out.println("BigBrotherGPS: Received Timeout!");
+                GPS.this.doTimeout();
+            }
+        }
     }
 
-    class BatteryState extends BroadcastReceiver
-    {
-		@Override public void onReceive(Context ctx, Intent i)
-		{
-			float level;
-			level = i.getIntExtra("level", 0);
-			level /= i.getIntExtra("scale", 100);
-			GPS.this.bat_level = (int)(level*100);
-			GPS.this.charger = i.getIntExtra("plugged",1)!=0;
-			System.out.printf("BigBrotherGPS: Battery state change: %d%% %b\n",
-							  GPS.this.bat_level, GPS.this.charger);
+    class BatteryState extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context ctx, Intent i) {
+            float level;
+            level = i.getIntExtra("level", 0);
+            level /= i.getIntExtra("scale", 100);
+            GPS.this.bat_level = (int) (level * 100);
+            GPS.this.charger = i.getIntExtra("plugged", 1) != 0;
+            System.out.printf("BigBrotherGPS: Battery state change: %d%% %b\n",
+                    GPS.this.bat_level, GPS.this.charger);
 
-			// DAR
-			GPS.this.bat_temp = i.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -999)/10.0f;
-			System.out.printf("BigBrotherGPS: Battery temp: %f%%\n", GPS.this.bat_temp);
-			// !DAR
-		}
+            // DAR
+            GPS.this.bat_temp = i.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -999) / 10.0f;
+            System.out.printf("BigBrotherGPS: Battery temp: %f%%\n", GPS.this.bat_temp);
+            // !DAR
+        }
     }
 
     class SignalState extends PhoneStateListener {
-        @Override public void onSignalStrengthsChanged(SignalStrength strength) {
+        @Override
+        public void onSignalStrengthsChanged(SignalStrength strength) {
             super.onSignalStrengthsChanged(strength);
             GPS.this.signal = strength.getGsmSignalStrength();
         }
     }
 
 
-    class LocListen implements LocationListener
-    {
-		@Override public void onProviderDisabled(String prov)
-		{
-			System.out.println("BigBrotherGPS ProviderDisabled: "+prov);
-			if (GPS.this.prefs.continous_mode)
-				GPS.this.startLocator();
-			else {
-				/* Stop waiting for timeout since this locator is off */
-				GPS.this.timeout = System.currentTimeMillis()-1;
-				GPS.this.doTimeout();
-			}
-		}
+    class LocListen implements LocationListener {
+        @Override
+        public void onProviderDisabled(String prov) {
+            System.out.println("BigBrotherGPS ProviderDisabled: " + prov);
+            if (GPS.this.prefs.continous_mode)
+                GPS.this.startLocator();
+            else {
+                /* Stop waiting for timeout since this locator is off */
+                GPS.this.timeout = System.currentTimeMillis() - 1;
+                GPS.this.doTimeout();
+            }
+        }
 
-		@Override public void onProviderEnabled(String prov)
-		{
-			System.out.println("BigBrotherGPS ProviderEnabled: "+prov);
-			if (GPS.this.prefs.continous_mode)
-				GPS.this.startLocator();
-			else
-				GPS.this.doTimeout();
-		}
+        @Override
+        public void onProviderEnabled(String prov) {
+            System.out.println("BigBrotherGPS ProviderEnabled: " + prov);
+            if (GPS.this.prefs.continous_mode)
+                GPS.this.startLocator();
+            else
+                GPS.this.doTimeout();
+        }
 
-		@Override public void onStatusChanged(String prov, int stat,
-											  Bundle xtra)
-		{
-			System.out.println("BigBrotherGPS Status change: "
-							   +prov+" -> "+stat);
-			if (GPS.this.rpc_if != null)
-				GPS.this.rpc_if.onStateChange(prov, stat);
+        @Override
+        public void onStatusChanged(String prov, int stat,
+                                    Bundle xtra) {
+            System.out.println("BigBrotherGPS Status change: "
+                    + prov + " -> " + stat);
+            if (GPS.this.rpc_if != null)
+                GPS.this.rpc_if.onStateChange(prov, stat);
 
-			if (GPS.this.prefs.continous_mode)
-				GPS.this.startLocator();
-			else
-				GPS.this.doTimeout();
-		}
+            if (GPS.this.prefs.continous_mode)
+                GPS.this.startLocator();
+            else
+                GPS.this.doTimeout();
+        }
 
-		@Override public void onLocationChanged(Location loc)
-		{
-			System.out.println("BigBrotherGPS got loc from "
-							   +loc.getProvider());
-			GPS.this.location = loc;
+        @Override
+        public void onLocationChanged(Location loc) {
+            System.out.println("BigBrotherGPS got loc from "
+                    + loc.getProvider());
+            GPS.this.location = loc;
 
-			if (!GPS.this.prefs.continous_mode && !GPS.this.prefs.improve_accuracy) {
-				/* Stop waiting for locations. Will be restarted by alarm */
-				GPS.this.lm.removeUpdates(GPS.this.ll);
-				GPS.this.am.cancel(GPS.this.tointent);
+            if (!GPS.this.prefs.continous_mode && !GPS.this.prefs.improve_accuracy) {
+                /* Stop waiting for locations. Will be restarted by alarm */
+                GPS.this.lm.removeUpdates(GPS.this.ll);
+                GPS.this.am.cancel(GPS.this.tointent);
 
-				GPS.this.locationUpdate();
-			}
-		}
+                GPS.this.locationUpdate();
+            }
+        }
     }
 }

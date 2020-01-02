@@ -22,13 +22,12 @@ import android.location.*;
 
 import org.gnarf.android.Helper;
 
-public class BigBrotherGPS extends Activity
-{
+public class BigBrotherGPS extends Activity {
     Bundle state;
 
     /* Prefs */
     Preferences prefs;
-    
+
     /* References to our service */
     Intent srvint;
     ComponentName srv;
@@ -42,164 +41,163 @@ public class BigBrotherGPS extends Activity
     private TextView batlev, chrgr;
     private TextView log;
     // DAR
-	private TextView temp;
-	private TextView uptime;
-	private TextView freespace;
-	// !DAR
+    private TextView temp;
+    private TextView uptime;
+    private TextView freespace;
+    // !DAR
 
     SimpleDateFormat dateformatter;
 
 
-    /** Called when the activity is first created. */
-    @Override public void onCreate(Bundle savedInstanceState)
-    {
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-	System.out.println("onCreate called");
-	this.state = savedInstanceState;
+        System.out.println("onCreate called");
+        this.state = savedInstanceState;
 
-	/* Get prefs */
-	this.prefs = new Preferences(this);
-	this.prefs.load();
+        /* Get prefs */
+        this.prefs = new Preferences(this);
+        this.prefs.load();
 
-	startTheGPS();
+        startTheGPS();
 
-	startUI();
+        startUI();
     }
 
 
-    @Override public void onDestroy()
-    {
-	super.onDestroy();
-	System.out.println("onDestroy called");
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("onDestroy called");
 
-	/* Disconnect from service */
-	unbindService(this.servicecon);
-    }    
-
-    
-    @Override public boolean onCreateOptionsMenu(Menu menu)
-    {
-	menu.add(0, 0, 0, "Update location now");
-	menu.add(0, 1, 1, "Changelog");
-	menu.add(0, 100, 100, "Settings")
-	    .setIcon(android.R.drawable.ic_menu_preferences);
-	return true;
+        /* Disconnect from service */
+        unbindService(this.servicecon);
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item)
-    {
-	switch(item.getItemId()) {
-	case 0:
-	    if (this.binder != null)
-		this.binder.triggerUpdate();
-	    break;
-	case 1:
-	    Intent changelog = new Intent(this, Changelog.class);
-	    startActivity(changelog);
-	    break;
-	case 100:
-	    Intent prefA = new Intent(this, PreferencesActivity.class);
-	    startActivityForResult(prefA, 0);
-	    break;
-	}
 
-	return true;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add(0, 0, 0, "Update location now");
+        menu.add(0, 1, 1, "Changelog");
+        menu.add(0, 100, 100, "Settings")
+                .setIcon(android.R.drawable.ic_menu_preferences);
+        return true;
     }
 
-    @Override public void onActivityResult(int req, int res, Intent i)
-    {
-	/* Get prefs */
-	this.prefs.load();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case 0:
+                if (this.binder != null)
+                    this.binder.triggerUpdate();
+                break;
+            case 1:
+                Intent changelog = new Intent(this, Changelog.class);
+                startActivity(changelog);
+                break;
+            case 100:
+                Intent prefA = new Intent(this, PreferencesActivity.class);
+                startActivityForResult(prefA, 0);
+                break;
+        }
 
-	/* Notify the service that preferences might have changed */
-	if (this.binder != null)
-	    this.binder.updatePrefs();
+        return true;
     }
 
-    private void startTheGPS()
-    {
-	/* Start GPS service */
-	this.srvint = new Intent(this, GPS.class);
-	this.srv = startService(this.srvint);
-	this.servicecon = new Con();
-	boolean bind = bindService(this.srvint, this.servicecon, 0);
-	if (this.srv == null && bind) {
-	    Helper.ok_dialog(this, "Service", "Failed starting GPS service");
-	    finish();
-	}
+    @Override
+    public void onActivityResult(int req, int res, Intent i) {
+        /* Get prefs */
+        this.prefs.load();
+
+        /* Notify the service that preferences might have changed */
+        if (this.binder != null)
+            this.binder.updatePrefs();
     }
 
-    private void startUI()
-    {
-	/* Create the UI */
+    private void startTheGPS() {
+        /* Start GPS service */
+        this.srvint = new Intent(this, GPS.class);
+        this.srv = startService(this.srvint);
+        this.servicecon = new Con();
+        boolean bind = bindService(this.srvint, this.servicecon, 0);
+        if (this.srv == null && bind) {
+            Helper.ok_dialog(this, "Service", "Failed starting GPS service");
+            finish();
+        }
+    }
+
+    private void startUI() {
+        /* Create the UI */
         setContentView(R.layout.main);
 
-	/* Date/time formatting */
-	this.dateformatter = new SimpleDateFormat("HH:mm:ss.SS", Locale.US);
+        /* Date/time formatting */
+        this.dateformatter = new SimpleDateFormat("HH:mm:ss.SS", Locale.US);
 
-	/* Lookup our text fields */
-	this.time = (TextView)findViewById(R.id.main_time);
+        /* Lookup our text fields */
+        this.time = (TextView) findViewById(R.id.main_time);
 
-	this.prov = (TextView)findViewById(R.id.main_provider);
-	this.lat = (TextView)findViewById(R.id.main_latitude);
-	this.lon = (TextView)findViewById(R.id.main_longitude);
-	this.alt = (TextView)findViewById(R.id.main_altitude);
-	this.acc = (TextView)findViewById(R.id.main_accuracy);
+        this.prov = (TextView) findViewById(R.id.main_provider);
+        this.lat = (TextView) findViewById(R.id.main_latitude);
+        this.lon = (TextView) findViewById(R.id.main_longitude);
+        this.alt = (TextView) findViewById(R.id.main_altitude);
+        this.acc = (TextView) findViewById(R.id.main_accuracy);
 
-	this.brg = (TextView)findViewById(R.id.main_bearing);
-	this.spd = (TextView)findViewById(R.id.main_speed);
+        this.brg = (TextView) findViewById(R.id.main_bearing);
+        this.spd = (TextView) findViewById(R.id.main_speed);
 
-	this.batlev = (TextView)findViewById(R.id.main_bat_level);
-	this.chrgr = (TextView)findViewById(R.id.main_bat_charger);
+        this.batlev = (TextView) findViewById(R.id.main_bat_level);
+        this.chrgr = (TextView) findViewById(R.id.main_bat_charger);
 
-	this.log = (TextView)findViewById(R.id.main_log);
+        this.log = (TextView) findViewById(R.id.main_log);
 
-	// DAR
-	this.temp = (TextView)findViewById(R.id.main_temperature);
-	this.uptime = (TextView)findViewById(R.id.main_uptime);
-	this.freespace = (TextView)findViewById(R.id.main_freespace);
-	// !DAR
+        // DAR
+        this.temp = (TextView) findViewById(R.id.main_temperature);
+        this.uptime = (TextView) findViewById(R.id.main_uptime);
+        this.freespace = (TextView) findViewById(R.id.main_freespace);
+        // !DAR
 
-	/* Hook the button */
+        /* Hook the button */
         Button btn;
 
-	/* end button */
-	btn = (Button)findViewById(R.id.main_stop);
-	if (btn != null)
-	    btn.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View v) {
-			stopService(BigBrotherGPS.this.srvint);
-			BigBrotherGPS.this.finish();
-		    }
-		});
+        /* end button */
+        btn = (Button) findViewById(R.id.main_stop);
+        if (btn != null)
+            btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    stopService(BigBrotherGPS.this.srvint);
+                    BigBrotherGPS.this.finish();
+                }
+            });
 
-	/* update button */
-        btn = (Button)findViewById(R.id.main_triggerupdate);
-	if (btn != null)
-	    btn.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View v) {
-			if (BigBrotherGPS.this.binder != null)
-			    BigBrotherGPS.this.binder.triggerUpdate();
-		    }
-		});
+        /* update button */
+        btn = (Button) findViewById(R.id.main_triggerupdate);
+        if (btn != null)
+            btn.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    if (BigBrotherGPS.this.binder != null)
+                        BigBrotherGPS.this.binder.triggerUpdate();
+                }
+            });
     }
 
-    void logError(String err)
-    {
-	/* Add error message at top. */
-	this.log.setText(err+"\n"+this.log.getText());
+    void logError(String err) {
+        /* Add error message at top. */
+        this.log.setText(err + "\n" + this.log.getText());
 
-	/* Keep only last 10 */
-	String oldlog = this.log.getText().toString();
-	String[] log = oldlog.split("\n");
-	if (log.length > 10) {
-	    StringBuffer newlog = new StringBuffer();
-	    for (int i = 0; i < 10; i++) 
-		newlog.append(log[i]).append("\n");
-	    this.log.setText(newlog);
-	}
-	
+        /* Keep only last 10 */
+        String oldlog = this.log.getText().toString();
+        String[] log = oldlog.split("\n");
+        if (log.length > 10) {
+            StringBuffer newlog = new StringBuffer();
+            for (int i = 0; i < 10; i++)
+                newlog.append(log[i]).append("\n");
+            this.log.setText(newlog);
+        }
+
     }
 
 
@@ -208,86 +206,87 @@ public class BigBrotherGPS extends Activity
      ************************************************************************/
 
     /* Wrapper so we get connected to the service on bind */
-    class Con implements ServiceConnection
-    {
-	@Override public void onServiceConnected(ComponentName name, 
-						 IBinder service)
-	{
-	    LocBinder lb = (LocBinder)service;
-	    CallBackIF cb = new CallBackIF();
+    class Con implements ServiceConnection {
+        @Override
+        public void onServiceConnected(ComponentName name,
+                                       IBinder service) {
+            LocBinder lb = (LocBinder) service;
+            CallBackIF cb = new CallBackIF();
 
-	    /* Read last position from locator */
-	    cb.onLocation("init", lb.getLocation(),
-			  lb.getBattery(), lb.getCharger(), lb.getTemp(), lb.getUptime(), lb.getFreespace());
-	    
+            /* Read last position from locator */
+            cb.onLocation("init", lb.getLocation(),
+                    lb.getBattery(), lb.getCharger(), lb.getTemp(), lb.getUptime(), lb.getFreespace());
 
-	    /* Bind for updates */
-	    BigBrotherGPS.this.binder = lb;
-	    lb.setCallback(new CallBackIF());
-	}
 
-	@Override public void onServiceDisconnected(ComponentName name) {}
+            /* Bind for updates */
+            BigBrotherGPS.this.binder = lb;
+            lb.setCallback(new CallBackIF());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+        }
     }
-    
 
 
     /* The actual connection interface class */
-	@SuppressWarnings("AccessStaticViaInstance")
-	class CallBackIF implements LocIF
-    {
-	@Override public void onError(String err)
-	{
-	    BigBrotherGPS.this.logError(err);
-	}
-	
-	@Override public void onStateChange(String prov, int state) {}
+    @SuppressWarnings("AccessStaticViaInstance")
+    class CallBackIF implements LocIF {
+        @Override
+        public void onError(String err) {
+            BigBrotherGPS.this.logError(err);
+        }
 
-	@Override public void onLocation(String prov, Location loc,
-					 int bat_level, boolean charger, float temp, long uptime, long freespace)
-	{
-	    if (loc == null)
-		return;
+        @Override
+        public void onStateChange(String prov, int state) {
+        }
 
-	    double latitude = loc.getLatitude();
-	    double longitude = loc.getLongitude();
-	    int accuracy = (int) loc.getAccuracy();
-	    double altitude = loc.getAltitude();
-	    double bearing = (double) loc.getBearing();
-	    double speed = (double) loc.getSpeed();
+        @Override
+        public void onLocation(String prov, Location loc,
+                               int bat_level, boolean charger, float temp, long uptime, long freespace) {
+            if (loc == null)
+                return;
 
-	    Date date = new Date(loc.getTime());
-	    String df = BigBrotherGPS.this.dateformatter.format(date);
+            double latitude = loc.getLatitude();
+            double longitude = loc.getLongitude();
+            int accuracy = (int) loc.getAccuracy();
+            double altitude = loc.getAltitude();
+            double bearing = (double) loc.getBearing();
+            double speed = (double) loc.getSpeed();
 
-	    /* Set format */
-	    int cf;
-	    switch (BigBrotherGPS.this.prefs.coordinate_format) {
-	    case 2:
-		cf = loc.FORMAT_MINUTES;
-		break;
-	    case 3:
-		cf = loc.FORMAT_SECONDS;
-		break;
-	    default:
-		cf = loc.FORMAT_DEGREES;
-		break;
-	    }
+            Date date = new Date(loc.getTime());
+            String df = BigBrotherGPS.this.dateformatter.format(date);
 
-	    BigBrotherGPS.this.time.setText(df);
-	    BigBrotherGPS.this.prov.setText(loc.getProvider());	    
-	    BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
-	    BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
-	    BigBrotherGPS.this.alt.setText(Double.toString(altitude));
-	    BigBrotherGPS.this.acc.setText(Integer.toString(accuracy));
-	    BigBrotherGPS.this.brg.setText(Double.toString(bearing));
-	    BigBrotherGPS.this.spd.setText(Double.toString(speed));
-	    BigBrotherGPS.this.batlev.setText((Integer.valueOf(bat_level)).toString());
-	    if (charger)
-		BigBrotherGPS.this.chrgr.setText("(charging)");
-	    else
-		BigBrotherGPS.this.chrgr.setText("");
-	    BigBrotherGPS.this.temp.setText(String.format(Locale.US, "%.1f", temp));
-	    BigBrotherGPS.this.uptime.setText((Long.valueOf(uptime)).toString());
-	    BigBrotherGPS.this.freespace.setText((Long.valueOf(freespace)).toString());
-	}
+            /* Set format */
+            int cf;
+            switch (BigBrotherGPS.this.prefs.coordinate_format) {
+                case 2:
+                    cf = loc.FORMAT_MINUTES;
+                    break;
+                case 3:
+                    cf = loc.FORMAT_SECONDS;
+                    break;
+                default:
+                    cf = loc.FORMAT_DEGREES;
+                    break;
+            }
+
+            BigBrotherGPS.this.time.setText(df);
+            BigBrotherGPS.this.prov.setText(loc.getProvider());
+            BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
+            BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
+            BigBrotherGPS.this.alt.setText(Double.toString(altitude));
+            BigBrotherGPS.this.acc.setText(Integer.toString(accuracy));
+            BigBrotherGPS.this.brg.setText(Double.toString(bearing));
+            BigBrotherGPS.this.spd.setText(Double.toString(speed));
+            BigBrotherGPS.this.batlev.setText((Integer.valueOf(bat_level)).toString());
+            if (charger)
+                BigBrotherGPS.this.chrgr.setText("(charging)");
+            else
+                BigBrotherGPS.this.chrgr.setText("");
+            BigBrotherGPS.this.temp.setText(String.format(Locale.US, "%.1f", temp));
+            BigBrotherGPS.this.uptime.setText((Long.valueOf(uptime)).toString());
+            BigBrotherGPS.this.freespace.setText((Long.valueOf(freespace)).toString());
+        }
     }
 }

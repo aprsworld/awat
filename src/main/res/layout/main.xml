@@ -1,291 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-  <LinearLayout
-      android:orientation="vertical"
-      android:isScrollContainer="true"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content" >
-    <ImageView
-        android:contentDescription="BBG Logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/bbg_logo"
-        android:scaleType="center"
-        android:paddingBottom="10dip" />
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:paddingBottom="10dip" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Time.colon" />
-      <TextView
-        android:id="@+id/main_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Provider.colon" />
-      <TextView
-        android:id="@+id/main_provider"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Latitude.colon" />
-      <TextView
-        android:id="@+id/main_latitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Longitude.colon" />
-      <TextView
-        android:id="@+id/main_longitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Altitude.colon" />
-      <TextView
-        android:id="@+id/main_altitude"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="m" />
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:paddingBottom="10dip" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Accuracy.colon" />
-      <TextView
-        android:id="@+id/main_accuracy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="m" />
-    </LinearLayout>
-
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Bearing.colon" />
-      <TextView
-        android:id="@+id/main_bearing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-    </LinearLayout>
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:paddingBottom="10dip" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Speed.colon" />
-      <TextView
-        android:id="@+id/main_speed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="m/s" />
-    </LinearLayout>
-
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="fill_parent"
-      android:layout_height="wrap_content"
-      android:paddingBottom="30dip" >
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="@string/Battery.colon" />
-      <TextView
-        android:id="@+id/main_bat_level"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wait" />
-      <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingRight="10dip"
-        android:paddingLeft="10dip"
-        android:text="%" />
-      <TextView
-        android:id="@+id/main_bat_charger"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingBottom="10dip">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="10dip"
-          android:paddingRight="10dip"
-          android:text="@string/Temperature.colon" />
-
-      <TextView
-          android:id="@+id/main_temperature"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="wait..." />
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_weight="0"
-          android:text="C" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingBottom="10dip">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="10dip"
-          android:paddingRight="10dip"
-          android:text="@string/Uptime.colon" />
-
-      <TextView
-          android:id="@+id/main_uptime"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="wait..." />
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_weight="0"
-          android:text="ms" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:paddingBottom="10dip">
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingLeft="10dip"
-          android:paddingRight="10dip"
-          android:text="@string/FreeSpace.colon" />
-
-      <TextView
-          android:id="@+id/main_freespace"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="wait..." />
-
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="match_parent"
-          android:layout_weight="0"
-          android:text="MB" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/main_triggerupdate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/Update_location" />
+        android:isScrollContainer="true"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/main_stop"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/End_Program" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="BBG Logo"
+            android:paddingBottom="10dip"
+            android:scaleType="center"
+            android:src="@drawable/bbg_logo" />
 
-    <TextView
-        android:id="@+id/main_log"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip">
 
-  </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Time.colon" />
+
+            <TextView
+                android:id="@+id/main_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Provider.colon" />
+
+            <TextView
+                android:id="@+id/main_provider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Latitude.colon" />
+
+            <TextView
+                android:id="@+id/main_latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Longitude.colon" />
+
+            <TextView
+                android:id="@+id/main_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Altitude.colon" />
+
+            <TextView
+                android:id="@+id/main_altitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="m" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Accuracy.colon" />
+
+            <TextView
+                android:id="@+id/main_accuracy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="m" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Bearing.colon" />
+
+            <TextView
+                android:id="@+id/main_bearing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Speed.colon" />
+
+            <TextView
+                android:id="@+id/main_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="m/s" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="30dip">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Battery.colon" />
+
+            <TextView
+                android:id="@+id/main_bat_level"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wait" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="%" />
+
+            <TextView
+                android:id="@+id/main_bat_charger"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Temperature.colon" />
+
+            <TextView
+                android:id="@+id/main_temperature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wait..." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:text="C" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/Uptime.colon" />
+
+            <TextView
+                android:id="@+id/main_uptime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wait..." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:text="ms" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="10dip">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dip"
+                android:paddingRight="10dip"
+                android:text="@string/FreeSpace.colon" />
+
+            <TextView
+                android:id="@+id/main_freespace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="wait..." />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:text="MB" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/main_triggerupdate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/Update_location" />
+
+        <Button
+            android:id="@+id/main_stop"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/End_Program" />
+
+        <TextView
+            android:id="@+id/main_log"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="" />
+
+    </LinearLayout>
 </ScrollView>

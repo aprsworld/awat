@@ -1,139 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-  <PreferenceCategory android:title="Program settings">
-    <CheckBoxPreference
-        android:title="Start service on boot"
-	android:defaultValue="0"
-	android:key="start_on_boot" />
-    <CheckBoxPreference
-        android:title="Show in notification bar"
-	android:defaultValue="1"
-	android:key="show_in_notif_bar" />
-    <ListPreference 
-        android:title="Coordinate format"
-	android:summary="The format of the coordinates shown on screen"
-        android:key="coordinate_format"
-        android:entries="@array/coordinate_format_names"
-        android:entryValues="@array/coordinate_format"
-        android:defaultValue="1"
-    />
+    <PreferenceCategory android:title="Program settings">
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="start_on_boot"
+            android:title="Start service on boot" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="show_in_notif_bar"
+            android:title="Show in notification bar" />
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/coordinate_format_names"
+            android:entryValues="@array/coordinate_format"
+            android:key="coordinate_format"
+            android:summary="The format of the coordinates shown on screen"
+            android:title="Coordinate format" />
 
-  </PreferenceCategory>
+    </PreferenceCategory>
 
-  <PreferenceCategory android:title="Locator settings">
-    <EditTextPreference 
-	android:title="Update interval"
-	android:summary="How often (in minutes) to update the location"
-	android:inputType="numberDecimal"
-	android:defaultValue="15"
-	android:key="update_interval" />
-    <CheckBoxPreference
-        android:title="Use GPS"
-	android:summary="Whether to use GPS for positioning or the cellular networks"
-	android:defaultValue="1"
-	android:key="provider" />
-	  <CheckBoxPreference
-		  android:defaultValue="false"
-		  android:key="improve_accuracy"
-		  android:summary="Improve the GPS accuracy by running the GPS continously until the GPS Timeout occures and selecting the most accurate reading during that time."
-		  android:title="Improve GPS Accuracy" />
-	  <EditTextPreference
-	android:title="GPS Timeout"
-	android:summary="Timeout, in seconds, for GPS location. If location isn't received within this time the program falls back to network."
-	android:inputType="number"
-	android:defaultValue="10"
-	android:key="gps_timeout" />
-    <CheckBoxPreference 
-	android:title="Continous Operation"
-	android:summary="Keep the locator running. Better accuracy, but bad for battery"
-	android:defaultValue="0"
-	android:key="continous_mode" />
-  </PreferenceCategory>
+    <PreferenceCategory android:title="Locator settings">
+        <EditTextPreference
+            android:defaultValue="15"
+            android:inputType="numberDecimal"
+            android:key="update_interval"
+            android:summary="How often (in minutes) to update the location"
+            android:title="Update interval" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="provider"
+            android:summary="Whether to use GPS for positioning or the cellular networks"
+            android:title="Use GPS" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="improve_accuracy"
+            android:summary="Improve the GPS accuracy by running the GPS continously until the GPS Timeout occures and selecting the most accurate reading during that time."
+            android:title="Improve GPS Accuracy" />
+        <EditTextPreference
+            android:defaultValue="10"
+            android:inputType="number"
+            android:key="gps_timeout"
+            android:summary="Timeout, in seconds, for GPS location. If location isn't received within this time the program falls back to network."
+            android:title="GPS Timeout" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="continous_mode"
+            android:summary="Keep the locator running. Better accuracy, but bad for battery"
+            android:title="Continous Operation" />
+    </PreferenceCategory>
 
-  <PreferenceCategory android:title="Callback settings">
-    <EditTextPreference 
-	android:title="URL"
-	android:summary="Enter the target URL"
-	android:inputType="textUri"
-	android:key="target_url" />
-    <EditTextPreference 
-	android:title="Secret"
-	android:summary="A shared secret used to authenticate the phone to the server"
-	android:key="secret" />
-    <CheckBoxPreference
-        android:title="Send provider"
-	android:summary="Select this if you wish to send information about the provider of the location data."
-	android:defaultValue="1"
-	android:key="send_provider" />
-    <CheckBoxPreference
-        android:title="Send altitude"
-	android:summary="Select this if you wish to send the altitude."
-	android:defaultValue="1"
-	android:key="send_altitude" />
-    <CheckBoxPreference
-        android:title="Send time"
-	android:summary="Select this if you wish to send the time of the fix to the server."
-	android:defaultValue="1"
-	android:key="send_time" />
-    <CheckBoxPreference
-        android:title="Send bearing"
-	android:summary="Select this if you wish to send the bearing."
-	android:defaultValue="1"
-	android:key="send_bearing" />
-    <CheckBoxPreference
-        android:title="Send speed"
-	android:summary="Select this if you wish to send the speed."
-	android:defaultValue="1"
-	android:key="send_speed" />
-	  <CheckBoxPreference
-		  android:title="Send GPS Extra Info"
-		  android:summary="Select this if you wish to send the extra GPS info."
-		  android:defaultValue="0"
-		  android:key="send_extras" />
-	  <CheckBoxPreference
-		  android:title="Send system time"
-		  android:summary="Select this if you want the system time to be sent in the POST request."
-		  android:defaultValue="0"
-		  android:key="send_systime" />
-	  <CheckBoxPreference
-        android:title="Send battery status"
-	android:summary="Select this if you want the battery status to be sent in the POST request."
-	android:defaultValue="0"
-	android:key="send_batt_status" />
-    <CheckBoxPreference
-        android:title="Send device id"
-	android:summary="Sends device id (IMEI / MEID) in POST request."
-	android:defaultValue="0"
-	android:key="send_devid" />
-    <CheckBoxPreference
-        android:title="Send subscriber id"
-	android:summary="Sends subscriber id (IMSI) in POST request."
-	android:defaultValue="0"
-	android:key="send_subscrid" />
-	  <CheckBoxPreference
-		  android:defaultValue="false"
-		  android:key="send_temp"
-		  android:summary="Sends battery temperature data in POST request"
-		  android:title="Send temperature" />
-	  <CheckBoxPreference
-		  android:defaultValue="false"
-		  android:key="send_uptime"
-		  android:summary="Sends device uptime data in POST request"
-		  android:title="Send uptime" />
-	  <CheckBoxPreference
-		  android:defaultValue="false"
-		  android:key="send_signal"
-		  android:summary="Sends the signal strength data in POST request"
-		  android:title="Send signal strength" />
-	  <CheckBoxPreference
-		  android:defaultValue="false"
-		  android:key="send_freespace"
-		  android:summary="Send size of free disk space in POST request"
-		  android:title="Send free disk space" />
-	  <CheckBoxPreference
-        android:title="Use HTTP response for notif. bar."
-	android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
-	android:defaultValue="0"
-	android:key="http_resp_in_notif_bar" />
-  </PreferenceCategory>
+    <PreferenceCategory android:title="Callback settings">
+        <EditTextPreference
+            android:inputType="textUri"
+            android:key="target_url"
+            android:summary="Enter the target URL"
+            android:title="URL" />
+        <EditTextPreference
+            android:key="secret"
+            android:summary="A shared secret used to authenticate the phone to the server"
+            android:title="Secret" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="send_provider"
+            android:summary="Select this if you wish to send information about the provider of the location data."
+            android:title="Send provider" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="send_altitude"
+            android:summary="Select this if you wish to send the altitude."
+            android:title="Send altitude" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="send_time"
+            android:summary="Select this if you wish to send the time of the fix to the server."
+            android:title="Send time" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="send_bearing"
+            android:summary="Select this if you wish to send the bearing."
+            android:title="Send bearing" />
+        <CheckBoxPreference
+            android:defaultValue="1"
+            android:key="send_speed"
+            android:summary="Select this if you wish to send the speed."
+            android:title="Send speed" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="send_extras"
+            android:summary="Select this if you wish to send the extra GPS info."
+            android:title="Send GPS Extra Info" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="send_systime"
+            android:summary="Select this if you want the system time to be sent in the POST request."
+            android:title="Send system time" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="send_batt_status"
+            android:summary="Select this if you want the battery status to be sent in the POST request."
+            android:title="Send battery status" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="send_devid"
+            android:summary="Sends device id (IMEI / MEID) in POST request."
+            android:title="Send device id" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="send_subscrid"
+            android:summary="Sends subscriber id (IMSI) in POST request."
+            android:title="Send subscriber id" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_temp"
+            android:summary="Sends battery temperature data in POST request"
+            android:title="Send temperature" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_uptime"
+            android:summary="Sends device uptime data in POST request"
+            android:title="Send uptime" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_signal"
+            android:summary="Sends the signal strength data in POST request"
+            android:title="Send signal strength" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_freespace"
+            android:summary="Send size of free disk space in POST request"
+            android:title="Send free disk space" />
+        <CheckBoxPreference
+            android:defaultValue="0"
+            android:key="http_resp_in_notif_bar"
+            android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
+            android:title="Use HTTP response for notif. bar." />
+    </PreferenceCategory>
 </PreferenceScreen>
