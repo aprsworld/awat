@@ -275,18 +275,18 @@ public class BigBrotherGPS extends Activity {
             BigBrotherGPS.this.prov.setText(loc.getProvider());
             BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
             BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
-            BigBrotherGPS.this.alt.setText(Double.toString(altitude));
-            BigBrotherGPS.this.acc.setText(Integer.toString(accuracy));
-            BigBrotherGPS.this.brg.setText(Double.toString(bearing));
-            BigBrotherGPS.this.spd.setText(Double.toString(speed));
-            BigBrotherGPS.this.batlev.setText((Integer.valueOf(bat_level)).toString());
+            BigBrotherGPS.this.alt.setText(String.format(Locale.US, "%f", altitude));
+            BigBrotherGPS.this.acc.setText(String.format(Locale.US, "%d", accuracy));
+            BigBrotherGPS.this.brg.setText(String.format(Locale.US, "%f", bearing));
+            BigBrotherGPS.this.spd.setText(String.format(Locale.US, "%f", speed));
+            BigBrotherGPS.this.batlev.setText(String.format(Locale.US, "%d", bat_level));
             if (charger)
                 BigBrotherGPS.this.chrgr.setText("(charging)");
             else
                 BigBrotherGPS.this.chrgr.setText("");
             BigBrotherGPS.this.temp.setText(String.format(Locale.US, "%.1f", temp));
-            BigBrotherGPS.this.uptime.setText((Long.valueOf(uptime)).toString());
-            BigBrotherGPS.this.freespace.setText((Long.valueOf(freespace)).toString());
+            BigBrotherGPS.this.uptime.setText(String.format(Locale.US, "%d", uptime));
+            BigBrotherGPS.this.freespace.setText(String.format(Locale.US, "%d", freespace));
         }
     }
 }
