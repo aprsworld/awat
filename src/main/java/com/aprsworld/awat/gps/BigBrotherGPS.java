@@ -1,4 +1,4 @@
-package org.gnarf.bigbrother.gps;
+package com.aprsworld.awat.gps;
 
 import java.util.*;
 
@@ -20,7 +20,7 @@ import android.widget.Button;
 
 import android.location.*;
 
-import org.gnarf.android.Helper;
+import com.aprsworld.android.Helper;
 
 public class BigBrotherGPS extends Activity {
     Bundle state;

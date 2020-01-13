@@ -1,4 +1,4 @@
-package org.gnarf.bigbrother.gps;
+package com.aprsworld.awat.gps;
 
 import android.app.Activity;
 import android.os.Bundle;

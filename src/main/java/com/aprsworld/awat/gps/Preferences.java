@@ -1,4 +1,4 @@
-package org.gnarf.bigbrother.gps;
+package com.aprsworld.awat.gps;
 
 import android.preference.PreferenceManager;
 import android.content.Context;

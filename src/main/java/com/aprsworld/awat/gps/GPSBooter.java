@@ -1,4 +1,4 @@
-package org.gnarf.bigbrother.gps;
+package com.aprsworld.awat.gps;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,12 +17,12 @@ public class GPSBooter extends BroadcastReceiver {
             Intent svc_i = new Intent(ctx, GPS.class);
             ComponentName svc = ctx.startService(svc_i);
             if (svc == null)
-                System.out.println("BigBrotherGPS: Failed starting service");
+                System.out.println("AWAT: Failed starting service");
             else
-                System.out.println("BigBrotherGPS: Started service");
+                System.out.println("AWAT: Started service");
 
         } else {
-            System.out.println("BigBrotherGPS: Not starting on boot");
+            System.out.println("AWAT: Not starting on boot");
         }
     }
 

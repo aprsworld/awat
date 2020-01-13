@@ -1,4 +1,4 @@
-package org.gnarf.android;
+package com.aprsworld.android;
 
 import android.content.Context;
 import android.app.AlertDialog;

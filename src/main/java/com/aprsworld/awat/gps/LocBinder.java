@@ -1,10 +1,10 @@
-package org.gnarf.bigbrother.gps;
+package com.aprsworld.awat.gps;
 
 import android.location.*;
 
 import android.os.Binder;
 
-import org.gnarf.bigbrother.gps.*;
+import com.aprsworld.awat.gps.*;
 
 /* This class is a RPC binder for the GPS class. It is instantiated in
  * the GPS class and returned in onBind() */

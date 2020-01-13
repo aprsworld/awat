@@ -1,4 +1,4 @@
-package org.gnarf.bigbrother.gps;
+package com.aprsworld.awat.gps;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -155,7 +155,7 @@ public class GPS extends Service {
             try {
                 startLocator();
             } catch (IllegalArgumentException e) {
-                System.out.println("BigBrotherGPS: " + e.toString());
+                System.out.println("AWAT: " + e.toString());
                 return;
             }
 
@@ -199,7 +199,7 @@ public class GPS extends Service {
             this.notman = (NotificationManager)
                     getSystemService(Context.NOTIFICATION_SERVICE);
             this.notif = new Notification(R.drawable.notif_icon,
-                    "BigBrother GPS Waiting for location",
+                    "AWAT GPS Waiting for location",
                     System.currentTimeMillis());
             this.notif.flags = notif.FLAG_ONGOING_EVENT;
             this.notintent =
@@ -283,7 +283,7 @@ public class GPS extends Service {
 
     public void doTimeout() {
         if (System.currentTimeMillis() >= this.timeout) {
-            System.out.println("BigBrotherGPS: Doing timeout");
+            System.out.println("AWAT: Doing timeout");
             if (this.prefs.improve_accuracy) {
                 locationUpdate();
                 this.lm.removeUpdates(this.ll);
@@ -291,7 +291,7 @@ public class GPS extends Service {
                 return;
             }
             if (this.twiceTimeout) {
-                System.out.println("BigBrotherGPS: Switching locator");
+                System.out.println("AWAT: Switching locator");
                 this.twiceTimeout = false;
                 this.timeout =
                         System.currentTimeMillis() + this.prefs.gps_timeout;
@@ -299,7 +299,7 @@ public class GPS extends Service {
                     this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER,
                             0, 0, this.ll);
                 } catch (IllegalArgumentException e) {
-                    System.out.println("BigBrotherGPS(timeout): "
+                    System.out.println("AWAT(timeout): "
                             + e.toString());
                     //noinspection UnnecessaryReturnStatement
                     return;
@@ -319,7 +319,7 @@ public class GPS extends Service {
     }
 
     private void reconfigure() {
-        System.out.println("BigBrotherGPS doing reconfig");
+        System.out.println("AWAT doing reconfig");
         /* Update the request times */
         this.lm.removeUpdates(ll);
 
@@ -334,7 +334,7 @@ public class GPS extends Service {
         try {
             this.target_url = new URL(this.prefs.target_url);
         } catch (MalformedURLException e) {
-            System.out.println("BigBrotherGPS: " + e.toString());
+            System.out.println("AWAT: " + e.toString());
             this.target_url = null;
         }
 
@@ -343,7 +343,7 @@ public class GPS extends Service {
             try {
                 startLocator();
             } catch (IllegalArgumentException e) {
-                System.out.println("BigBrotherGPS: "
+                System.out.println("AWAT: "
                         + "Can't start locator in continous mode: "
                         + e.toString());
                 //noinspection UnnecessaryReturnStatement
@@ -361,14 +361,14 @@ public class GPS extends Service {
         if (this.target_url == null)
             return;
 
-        System.out.println("BigBrotherGPS sending HTTP poke");
+        System.out.println("AWAT sending HTTP poke");
 
         /* Prepare connection and request */
         HttpURLConnection con;
         try {
             con = (HttpURLConnection) this.target_url.openConnection();
         } catch (IOException e) {
-            System.out.println("BigBrotherGPS: " + e.toString());
+            System.out.println("AWAT: " + e.toString());
             if (this.rpc_if != null)
                 this.rpc_if.onError(e.toString());
             return;
@@ -377,7 +377,7 @@ public class GPS extends Service {
         try {
             con.setRequestMethod("POST");
         } catch (ProtocolException e) {
-            System.out.println("BigBrotherGPS: " + e.toString());
+            System.out.println("AWAT: " + e.toString());
             if (this.rpc_if != null)
                 this.rpc_if.onError(e.toString());
             return;
@@ -544,14 +544,14 @@ public class GPS extends Service {
             }
             rd.close();
         } catch (IOException e) {
-            System.out.println("BigBrotherGPS: " + e.toString());
+            System.out.println("AWAT: " + e.toString());
             if (this.rpc_if != null)
                 this.rpc_if.onError(e.toString());
             return;
         }
         con.disconnect();
 
-        System.out.println("BigBrotherGPS sent HTTP poke");
+        System.out.println("AWAT sent HTTP poke");
 
         /* Set notification if we have it */
         if (this.notif != null && do_notif) {
@@ -615,7 +615,7 @@ public class GPS extends Service {
     class LocAlarm extends BroadcastReceiver {
         @Override
         public void onReceive(Context ctx, Intent i) {
-            System.out.println("BigBrotherGPS: Alarm!");
+            System.out.println("AWAT: Alarm!");
             GPS.this.setupAlarm();
             GPS.this.triggerUpdate();
         }
@@ -625,9 +625,9 @@ public class GPS extends Service {
         @Override
         public void onReceive(Context ctx, Intent i) {
             if (GPS.this.prefs.continous_mode) {
-                System.out.println("BigBrotherGPS: Ignored timeout");
+                System.out.println("AWAT: Ignored timeout");
             } else {
-                System.out.println("BigBrotherGPS: Received Timeout!");
+                System.out.println("AWAT: Received Timeout!");
                 GPS.this.doTimeout();
             }
         }
@@ -641,12 +641,12 @@ public class GPS extends Service {
             level /= i.getIntExtra("scale", 100);
             GPS.this.bat_level = (int) (level * 100);
             GPS.this.charger = i.getIntExtra("plugged", 1) != 0;
-            System.out.printf("BigBrotherGPS: Battery state change: %d%% %b\n",
+            System.out.printf("AWAT: Battery state change: %d%% %b\n",
                     GPS.this.bat_level, GPS.this.charger);
 
             // DAR
             GPS.this.bat_temp = i.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -999) / 10.0f;
-            System.out.printf("BigBrotherGPS: Battery temp: %f%%\n", GPS.this.bat_temp);
+            System.out.printf("AWAT: Battery temp: %f%%\n", GPS.this.bat_temp);
             // !DAR
         }
     }
@@ -663,7 +663,7 @@ public class GPS extends Service {
     class LocListen implements LocationListener {
         @Override
         public void onProviderDisabled(String prov) {
-            System.out.println("BigBrotherGPS ProviderDisabled: " + prov);
+            System.out.println("AWAT ProviderDisabled: " + prov);
             if (GPS.this.prefs.continous_mode)
                 GPS.this.startLocator();
             else {
@@ -675,7 +675,7 @@ public class GPS extends Service {
 
         @Override
         public void onProviderEnabled(String prov) {
-            System.out.println("BigBrotherGPS ProviderEnabled: " + prov);
+            System.out.println("AWAT ProviderEnabled: " + prov);
             if (GPS.this.prefs.continous_mode)
                 GPS.this.startLocator();
             else
@@ -685,7 +685,7 @@ public class GPS extends Service {
         @Override
         public void onStatusChanged(String prov, int stat,
                                     Bundle xtra) {
-            System.out.println("BigBrotherGPS Status change: "
+            System.out.println("AWAT Status change: "
                     + prov + " -> " + stat);
             if (GPS.this.rpc_if != null)
                 GPS.this.rpc_if.onStateChange(prov, stat);
@@ -698,7 +698,7 @@ public class GPS extends Service {
 
         @Override
         public void onLocationChanged(Location loc) {
-            System.out.println("BigBrotherGPS got loc from "
+            System.out.println("AWAT got loc from "
                     + loc.getProvider());
             GPS.this.location = loc;
 
