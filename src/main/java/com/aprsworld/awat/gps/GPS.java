@@ -209,9 +209,9 @@ public class GPS extends Service {
                     "Waiting for initial location",
                     notintent);
             this.notman.notify(1, notif);
-            if (this.prefs.continous_mode || this.prefs.improve_accuracy) {
+            //if (this.prefs.continous_mode || this.prefs.improve_accuracy) {
                 this.startForeground(1, this.notif);
-            }
+            //}
         } else {
             if (this.notman != null) {
                 /* Remove notification */

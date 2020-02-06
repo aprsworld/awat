@@ -69,7 +69,7 @@ public class Preferences {
         }
 
         this.start_on_boot = prefs.getBoolean("start_on_boot", false);
-        if (this.continous_mode || this.improve_accuracy) {
+        if (true || this.continous_mode || this.improve_accuracy) {
             this.show_in_notif_bar = true;
         } else {
             this.show_in_notif_bar = prefs.getBoolean("show_in_notif_bar", true);
