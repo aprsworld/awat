@@ -537,12 +537,11 @@ public class GPS extends Service {
             wr.flush();
             wr.close();
 
-            DataInputStream rd;
-            rd = new DataInputStream(con.getInputStream());
+            BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream()));
             if (do_notif) {
-                response.append(rd.readLine());
+                response.append(br.readLine());
             }
-            rd.close();
+            br.close();
         } catch (IOException e) {
             System.out.println("AWAT: " + e.toString());
             if (this.rpc_if != null)
