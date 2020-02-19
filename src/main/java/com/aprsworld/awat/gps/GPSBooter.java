@@ -13,7 +13,7 @@ public class GPSBooter extends BroadcastReceiver {
         Preferences prefs = new Preferences(ctx);
         prefs.load();
 
-        if (!i.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+        if (i.getAction() == null || !i.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
             return;
         }
 
