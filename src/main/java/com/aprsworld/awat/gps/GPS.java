@@ -511,12 +511,14 @@ public class GPS extends Service {
 
         /* Add Screen State */
         if (this.prefs.send_screen) {
-            req.append("&screen=");
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-            if (Build.VERSION.SDK_INT >= 21) {
-                req.append(pm.isInteractive());
-            } else {
-                req.append(pm.isScreenOn());
+            if (pm != null) {
+                req.append("&screen=");
+                if (Build.VERSION.SDK_INT >= 21) {
+                    req.append(pm.isInteractive());
+                } else {
+                    req.append(pm.isScreenOn());
+                }
             }
         }
         // !DAR
