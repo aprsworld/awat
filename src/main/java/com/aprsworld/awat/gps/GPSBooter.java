@@ -13,6 +13,10 @@ public class GPSBooter extends BroadcastReceiver {
         Preferences prefs = new Preferences(ctx);
         prefs.load();
 
+        if (i.getAction() != Intent.ACTION_BOOT_COMPLETED) {
+            return;
+        }
+
         if (prefs.start_on_boot) {
             Intent svc_i = new Intent(ctx, GPS.class);
             ComponentName svc = ctx.startService(svc_i);
