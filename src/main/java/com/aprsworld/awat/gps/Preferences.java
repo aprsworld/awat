@@ -34,6 +34,7 @@ public class Preferences {
     public boolean send_signal;
     public boolean send_extras;
     public boolean send_systime;
+    public boolean send_screen;
     // !DAR
 
     Preferences(Context ctx) {
@@ -99,6 +100,7 @@ public class Preferences {
         this.send_signal = prefs.getBoolean("send_signal", false);
         this.send_extras = prefs.getBoolean("send_extras", false);
         this.send_systime = prefs.getBoolean("send_systime", false);
+        this.send_screen = prefs.getBoolean("send_screen", false);
         // !DAR
     }
 }

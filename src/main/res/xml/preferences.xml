@@ -130,6 +130,11 @@
             android:summary="Send size of free disk space in POST request"
             android:title="Send free disk space" />
         <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="send_screen"
+            android:summary="Send wethor the screen is on in POST request"
+            android:title="Send screen state" />
+        <CheckBoxPreference
             android:defaultValue="0"
             android:key="http_resp_in_notif_bar"
             android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
