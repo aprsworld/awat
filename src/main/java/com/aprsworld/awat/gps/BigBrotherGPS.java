@@ -275,10 +275,10 @@ public class BigBrotherGPS extends Activity {
             BigBrotherGPS.this.prov.setText(loc.getProvider());
             BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
             BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
-            BigBrotherGPS.this.alt.setText(String.format(Locale.US, "%f", altitude));
+            BigBrotherGPS.this.alt.setText(String.format(Locale.US, "%.2f", altitude));
             BigBrotherGPS.this.acc.setText(String.format(Locale.US, "%d", accuracy));
-            BigBrotherGPS.this.brg.setText(String.format(Locale.US, "%f", bearing));
-            BigBrotherGPS.this.spd.setText(String.format(Locale.US, "%f", speed));
+            BigBrotherGPS.this.brg.setText(String.format(Locale.US, "%.2f", bearing));
+            BigBrotherGPS.this.spd.setText(String.format(Locale.US, "%.2f", speed));
             BigBrotherGPS.this.batlev.setText(String.format(Locale.US, "%d", bat_level));
             if (charger)
                 BigBrotherGPS.this.chrgr.setText("(charging)");
