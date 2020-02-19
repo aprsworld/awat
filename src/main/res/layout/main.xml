@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical">
@@ -16,7 +17,8 @@
             android:contentDescription="BBG Logo"
             android:paddingBottom="10dip"
             android:scaleType="center"
-            android:src="@drawable/bbg_logo" />
+            android:src="@drawable/bbg_logo"
+            tools:ignore="HardcodedText" />
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -116,7 +118,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="m" />
+                android:text="m"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
@@ -141,7 +144,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="m" />
+                android:text="m"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
@@ -185,7 +189,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="m/s" />
+                android:text="m/s"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
@@ -212,7 +217,8 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="%" />
+                android:text="%"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/main_bat_charger"
@@ -239,12 +245,14 @@
                 android:id="@+id/main_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="wait..." />
+                android:text="wait..."
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="C" />
+                android:text="C"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
@@ -264,12 +272,14 @@
                 android:id="@+id/main_uptime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="wait..." />
+                android:text="wait..."
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="ms" />
+                android:text="ms"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <LinearLayout
@@ -289,12 +299,14 @@
                 android:id="@+id/main_freespace"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="wait..." />
+                android:text="wait..."
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="MB" />
+                android:text="MB"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
 
         <Button
