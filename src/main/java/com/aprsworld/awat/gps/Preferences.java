@@ -17,7 +17,6 @@ public class Preferences {
     public boolean start_on_boot;
     public boolean improve_accuracy;
     public boolean continous_mode;
-    public boolean show_in_notif_bar;
     public boolean http_resp_in_notif_bar;
     public boolean send_provider;
     public boolean send_altitude;
@@ -70,11 +69,6 @@ public class Preferences {
         }
 
         this.start_on_boot = prefs.getBoolean("start_on_boot", false);
-        if (true || this.continous_mode || this.improve_accuracy) {
-            this.show_in_notif_bar = true;
-        } else {
-            this.show_in_notif_bar = prefs.getBoolean("show_in_notif_bar", true);
-        }
         this.http_resp_in_notif_bar =
                 prefs.getBoolean("http_resp_in_notif_bar", false);
 

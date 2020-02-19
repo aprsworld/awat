@@ -187,39 +187,27 @@ public class GPS extends Service {
     }
 
     private void setupNotif() {
-        if (this.prefs.show_in_notif_bar) {
-            /* Show state in notif bar */
-
-            if (this.notman != null) {
-                /* Already set up */
-                return;
-            }
-
-            /* Set up a persistent notification */
-            this.notman = (NotificationManager)
-                    getSystemService(Context.NOTIFICATION_SERVICE);
-            this.notif = new Notification(R.drawable.notif_icon,
-                    "AWAT GPS Waiting for location",
-                    System.currentTimeMillis());
-            this.notif.flags = notif.FLAG_ONGOING_EVENT;
-            this.notintent =
-                    PendingIntent.getActivity(this, 0,
-                            new Intent(this, BigBrotherGPS.class), 0);
-            this.notif.setLatestEventInfo(this, getString(R.string.app_name),
-                    "Waiting for initial location",
-                    notintent);
-            this.notman.notify(1, notif);
-            //if (this.prefs.continous_mode || this.prefs.improve_accuracy) {
-                this.startForeground(1, this.notif);
-            //}
-        } else {
-            if (this.notman != null) {
-                /* Remove notification */
-                this.stopForeground(true);
-                this.notman.cancelAll();
-                this.notman = null;
-            }
+        /* Show state in notif bar */
+        if (this.notman != null) {
+            /* Already set up */
+            return;
         }
+
+        /* Set up a persistent notification */
+        this.notman = (NotificationManager)
+                getSystemService(Context.NOTIFICATION_SERVICE);
+        this.notif = new Notification(R.drawable.notif_icon,
+                "AWAT GPS Waiting for location",
+                System.currentTimeMillis());
+        this.notif.flags = notif.FLAG_ONGOING_EVENT;
+        this.notintent =
+                PendingIntent.getActivity(this, 0,
+                        new Intent(this, BigBrotherGPS.class), 0);
+        this.notif.setLatestEventInfo(this, getString(R.string.app_name),
+                "Waiting for initial location",
+                notintent);
+        this.notman.notify(1, notif);
+        this.startForeground(1, this.notif);
     }
 
     private void setupAlarms() {
@@ -388,8 +376,7 @@ public class GPS extends Service {
         con.setDoInput(true);
 
         /* If HTTP response is to be used in notif bar */
-        if (this.prefs.show_in_notif_bar &&
-                this.prefs.http_resp_in_notif_bar) {
+        if (this.prefs.http_resp_in_notif_bar) {
             this.setupNotif();
             do_notif = true;
         }
@@ -593,7 +580,7 @@ public class GPS extends Service {
         }
 
         /* Change notification */
-        if (loc != null && this.prefs.show_in_notif_bar &&
+        if (loc != null &&
                 !this.prefs.http_resp_in_notif_bar) {
             this.setupNotif();
             String txt = loc.getLatitude() + ", "

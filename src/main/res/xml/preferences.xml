@@ -5,10 +5,6 @@
             android:defaultValue="0"
             android:key="start_on_boot"
             android:title="Start service on boot" />
-        <CheckBoxPreference
-            android:defaultValue="1"
-            android:key="show_in_notif_bar"
-            android:title="Show in notification bar" />
         <ListPreference
             android:defaultValue="1"
             android:entries="@array/coordinate_format_names"
