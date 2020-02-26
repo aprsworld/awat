@@ -17,7 +17,7 @@
             android:contentDescription="BBG Logo"
             android:paddingBottom="10dip"
             android:scaleType="center"
-            android:src="@drawable/bbg_logo"
+            android:src="@drawable/logo"
             tools:ignore="HardcodedText" />
 
         <LinearLayout
