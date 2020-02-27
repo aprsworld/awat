@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 
 public class GPSBooter extends BroadcastReceiver {
+    @SuppressWarnings("unused")
     public static final String TAG = "GPSBooter";
 
     @Override
