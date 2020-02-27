@@ -272,7 +272,8 @@ public class BigBrotherGPS extends Activity {
             }
 
             BigBrotherGPS.this.time.setText(df);
-            BigBrotherGPS.this.prov.setText(loc.getProvider());
+            //BigBrotherGPS.this.prov.setText(loc.getProvider());
+            BigBrotherGPS.this.prov.setText(prov);
             BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
             BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
             BigBrotherGPS.this.alt.setText(String.format(Locale.US, "%.2f", altitude));
