@@ -16,12 +16,12 @@ allprojects {
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-22'
+    compileSdkVersion 26
     buildToolsVersion '28.0.3'
 
     defaultConfig {
         targetSdkVersion 22
-        minSdkVersion 15
+        minSdkVersion 16
     }
 
     buildTypes {

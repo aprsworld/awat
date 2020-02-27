@@ -138,33 +138,33 @@ public class BigBrotherGPS extends Activity {
         this.dateformatter = new SimpleDateFormat("HH:mm:ss.SS", Locale.US);
 
         /* Lookup our text fields */
-        this.time = (TextView) findViewById(R.id.main_time);
+        this.time = findViewById(R.id.main_time);
 
-        this.prov = (TextView) findViewById(R.id.main_provider);
-        this.lat = (TextView) findViewById(R.id.main_latitude);
-        this.lon = (TextView) findViewById(R.id.main_longitude);
-        this.alt = (TextView) findViewById(R.id.main_altitude);
-        this.acc = (TextView) findViewById(R.id.main_accuracy);
+        this.prov = findViewById(R.id.main_provider);
+        this.lat = findViewById(R.id.main_latitude);
+        this.lon = findViewById(R.id.main_longitude);
+        this.alt = findViewById(R.id.main_altitude);
+        this.acc = findViewById(R.id.main_accuracy);
 
-        this.brg = (TextView) findViewById(R.id.main_bearing);
-        this.spd = (TextView) findViewById(R.id.main_speed);
+        this.brg = findViewById(R.id.main_bearing);
+        this.spd = findViewById(R.id.main_speed);
 
-        this.batlev = (TextView) findViewById(R.id.main_bat_level);
-        this.chrgr = (TextView) findViewById(R.id.main_bat_charger);
+        this.batlev = findViewById(R.id.main_bat_level);
+        this.chrgr = findViewById(R.id.main_bat_charger);
 
-        this.log = (TextView) findViewById(R.id.main_log);
+        this.log = findViewById(R.id.main_log);
 
         // DAR
-        this.temp = (TextView) findViewById(R.id.main_temperature);
-        this.uptime = (TextView) findViewById(R.id.main_uptime);
-        this.freespace = (TextView) findViewById(R.id.main_freespace);
+        this.temp = findViewById(R.id.main_temperature);
+        this.uptime = findViewById(R.id.main_uptime);
+        this.freespace = findViewById(R.id.main_freespace);
         // !DAR
 
         /* Hook the button */
         Button btn;
 
         /* end button */
-        btn = (Button) findViewById(R.id.main_stop);
+        btn = findViewById(R.id.main_stop);
         if (btn != null)
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -174,7 +174,7 @@ public class BigBrotherGPS extends Activity {
             });
 
         /* update button */
-        btn = (Button) findViewById(R.id.main_triggerupdate);
+        btn = findViewById(R.id.main_triggerupdate);
         if (btn != null)
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {

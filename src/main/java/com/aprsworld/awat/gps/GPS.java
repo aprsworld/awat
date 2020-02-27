@@ -196,16 +196,17 @@ public class GPS extends Service {
         /* Set up a persistent notification */
         this.notman = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
-        this.notif = new Notification(R.drawable.notif_icon,
-                "AWAT GPS Waiting for location",
-                System.currentTimeMillis());
-        this.notif.flags = notif.FLAG_ONGOING_EVENT;
         this.notintent =
                 PendingIntent.getActivity(this, 0,
                         new Intent(this, BigBrotherGPS.class), 0);
-        this.notif.setLatestEventInfo(this, getString(R.string.app_name),
-                "Waiting for initial location",
-                notintent);
+        Notification.Builder builder = new Notification.Builder(this);
+        this.notif = builder.setContentIntent(this.notintent)
+                .setSmallIcon(R.drawable.notif_icon)
+                .setTicker(getString(R.string.app_name))
+                .setWhen(System.currentTimeMillis())
+                .setOngoing(true)
+                .setContentTitle("GPS Location")
+                .setContentText("Waiting...").build();
         this.notman.notify(1, notif);
         this.startForeground(1, this.notif);
     }
@@ -554,11 +555,14 @@ public class GPS extends Service {
 
         /* Set notification if we have it */
         if (this.notif != null && do_notif) {
-            this.notif.when = System.currentTimeMillis();
-            this.notif.setLatestEventInfo(this,
-                    getString(R.string.app_name),
-                    response.toString(),
-                    this.notintent);
+            Notification.Builder builder = new Notification.Builder(this);
+            this.notif = builder.setContentIntent(this.notintent)
+                    .setSmallIcon(R.drawable.notif_icon)
+                    .setTicker(getString(R.string.app_name))
+                    .setWhen(System.currentTimeMillis())
+                    .setOngoing(true)
+                    .setContentTitle("POST Response")
+                    .setContentText(response.toString()).build();
             this.notman.notify(1, this.notif);
         }
 
@@ -587,10 +591,14 @@ public class GPS extends Service {
             String txt = loc.getLatitude() + ", "
                     + loc.getLongitude() + ", "
                     + (int) loc.getAccuracy() + "m";
-            this.notif.when = System.currentTimeMillis();
-            this.notif.setLatestEventInfo(GPS.this,
-                    getString(R.string.app_name),
-                    txt, GPS.this.notintent);
+            Notification.Builder builder = new Notification.Builder(GPS.this);
+            this.notif = builder.setContentIntent(GPS.this.notintent)
+                    .setSmallIcon(R.drawable.notif_icon)
+                    .setTicker(getString(R.string.app_name))
+                    .setWhen(System.currentTimeMillis())
+                    .setOngoing(true)
+                    .setContentTitle("GPS Location")
+                    .setContentText(txt).build();
             this.notman.notify(1, GPS.this.notif);
         }
 
