@@ -1,11 +1,9 @@
 buildscript {
     repositories {
         google()
-        //mavenCentral()
         jcenter()
     }
     dependencies {
-        //classpath 'com.android.tools.build:gradle:2.0.0'
         classpath 'com.android.tools.build:gradle:3.5.3'
     }
 }
@@ -29,11 +27,11 @@ android {
     buildTypes {
         debug {
             minifyEnabled true
-            useProguard false
+            //useProguard false
         }
         release {
             minifyEnabled true
-            useProguard true // this is a default setting
+            //useProguard true // this is a default setting
         }
     }
 
