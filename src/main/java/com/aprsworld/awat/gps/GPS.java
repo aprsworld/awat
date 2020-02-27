@@ -22,6 +22,7 @@ import java.text.SimpleDateFormat;
 import android.os.*;
 import android.telephony.*;
 
+@SuppressWarnings("AccessStaticViaInstance")
 public class GPS extends Service {
     /* Location manager params */
     LocationManager lm;
