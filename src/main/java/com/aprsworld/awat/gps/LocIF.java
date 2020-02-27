@@ -3,7 +3,6 @@ package com.aprsworld.awat.gps;
 import android.location.*;
 
 public interface LocIF {
-    @SuppressWarnings({"EmptyMethod", "unused"})
     void onStateChange(String prov, int state);
 
     void onLocation(String prov, Location loc,
