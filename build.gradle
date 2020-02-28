@@ -35,6 +35,37 @@ android {
         }
     }
 
+    def getGitHash = { ->
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+
+    def getGitClean = { ->
+        return exec {
+            commandLine 'git', 'diff', '--quiet'
+            ignoreExitValue = true
+        }.getExitValue() == 0
+    }
+
+    signingConfigs {
+        buildTypes {
+            debug {
+                buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
+                buildConfigField "String", "BUILD_GIT_HASH", "\"${getGitHash()}\""
+                buildConfigField "boolean", "BUILD_GIT_CLEAN", "\"${getGitClean()}\""
+            }
+            release {
+                buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
+                buildConfigField "String", "BUILD_GIT_HASH", "\"${getGitHash()}\""
+                buildConfigField "boolean", "BUILD_GIT_CLEAN", "\"${getGitClean()}\""
+            }
+        }
+    }
+
     lintOptions {
         abortOnError false
     }

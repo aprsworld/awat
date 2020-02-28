@@ -26,7 +26,6 @@ class Preferences {
     public boolean send_batt_status;
     public boolean send_devid;
     public boolean send_subscrid;
-    // DAR
     public boolean send_temp;
     public boolean send_uptime;
     public boolean send_freespace;
@@ -34,7 +33,6 @@ class Preferences {
     public boolean send_extras;
     public boolean send_systime;
     public boolean send_screen;
-    // !DAR
 
     Preferences(Context ctx) {
         this.ctx = ctx;
@@ -46,9 +44,9 @@ class Preferences {
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this.ctx);
 
-        this.target_url = prefs.getString("target_url", null);
+        this.target_url = prefs.getString("target_url", "http://data.aprsworld.com/gpsup/");
 
-        tmp = prefs.getString("update_interval", "15");
+        tmp = prefs.getString("update_interval", "10");
         this.update_interval = Integer.valueOf(tmp) * 60 * 1000;
 
         boolean tb = prefs.getBoolean("provider", true);
@@ -57,10 +55,10 @@ class Preferences {
         else
             this.provider = 0;
 
-        this.improve_accuracy = prefs.getBoolean("improve_accuracy", false);
+        this.improve_accuracy = prefs.getBoolean("improve_accuracy", true);
         this.continous_mode = prefs.getBoolean("continous_mode", false);
 
-        tmp = prefs.getString("gps_timeout", "10");
+        tmp = prefs.getString("gps_timeout", "30");
         this.gps_timeout = Integer.valueOf(tmp);
         this.gps_timeout *= 1000;
 
@@ -68,9 +66,8 @@ class Preferences {
             this.continous_mode = true;
         }
 
-        this.start_on_boot = prefs.getBoolean("start_on_boot", false);
-        this.http_resp_in_notif_bar =
-                prefs.getBoolean("http_resp_in_notif_bar", false);
+        this.start_on_boot = prefs.getBoolean("start_on_boot", true);
+        this.http_resp_in_notif_bar = prefs.getBoolean("http_resp_in_notif_bar", false);
 
         secret = prefs.getString("secret", null);
         if (secret == null || secret.length() < 1)
@@ -84,18 +81,16 @@ class Preferences {
         this.send_bearing = prefs.getBoolean("send_bearing", true);
         this.send_speed = prefs.getBoolean("send_speed", true);
         this.send_time = prefs.getBoolean("send_time", true);
-        this.send_batt_status = prefs.getBoolean("send_batt_status", false);
-        this.send_devid = prefs.getBoolean("send_devid", false);
-        this.send_subscrid = prefs.getBoolean("send_subscrid", false);
-        // DAR
-        this.send_temp = prefs.getBoolean("send_temp", false);
-        this.send_uptime = prefs.getBoolean("send_uptime", false);
-        this.send_freespace = prefs.getBoolean("send_freespace", false);
-        this.send_signal = prefs.getBoolean("send_signal", false);
-        this.send_extras = prefs.getBoolean("send_extras", false);
-        this.send_systime = prefs.getBoolean("send_systime", false);
-        this.send_screen = prefs.getBoolean("send_screen", false);
-        // !DAR
+        this.send_batt_status = prefs.getBoolean("send_batt_status", true);
+        this.send_devid = prefs.getBoolean("send_devid", true);
+        this.send_subscrid = prefs.getBoolean("send_subscrid", true);
+        this.send_temp = prefs.getBoolean("send_temp", true);
+        this.send_uptime = prefs.getBoolean("send_uptime", true);
+        this.send_freespace = prefs.getBoolean("send_freespace", true);
+        this.send_signal = prefs.getBoolean("send_signal", true);
+        this.send_extras = prefs.getBoolean("send_extras", true);
+        this.send_systime = prefs.getBoolean("send_systime", true);
+        this.send_screen = prefs.getBoolean("send_screen", true);
     }
 }
 
