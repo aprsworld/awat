@@ -8,7 +8,7 @@ import com.aprsworld.awat.gps.*;
 
 /* This class is a RPC binder for the GPS class. It is instantiated in
  * the GPS class and returned in onBind() */
-public class LocBinder extends Binder {
+class LocBinder extends Binder {
     private final GPS gps;
 
     LocBinder(GPS gps) {

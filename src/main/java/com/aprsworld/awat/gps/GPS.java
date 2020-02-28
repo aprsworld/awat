@@ -25,34 +25,34 @@ import android.telephony.*;
 @SuppressWarnings("AccessStaticViaInstance")
 public class GPS extends Service {
     /* Location manager params */
-    LocationManager lm;
-    LocListen ll;
-    AlarmManager am;
-    PendingIntent amintent;
-    LocAlarm recvr;
-    PendingIntent tointent;
-    LocTimeout recvTimeout;
-    boolean twiceTimeout;
-    long timeout;
+    private LocationManager lm;
+    private LocListen ll;
+    private AlarmManager am;
+    private PendingIntent amintent;
+    private LocAlarm recvr;
+    private PendingIntent tointent;
+    private LocTimeout recvTimeout;
+    private boolean twiceTimeout;
+    private long timeout;
 
     /* Date formatting */
-    SimpleDateFormat dateformatter;
+    private SimpleDateFormat dateformatter;
 
     /* Notification */
-    NotificationManager notman;
-    Notification notif;
-    PendingIntent notintent;
+    private NotificationManager notman;
+    private Notification notif;
+    private PendingIntent notintent;
 
     /* RPC */
-    LocBinder binder;
+    private LocBinder binder;
     public LocIF rpc_if;
-    URL target_url;
+    private URL target_url;
 
     /* Our position data from last read */
     Location location;
 
     /* Battery info */
-    BatteryState bat_rcvr;
+    private BatteryState bat_rcvr;
     int bat_level;
     boolean charger;
 
@@ -62,13 +62,15 @@ public class GPS extends Service {
     long uptime;
     long freespace;
 
-    int signal;
-    TelephonyManager tManager;
-    SignalState signal_rcvr;
+    private int signal;
+    @SuppressWarnings("FieldCanBeLocal")
+    private TelephonyManager tManager;
+    @SuppressWarnings("FieldCanBeLocal")
+    private SignalState signal_rcvr;
     // !DAR
 
     /* Prefs */
-    Preferences prefs;
+    private Preferences prefs;
 
     @Override
     public void onCreate() {
@@ -247,7 +249,7 @@ public class GPS extends Service {
         this.tManager.listen(this.signal_rcvr, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
     }
 
-    public void setupAlarm() {
+    private void setupAlarm() {
         long current = System.currentTimeMillis();
         long timeout = this.prefs.update_interval;
         long next = current + timeout - current % timeout;
@@ -270,7 +272,7 @@ public class GPS extends Service {
         }
     }
 
-    public void doTimeout() {
+    private void doTimeout() {
         if (System.currentTimeMillis() >= this.timeout) {
             System.out.println("AWAT: Doing timeout");
             if (this.prefs.improve_accuracy) {
@@ -343,7 +345,7 @@ public class GPS extends Service {
 
     /* Send a request to the URL and post some data */
     @SuppressLint("HardwareIds")
-    protected void postLocation() {
+    private void postLocation() {
         boolean do_notif = false;
 
         /* No url, don't do anything */

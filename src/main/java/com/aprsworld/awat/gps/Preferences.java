@@ -4,8 +4,8 @@ import android.preference.PreferenceManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-public class Preferences {
-    final Context ctx;
+class Preferences {
+    private final Context ctx;
 
     /* The preference values */
     public String target_url;

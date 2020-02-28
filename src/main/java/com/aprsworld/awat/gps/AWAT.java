@@ -28,13 +28,14 @@ public class AWAT extends Activity {
     Bundle state;
 
     /* Prefs */
-    Preferences prefs;
+    private Preferences prefs;
 
     /* References to our service */
-    Intent srvint;
-    ComponentName srv;
-    Con servicecon;
-    LocBinder binder;
+    private Intent srvint;
+    @SuppressWarnings("FieldCanBeLocal")
+    private ComponentName srv;
+    private Con servicecon;
+    private LocBinder binder;
 
     /* Our UI components */
     private TextView time;
@@ -48,7 +49,7 @@ public class AWAT extends Activity {
     private TextView freespace;
     // !DAR
 
-    SimpleDateFormat dateformatter;
+    private SimpleDateFormat dateformatter;
 
 
     /**
@@ -186,7 +187,7 @@ public class AWAT extends Activity {
             });
     }
 
-    void logError(String err) {
+    private void logError(String err) {
         /* Add error message at top. */
         this.log.setText(err + "\n" + this.log.getText());
 
