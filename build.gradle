@@ -56,12 +56,12 @@ android {
             debug {
                 buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
                 buildConfigField "String", "BUILD_GIT_HASH", "\"${getGitHash()}\""
-                buildConfigField "boolean", "BUILD_GIT_CLEAN", "\"${getGitClean()}\""
+                buildConfigField "boolean", "BUILD_GIT_CLEAN", "${getGitClean()}"
             }
             release {
                 buildConfigField "java.util.Date", "BUILD_TIME", "new java.util.Date(" + System.currentTimeMillis() + "L)"
                 buildConfigField "String", "BUILD_GIT_HASH", "\"${getGitHash()}\""
-                buildConfigField "boolean", "BUILD_GIT_CLEAN", "\"${getGitClean()}\""
+                buildConfigField "boolean", "BUILD_GIT_CLEAN", "${getGitClean()}"
             }
         }
     }
