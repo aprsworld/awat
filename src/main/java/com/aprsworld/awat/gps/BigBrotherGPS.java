@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,6 +24,7 @@ import android.location.*;
 import com.aprsworld.android.Helper;
 
 public class BigBrotherGPS extends Activity {
+    @SuppressWarnings("unused")
     Bundle state;
 
     /* Prefs */
@@ -239,6 +241,7 @@ public class BigBrotherGPS extends Activity {
 
         @Override
         public void onStateChange(String prov, int state) {
+            Log.d("AWAT","OnStateChange('" + prov + "'," + state + ",)");
         }
 
         @Override
