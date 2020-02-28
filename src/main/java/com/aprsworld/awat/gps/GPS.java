@@ -198,7 +198,7 @@ public class GPS extends Service {
                 getSystemService(Context.NOTIFICATION_SERVICE);
         this.notintent =
                 PendingIntent.getActivity(this, 0,
-                        new Intent(this, BigBrotherGPS.class), 0);
+                        new Intent(this, AWAT.class), 0);
         Notification.Builder builder = new Notification.Builder(this);
         this.notif = builder.setContentIntent(this.notintent)
                 .setSmallIcon(R.drawable.notif_icon)

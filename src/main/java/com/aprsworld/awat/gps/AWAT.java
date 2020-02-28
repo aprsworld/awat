@@ -23,7 +23,7 @@ import android.location.*;
 
 import com.aprsworld.android.Helper;
 
-public class BigBrotherGPS extends Activity {
+public class AWAT extends Activity {
     @SuppressWarnings("unused")
     Bundle state;
 
@@ -170,8 +170,8 @@ public class BigBrotherGPS extends Activity {
         if (btn != null)
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    stopService(BigBrotherGPS.this.srvint);
-                    BigBrotherGPS.this.finish();
+                    stopService(AWAT.this.srvint);
+                    AWAT.this.finish();
                 }
             });
 
@@ -180,8 +180,8 @@ public class BigBrotherGPS extends Activity {
         if (btn != null)
             btn.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    if (BigBrotherGPS.this.binder != null)
-                        BigBrotherGPS.this.binder.triggerUpdate();
+                    if (AWAT.this.binder != null)
+                        AWAT.this.binder.triggerUpdate();
                 }
             });
     }
@@ -221,7 +221,7 @@ public class BigBrotherGPS extends Activity {
 
 
             /* Bind for updates */
-            BigBrotherGPS.this.binder = lb;
+            AWAT.this.binder = lb;
             lb.setCallback(new CallBackIF());
         }
 
@@ -236,7 +236,7 @@ public class BigBrotherGPS extends Activity {
     class CallBackIF implements LocIF {
         @Override
         public void onError(String err) {
-            BigBrotherGPS.this.logError(err);
+            AWAT.this.logError(err);
         }
 
         @Override
@@ -258,11 +258,11 @@ public class BigBrotherGPS extends Activity {
             double speed = (double) loc.getSpeed();
 
             Date date = new Date(loc.getTime());
-            String df = BigBrotherGPS.this.dateformatter.format(date);
+            String df = AWAT.this.dateformatter.format(date);
 
             /* Set format */
             int cf;
-            switch (BigBrotherGPS.this.prefs.coordinate_format) {
+            switch (AWAT.this.prefs.coordinate_format) {
                 case 2:
                     cf = loc.FORMAT_MINUTES;
                     break;
@@ -274,23 +274,23 @@ public class BigBrotherGPS extends Activity {
                     break;
             }
 
-            BigBrotherGPS.this.time.setText(df);
-            //BigBrotherGPS.this.prov.setText(loc.getProvider());
-            BigBrotherGPS.this.prov.setText(prov);
-            BigBrotherGPS.this.lat.setText(loc.convert(latitude, cf));
-            BigBrotherGPS.this.lon.setText(loc.convert(longitude, cf));
-            BigBrotherGPS.this.alt.setText(String.format(Locale.US, "%.2f", altitude));
-            BigBrotherGPS.this.acc.setText(String.format(Locale.US, "%d", accuracy));
-            BigBrotherGPS.this.brg.setText(String.format(Locale.US, "%.2f", bearing));
-            BigBrotherGPS.this.spd.setText(String.format(Locale.US, "%.2f", speed));
-            BigBrotherGPS.this.batlev.setText(String.format(Locale.US, "%d", bat_level));
+            AWAT.this.time.setText(df);
+            //AWAT.this.prov.setText(loc.getProvider());
+            AWAT.this.prov.setText(prov);
+            AWAT.this.lat.setText(loc.convert(latitude, cf));
+            AWAT.this.lon.setText(loc.convert(longitude, cf));
+            AWAT.this.alt.setText(String.format(Locale.US, "%.2f", altitude));
+            AWAT.this.acc.setText(String.format(Locale.US, "%d", accuracy));
+            AWAT.this.brg.setText(String.format(Locale.US, "%.2f", bearing));
+            AWAT.this.spd.setText(String.format(Locale.US, "%.2f", speed));
+            AWAT.this.batlev.setText(String.format(Locale.US, "%d", bat_level));
             if (charger)
-                BigBrotherGPS.this.chrgr.setText("(charging)");
+                AWAT.this.chrgr.setText("(charging)");
             else
-                BigBrotherGPS.this.chrgr.setText("");
-            BigBrotherGPS.this.temp.setText(String.format(Locale.US, "%.1f", temp));
-            BigBrotherGPS.this.uptime.setText(String.format(Locale.US, "%d", uptime));
-            BigBrotherGPS.this.freespace.setText(String.format(Locale.US, "%d", freespace));
+                AWAT.this.chrgr.setText("");
+            AWAT.this.temp.setText(String.format(Locale.US, "%.1f", temp));
+            AWAT.this.uptime.setText(String.format(Locale.US, "%d", uptime));
+            AWAT.this.freespace.setText(String.format(Locale.US, "%d", freespace));
         }
     }
 }
