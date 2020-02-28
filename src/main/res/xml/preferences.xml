@@ -12,7 +12,6 @@
             android:key="coordinate_format"
             android:summary="The format of the coordinates shown on screen"
             android:title="Coordinate format" />
-
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Locator settings">
@@ -57,6 +56,15 @@
             android:summary="A shared secret used to authenticate the phone to the server"
             android:title="Secret" />
         <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="http_resp_in_notif_bar"
+            android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
+            android:title="Use HTTP response for notif. bar." />
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="GPS Info">
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="send_provider"
             android:summary="Select this if you wish to send information about the provider of the location data."
@@ -86,6 +94,9 @@
             android:key="send_extras"
             android:summary="Select this if you wish to send the extra GPS info."
             android:title="Send GPS Extra Info" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Device Info">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="send_systime"
@@ -93,9 +104,35 @@
             android:title="Send system time" />
         <CheckBoxPreference
             android:defaultValue="true"
+            android:key="send_uptime"
+            android:summary="Sends device uptime data in POST request"
+            android:title="Send uptime" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_freespace"
+            android:summary="Send size of free disk space in POST request"
+            android:title="Send free disk space" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_screen"
+            android:summary="Send wethor the screen is on in POST request"
+            android:title="Send screen state" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Battery Info">
+        <CheckBoxPreference
+            android:defaultValue="true"
             android:key="send_batt_status"
             android:summary="Select this if you want the battery status to be sent in the POST request."
             android:title="Send battery status" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_temp"
+            android:summary="Sends battery temperature data in POST request"
+            android:title="Send temperature" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Cellular Info">
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="send_devid"
@@ -108,33 +145,8 @@
             android:title="Send subscriber id" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="send_temp"
-            android:summary="Sends battery temperature data in POST request"
-            android:title="Send temperature" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="send_uptime"
-            android:summary="Sends device uptime data in POST request"
-            android:title="Send uptime" />
-        <CheckBoxPreference
-            android:defaultValue="true"
             android:key="send_signal"
             android:summary="Sends the signal strength data in POST request"
             android:title="Send signal strength" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="send_freespace"
-            android:summary="Send size of free disk space in POST request"
-            android:title="Send free disk space" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="send_screen"
-            android:summary="Send wethor the screen is on in POST request"
-            android:title="Send screen state" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="http_resp_in_notif_bar"
-            android:summary="Select this if you want the HTTP response to be displayed in the notification bar instead of the current location."
-            android:title="Use HTTP response for notif. bar." />
     </PreferenceCategory>
 </PreferenceScreen>
