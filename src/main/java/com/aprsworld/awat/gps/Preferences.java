@@ -33,6 +33,13 @@ class Preferences {
     public boolean send_extras;
     public boolean send_systime;
     public boolean send_screen;
+    public boolean send_build_versioncode;
+    public boolean send_build_version;
+    public boolean send_build_date;
+    public boolean send_build_type;
+    public boolean send_build_git_hash;
+    public boolean send_build_git_clean;
+
 
     Preferences(Context ctx) {
         this.ctx = ctx;
@@ -91,6 +98,12 @@ class Preferences {
         this.send_extras = prefs.getBoolean("send_extras", true);
         this.send_systime = prefs.getBoolean("send_systime", true);
         this.send_screen = prefs.getBoolean("send_screen", true);
+        this.send_build_date = prefs.getBoolean("send_build_date", true);
+        this.send_build_version = prefs.getBoolean("send_build_version", true);
+        this.send_build_versioncode = prefs.getBoolean("send_build_versioncode", true);
+        this.send_build_type = prefs.getBoolean("send_build_type", true);
+        this.send_build_git_hash = prefs.getBoolean("send_build_git_hash", true);
+        this.send_build_git_clean = prefs.getBoolean("send_build_git_clean", true);
     }
 }
 

@@ -149,4 +149,37 @@
             android:summary="Sends the signal strength data in POST request"
             android:title="Send signal strength" />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="APK Build Info">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_build_versioncode"
+            android:summary="Sends APK Version Code in POST request."
+            android:title="Send APK Version Code" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_build_version"
+            android:summary="Sends APK Version String in POST request."
+            android:title="Send APK Version" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_build_build_date"
+            android:summary="Sends APK Build Date in POST request."
+            android:title="Send APK Build Date" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_build_type"
+            android:summary="Sends APK Build Type in POST request."
+            android:title="Send APK Build Type" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_build_git_hash"
+            android:summary="Sends APK Build GIT Hash in POST request."
+            android:title="Send APK Build GIT Hash" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_build_git_clean"
+            android:summary="Sends APK Build GIT clean status in POST request."
+            android:title="Send APK Build GIT Clean Status" />
+    </PreferenceCategory>
 </PreferenceScreen>

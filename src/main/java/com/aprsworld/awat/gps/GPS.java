@@ -388,6 +388,35 @@ public class GPS extends Service {
         StringBuilder req = new StringBuilder();
         req.append("update=1");
 
+        if (this.prefs.send_build_date) {
+            req.append("&build_date=");
+            req.append(BuildConfig.BUILD_TIME);
+        }
+        if (this.prefs.send_build_version) {
+            req.append("&build_version=");
+            try {
+                req.append(URLEncoder.encode(BuildConfig.VERSION_NAME, "utf-8"));
+            } catch (UnsupportedEncodingException e) { }
+        }
+        if (this.prefs.send_build_versioncode) {
+            req.append("&build_versioncode=");
+            req.append(BuildConfig.VERSION_CODE);
+        }
+        if (this.prefs.send_build_type) {
+            req.append("&build_type=");
+            try {
+                req.append(URLEncoder.encode(BuildConfig.BUILD_TYPE, "utf-8"));
+            } catch (UnsupportedEncodingException e) { }
+        }
+        if (this.prefs.send_build_git_hash) {
+            req.append("&build_git_hash=");
+            req.append(BuildConfig.BUILD_GIT_HASH);
+        }
+        if (this.prefs.send_build_git_clean) {
+            req.append("&build_git_clean=");
+            req.append(BuildConfig.BUILD_GIT_CLEAN);
+        }
+
         if (this.location != null) {
             req.append("&latitude=");
             req.append(this.location.getLatitude());
