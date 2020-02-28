@@ -662,7 +662,11 @@ public class GPS extends Service {
         @Override
         public void onSignalStrengthsChanged(SignalStrength strength) {
             super.onSignalStrengthsChanged(strength);
-            GPS.this.signal = strength.getGsmSignalStrength();
+            if (Build.VERSION.SDK_INT >= 23) {
+                GPS.this.signal = strength.getLevel();
+            } else {
+                GPS.this.signal = -1;
+            }
         }
     }
 
