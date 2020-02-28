@@ -13,6 +13,7 @@
     <string name="Bearing.colon">Bearing:</string>
     <string name="Speed.colon">Speed:</string>
     <string name="End_Program">End Program</string>
+    <string name="ChangelogV5.0.1">* Added option to send APK build information.\n* Cleaned up settings some.</string>
     <string name="ChangelogV5.0">* Rebranded to AWAT.\n* Added cellular signal level and screen state.\n* Only displays two significant digits except for lat/long.\n* Cleaned up code but did not refactor.\n* Minimum supported Android version is now 4.1.</string>
     <string name="ChangelogV4.0.APRS.1">* Added uptime, battery temperature, GPS extra info, and free internal disk space readings.\n* Changed alarm timing to be on top of minute or whatever the setting is.\n* Added improve GPS accuracy option which will keep GPS running for n seconds.\n* Fixed GPS Subsystem bouncing by running the service in the foreground.</string>
     <string name="ChangelogV4.0">* Upgrade sdk / android versions. Now requires android 4.0.3 or newer.</string>
