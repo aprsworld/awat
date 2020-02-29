@@ -29,7 +29,7 @@ public class Changelog extends Activity {
         tv = findViewById(R.id.changelog_build_version);
         tv.setText(BuildConfig.VERSION_NAME);
         tv = findViewById(R.id.changelog_build_date);
-        tv.setText((new SimpleDateFormat("MM/DD/YYYY HH:mm:ss.SS", Locale.US)).format(BuildConfig.BUILD_TIME));
+        tv.setText((new SimpleDateFormat("MM/dd/YYYY HH:mm:ss.SS", Locale.US)).format(BuildConfig.BUILD_TIME));
         tv = findViewById(R.id.changelog_build_type);
         tv.setText(BuildConfig.BUILD_TYPE);
         tv = findViewById(R.id.changelog_build_git_hash);
