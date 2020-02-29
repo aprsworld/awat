@@ -51,7 +51,7 @@ class Preferences {
         SharedPreferences prefs =
                 PreferenceManager.getDefaultSharedPreferences(this.ctx);
 
-        this.target_url = prefs.getString("target_url", "http://data.aprsworld.com/gpsup/");
+        this.target_url = prefs.getString("target_url", "");
 
         tmp = prefs.getString("update_interval", "10");
         this.update_interval = Integer.valueOf(tmp) * 60 * 1000;

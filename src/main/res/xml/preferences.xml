@@ -46,7 +46,6 @@
 
     <PreferenceCategory android:title="Callback settings">
         <EditTextPreference
-            android:defaultValue="http://data.aprsworld.com/gpsup/"
             android:inputType="textUri"
             android:key="target_url"
             android:summary="Enter the target URL"
