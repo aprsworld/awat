@@ -69,7 +69,7 @@ class Preferences {
         this.gps_timeout = Integer.valueOf(tmp);
         this.gps_timeout *= 1000;
 
-        if (this.gps_timeout * 2 > this.update_interval || this.update_interval <= 60 * 1000) {
+        if (this.gps_timeout + 1000 > this.update_interval) {
             this.continous_mode = true;
         }
 
