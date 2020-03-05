@@ -8,44 +8,44 @@ class Preferences {
     private final Context ctx;
 
     /* The preference values */
-    public String target_url;
-    public String secret;
-    public int update_interval;
-    public int provider;
-    public int gps_timeout;
-    public int coordinate_format;
-    public boolean start_on_boot;
-    public boolean improve_accuracy;
-    public boolean continous_mode;
-    public boolean http_resp_in_notif_bar;
-    public boolean send_provider;
-    public boolean send_altitude;
-    public boolean send_bearing;
-    public boolean send_speed;
-    public boolean send_time;
-    public boolean send_batt_status;
-    public boolean send_devid;
-    public boolean send_subscrid;
-    public boolean send_temp;
-    public boolean send_uptime;
-    public boolean send_freespace;
-    public boolean send_signal;
-    public boolean send_extras;
-    public boolean send_systime;
-    public boolean send_screen;
-    public boolean send_build_versioncode;
-    public boolean send_build_version;
-    public boolean send_build_date;
-    public boolean send_build_type;
-    public boolean send_build_git_hash;
-    public boolean send_build_git_clean;
+    String target_url;
+    String secret;
+    int update_interval;
+    int provider;
+    int gps_timeout;
+    int coordinate_format;
+    boolean start_on_boot;
+    boolean improve_accuracy;
+    boolean continous_mode;
+    boolean http_resp_in_notif_bar;
+    boolean send_provider;
+    boolean send_altitude;
+    boolean send_bearing;
+    boolean send_speed;
+    boolean send_time;
+    boolean send_batt_status;
+    boolean send_devid;
+    boolean send_subscrid;
+    boolean send_temp;
+    boolean send_uptime;
+    boolean send_freespace;
+    boolean send_signal;
+    boolean send_extras;
+    boolean send_systime;
+    boolean send_screen;
+    boolean send_build_versioncode;
+    boolean send_build_version;
+    boolean send_build_date;
+    boolean send_build_type;
+    boolean send_build_git_hash;
+    boolean send_build_git_clean;
 
 
     Preferences(Context ctx) {
         this.ctx = ctx;
     }
 
-    public void load() {
+    void load() {
         String tmp;
 
         SharedPreferences prefs =
