@@ -396,7 +396,7 @@ public class GPS extends Service {
             req.append("&build_version=");
             try {
                 req.append(URLEncoder.encode(BuildConfig.VERSION_NAME, "utf-8"));
-            } catch (UnsupportedEncodingException e) { }
+            } catch (UnsupportedEncodingException ignored) { }
         }
         if (this.prefs.send_build_versioncode) {
             req.append("&build_versioncode=");
@@ -406,7 +406,7 @@ public class GPS extends Service {
             req.append("&build_type=");
             try {
                 req.append(URLEncoder.encode(BuildConfig.BUILD_TYPE, "utf-8"));
-            } catch (UnsupportedEncodingException e) { }
+            } catch (UnsupportedEncodingException ignored) { }
         }
         if (this.prefs.send_build_git_hash) {
             req.append("&build_git_hash=");

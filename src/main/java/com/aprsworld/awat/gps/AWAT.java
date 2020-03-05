@@ -255,8 +255,8 @@ public class AWAT extends Activity {
             double longitude = loc.getLongitude();
             int accuracy = (int) loc.getAccuracy();
             double altitude = loc.getAltitude();
-            double bearing = (double) loc.getBearing();
-            double speed = (double) loc.getSpeed();
+            double bearing = loc.getBearing();
+            double speed = loc.getSpeed();
 
             Date date = new Date(loc.getTime());
             String df = AWAT.this.dateformatter.format(date);
