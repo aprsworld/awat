@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.aprsworld.awat.gps"
     android:installLocation="auto"
-    android:versionCode="39903"
-    android:versionName="5.0.1">
+    android:versionCode="39904"
+    android:versionName="5.0.2">
 
     <supports-screens
         android:anyDensity="true"
