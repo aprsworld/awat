@@ -1,6 +1,9 @@
+# Build Temporaries
 local.properties
-bin
-gen
 .gradle
 build/
-BigBrotherGPS.apk
+
+# Keystore files
+*.jks
+*.keystore
+
