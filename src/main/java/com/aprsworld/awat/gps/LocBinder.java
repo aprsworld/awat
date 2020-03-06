@@ -1,10 +1,7 @@
 package com.aprsworld.awat.gps;
 
 import android.location.*;
-
 import android.os.Binder;
-
-import com.aprsworld.awat.gps.*;
 
 /* This class is a RPC binder for the GPS class. It is instantiated in
  * the GPS class and returned in onBind() */
@@ -16,7 +13,7 @@ class LocBinder extends Binder {
     }
 
 
-    public void setCallback(LocIF the_if) {
+    void setCallback(LocIF the_if) {
         this.gps.rpc_if = the_if;
     }
 
@@ -24,33 +21,33 @@ class LocBinder extends Binder {
         return this.gps.location;
     }
 
-    public int getBattery() {
+    int getBattery() {
         return this.gps.bat_level;
     }
 
-    public boolean getCharger() {
+    boolean getCharger() {
         return this.gps.charger;
     }
 
-    public float getTemp() {
+    float getTemp() {
         return this.gps.bat_temp;
     }
 
-    public long getUptime() {
+    long getUptime() {
         return this.gps.uptime;
     }
 
-    public long getFreespace() {
+    long getFreespace() {
         return this.gps.freespace;
     }
 
 
-    public void updatePrefs() {
+    void updatePrefs() {
         System.out.println("Doing updatePrefs");
         this.gps.reloadPrefs();
     }
 
-    public void triggerUpdate() {
+    void triggerUpdate() {
         this.gps.triggerUpdate();
     }
 }
