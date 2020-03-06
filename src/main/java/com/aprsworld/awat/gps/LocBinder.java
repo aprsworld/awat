@@ -48,6 +48,7 @@ class LocBinder extends Binder {
     }
 
     void triggerUpdate() {
+        this.gps.update_now = true;
         this.gps.triggerUpdate();
     }
 }

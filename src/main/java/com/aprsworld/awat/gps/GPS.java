@@ -32,7 +32,6 @@ public class GPS extends Service {
     private LocAlarm recvr;
     private PendingIntent tointent;
     private LocTimeout recvTimeout;
-    private boolean twiceTimeout;
     private long timeout;
 
     /* Date formatting */
@@ -47,6 +46,7 @@ public class GPS extends Service {
     private LocBinder binder;
     public LocIF rpc_if;
     private URL target_url;
+    boolean update_now;
 
     /* Our position data from last read */
     Location location;
@@ -163,22 +163,17 @@ public class GPS extends Service {
 
             /* Start timeout alarm */
             long current = System.currentTimeMillis();
-            if (current >= this.timeout) {
+            if (current >= this.timeout || this.update_now) {
                 this.timeout = System.currentTimeMillis();
                 this.timeout += this.prefs.gps_timeout;
                 this.timeout += 100; /* delay a bit to avoid a race */
+                this.update_now = false;
             }
-            if (this.prefs.improve_accuracy && !this.prefs.continuous_mode) {
-                if (Build.VERSION.SDK_INT >= 19) {
-                    this.am.setExact(this.am.RTC_WAKEUP, this.timeout, this.tointent);
-                } else {
-                    this.am.set(this.am.RTC_WAKEUP, this.timeout, this.tointent);
-                }
+            if (Build.VERSION.SDK_INT >= 19) {
+                this.am.setExact(this.am.RTC_WAKEUP, this.timeout, this.tointent);
             } else {
-                this.am.setRepeating(this.am.RTC_WAKEUP, this.timeout,
-                        this.prefs.gps_timeout, this.tointent);
+                this.am.set(this.am.RTC_WAKEUP, this.timeout, this.tointent);
             }
-            this.twiceTimeout = (this.prefs.provider == 1);
         }
     }
 
@@ -275,31 +270,12 @@ public class GPS extends Service {
     private void doTimeout() {
         if (System.currentTimeMillis() >= this.timeout) {
             System.out.println("AWAT: Doing timeout");
+
             if (this.prefs.improve_accuracy) {
                 locationUpdate();
-                this.lm.removeUpdates(this.ll);
-                //this.am.cancel(this.tointent);//
-                return;
             }
-            if (this.twiceTimeout) {
-                System.out.println("AWAT: Switching locator");
-                this.twiceTimeout = false;
-                this.timeout =
-                        System.currentTimeMillis() + this.prefs.gps_timeout;
-                try {
-                    this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER,
-                            0, 0, this.ll);
-                } catch (IllegalArgumentException e) {
-                    System.out.println("AWAT(timeout): "
-                            + e.toString());
-                    //noinspection UnnecessaryReturnStatement
-                    return;
-                }
-            } else {
-                /* Timeout reached */
-                this.lm.removeUpdates(this.ll);
-                this.am.cancel(this.tointent);
-            }
+
+            this.lm.removeUpdates(this.ll);
         }
     }
 
