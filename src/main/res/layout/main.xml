@@ -31,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Time.colon" />
+                android:text="@string/Time_colon" />
 
             <TextView
                 android:id="@+id/main_time"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Provider.colon" />
+                android:text="@string/Provider_colon" />
 
             <TextView
                 android:id="@+id/main_provider"
@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Latitude.colon" />
+                android:text="@string/Latitude_colon" />
 
             <TextView
                 android:id="@+id/main_latitude"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Longitude.colon" />
+                android:text="@string/Longitude_colon" />
 
             <TextView
                 android:id="@+id/main_longitude"
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Altitude.colon" />
+                android:text="@string/Altitude_colon" />
 
             <TextView
                 android:id="@+id/main_altitude"
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Accuracy.colon" />
+                android:text="@string/Accuracy_colon" />
 
             <TextView
                 android:id="@+id/main_accuracy"
@@ -158,7 +158,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Bearing.colon" />
+                android:text="@string/Bearing_colon" />
 
             <TextView
                 android:id="@+id/main_bearing"
@@ -178,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Speed.colon" />
+                android:text="@string/Speed_colon" />
 
             <TextView
                 android:id="@+id/main_speed"
@@ -204,7 +204,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Battery.colon" />
+                android:text="@string/Battery_colon" />
 
             <TextView
                 android:id="@+id/main_bat_level"
@@ -239,7 +239,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Temperature.colon" />
+                android:text="@string/Temperature_colon" />
 
             <TextView
                 android:id="@+id/main_temperature"
@@ -266,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/Uptime.colon" />
+                android:text="@string/Uptime_colon" />
 
             <TextView
                 android:id="@+id/main_uptime"
@@ -293,7 +293,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dip"
                 android:paddingRight="10dip"
-                android:text="@string/FreeSpace.colon" />
+                android:text="@string/FreeSpace_colon" />
 
             <TextView
                 android:id="@+id/main_freespace"
