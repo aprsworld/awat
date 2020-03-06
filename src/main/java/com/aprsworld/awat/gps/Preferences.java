@@ -16,7 +16,7 @@ class Preferences {
     int coordinate_format;
     boolean start_on_boot;
     boolean improve_accuracy;
-    boolean continous_mode;
+    boolean continuous_mode;
     boolean http_resp_in_notif_bar;
     boolean send_provider;
     boolean send_altitude;
@@ -63,14 +63,14 @@ class Preferences {
             this.provider = 0;
 
         this.improve_accuracy = prefs.getBoolean("improve_accuracy", true);
-        this.continous_mode = prefs.getBoolean("continous_mode", false);
+        this.continuous_mode = prefs.getBoolean("continuous_mode", false);
 
         tmp = prefs.getString("gps_timeout", "30");
         this.gps_timeout = Integer.parseInt(tmp);
         this.gps_timeout *= 1000;
 
         if (this.gps_timeout + 1000 > this.update_interval) {
-            this.continous_mode = true;
+            this.continuous_mode = true;
         }
 
         this.start_on_boot = prefs.getBoolean("start_on_boot", true);

@@ -145,8 +145,8 @@ public class GPS extends Service {
     }
 
     public void triggerUpdate() {
-        if (this.prefs.continous_mode) {
-            /* If we are in continous mode just send last location */
+        if (this.prefs.continuous_mode) {
+            /* If we are in continuous mode just send last location */
             locationUpdate();
         } else {
             /* Polling mode */
@@ -168,7 +168,7 @@ public class GPS extends Service {
                 this.timeout += this.prefs.gps_timeout;
                 this.timeout += 100; /* delay a bit to avoid a race */
             }
-            if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
+            if (this.prefs.improve_accuracy && !this.prefs.continuous_mode) {
                 if (Build.VERSION.SDK_INT >= 19) {
                     this.am.setExact(this.am.RTC_WAKEUP, this.timeout, this.tointent);
                 } else {
@@ -253,7 +253,7 @@ public class GPS extends Service {
         long current = System.currentTimeMillis();
         long timeout = this.prefs.update_interval;
         long next = current + timeout - current % timeout;
-        if (this.prefs.improve_accuracy && !this.prefs.continous_mode) {
+        if (this.prefs.improve_accuracy && !this.prefs.continuous_mode) {
             this.timeout = next;
             next -= this.prefs.gps_timeout;
             if (next <= current) {
@@ -329,13 +329,13 @@ public class GPS extends Service {
             this.target_url = null;
         }
 
-        /* For continous mode, start updating */
-        if (this.prefs.continous_mode) {
+        /* For continuous mode, start updating */
+        if (this.prefs.continuous_mode) {
             try {
                 startLocator();
             } catch (IllegalArgumentException e) {
                 System.out.println("AWAT: "
-                        + "Can't start locator in continous mode: "
+                        + "Can't start locator in continuous mode: "
                         + e.toString());
                 //noinspection UnnecessaryReturnStatement
                 return;
@@ -662,7 +662,7 @@ public class GPS extends Service {
     class LocTimeout extends BroadcastReceiver {
         @Override
         public void onReceive(Context ctx, Intent i) {
-            if (GPS.this.prefs.continous_mode) {
+            if (GPS.this.prefs.continuous_mode) {
                 System.out.println("AWAT: Ignored timeout");
             } else {
                 System.out.println("AWAT: Received Timeout!");
@@ -706,7 +706,7 @@ public class GPS extends Service {
         @Override
         public void onProviderDisabled(String prov) {
             System.out.println("AWAT ProviderDisabled: " + prov);
-            if (GPS.this.prefs.continous_mode)
+            if (GPS.this.prefs.continuous_mode)
                 GPS.this.startLocator();
             else {
                 /* Stop waiting for timeout since this locator is off */
@@ -718,7 +718,7 @@ public class GPS extends Service {
         @Override
         public void onProviderEnabled(String prov) {
             System.out.println("AWAT ProviderEnabled: " + prov);
-            if (GPS.this.prefs.continous_mode)
+            if (GPS.this.prefs.continuous_mode)
                 GPS.this.startLocator();
             else
                 GPS.this.doTimeout();
@@ -732,7 +732,7 @@ public class GPS extends Service {
             if (GPS.this.rpc_if != null)
                 GPS.this.rpc_if.onStateChange(prov, stat);
 
-            if (GPS.this.prefs.continous_mode)
+            if (GPS.this.prefs.continuous_mode)
                 GPS.this.startLocator();
             else
                 GPS.this.doTimeout();
@@ -744,7 +744,7 @@ public class GPS extends Service {
                     + loc.getProvider());
             GPS.this.location = loc;
 
-            if (!GPS.this.prefs.continous_mode && !GPS.this.prefs.improve_accuracy) {
+            if (!GPS.this.prefs.continuous_mode && !GPS.this.prefs.improve_accuracy) {
                 /* Stop waiting for locations. Will be restarted by alarm */
                 GPS.this.lm.removeUpdates(GPS.this.ll);
                 GPS.this.am.cancel(GPS.this.tointent);

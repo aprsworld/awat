@@ -29,7 +29,7 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="improve_accuracy"
-            android:summary="Improve the GPS accuracy by running the GPS continously until the GPS Timeout occures and selecting the most accurate reading during that time."
+            android:summary="Improve the GPS accuracy by running the GPS continuously until the GPS Timeout occurs and selecting the most accurate reading during that time."
             android:title="Improve GPS Accuracy" />
         <EditTextPreference
             android:defaultValue="30"
@@ -39,9 +39,9 @@
             android:title="GPS Timeout" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="continous_mode"
+            android:key="continuous_mode"
             android:summary="Keep the locator running. Better accuracy, but bad for battery"
-            android:title="Continous Operation" />
+            android:title="Continuous Operation" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Callback settings">
