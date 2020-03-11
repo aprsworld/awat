@@ -23,6 +23,7 @@ class Preferences {
     boolean send_bearing;
     boolean send_speed;
     boolean send_time;
+    boolean send_orientation;
     boolean send_batt_status;
     boolean send_devid;
     boolean send_subscrid;
@@ -104,6 +105,7 @@ class Preferences {
         this.send_build_type = prefs.getBoolean("send_build_type", true);
         this.send_build_git_hash = prefs.getBoolean("send_build_git_hash", true);
         this.send_build_git_clean = prefs.getBoolean("send_build_git_clean", true);
+        this.send_orientation = prefs.getBoolean("send_orientation", true);
     }
 }
 

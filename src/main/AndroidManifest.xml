@@ -28,6 +28,12 @@
     <uses-feature
         android:name="android.hardware.location.gps"
         android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.accelerometer"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.sensor.gyroscope"
+        android:required="false" />
 
     <application
         android:supportsRtl="false"

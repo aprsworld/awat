@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 
+import android.hardware.*;
 import android.location.*;
 
 import java.io.*;
@@ -57,7 +58,7 @@ public class GPS extends Service {
     boolean charger;
 
 
-    /* DAR Other info */
+    /* Other info */
     float bat_temp;
     long uptime;
     long freespace;
@@ -67,7 +68,8 @@ public class GPS extends Service {
     private TelephonyManager tManager;
     @SuppressWarnings("FieldCanBeLocal")
     private SignalState signal_rcvr;
-    // !DAR
+
+    OrientationState orientation;
 
     /* Prefs */
     private Preferences prefs;
@@ -114,6 +116,10 @@ public class GPS extends Service {
         unregisterReceiver(this.recvr);
         unregisterReceiver(this.bat_rcvr);
         unregisterReceiver(this.recvTimeout);
+        if (orientation != null) {
+            orientation.stop();
+            orientation = null;
+        }
 
         if (this.notman != null) {
             /* Remove notification */
@@ -142,6 +148,11 @@ public class GPS extends Service {
         else
             this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 0, 0,
                     this.ll);
+
+        // start sensors
+        if (this.orientation != null) {
+            this.orientation.start();
+        }
     }
 
     public void triggerUpdate() {
@@ -271,11 +282,16 @@ public class GPS extends Service {
         if (System.currentTimeMillis() >= this.timeout) {
             System.out.println("AWAT: Doing timeout");
 
+            // TODO: Or if no update has been sent because no location data has arrived.
             if (this.prefs.improve_accuracy) {
                 locationUpdate();
             }
 
+            // stop sensors
             this.lm.removeUpdates(this.ll);
+            if (this.orientation != null) {
+                this.orientation.stop();
+            }
         }
     }
 
@@ -295,6 +311,16 @@ public class GPS extends Service {
 
         /* Fix notifs */
         setupNotif();
+
+        /* Start/stop sensors */
+        if (prefs.send_orientation) {
+            if (orientation == null) {
+                orientation = new OrientationState();
+            }
+        } else {
+            orientation.stop();
+            orientation = null;
+        }
 
         /* Set URL */
         this.target_url = null;
@@ -455,6 +481,12 @@ public class GPS extends Service {
         if (this.prefs.send_systime) {
             req.append("&systime=");
             req.append(this.dateformatter.format(new Date()));
+        }
+
+        /* Add orientation status if configured */
+        if (this.prefs.send_orientation) {
+            req.append("&orientation=");
+            req.append(Arrays.toString(orientation.getCurrentValue()));
         }
 
         /* Add battery status if configured */
@@ -677,6 +709,79 @@ public class GPS extends Service {
         }
     }
 
+    class OrientationState implements SensorEventListener {
+        private SensorManager sensorManager;
+        private Sensor accelerometer, magneticField;
+        private float[] accelerometerReading = new float[3];
+        private float[] magnetometerReading = new float[3];
+        private float[] rotationMatrix = new float[9];
+        private float[] orientationAngles = new float[3];
+
+        boolean start() {
+            if (sensorManager == null) {
+                sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+                if (sensorManager == null) {
+                    return false;
+                }
+            }
+
+            if (accelerometer == null) {
+                accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+                if (accelerometer != null) {
+                    sensorManager.registerListener(this, accelerometer, 60000000);
+                }
+            }
+            if (magneticField == null) {
+                magneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+                if (magneticField != null) {
+                    sensorManager.registerListener(this, magneticField, 60000000);
+                }
+            }
+
+            if (magneticField == null || accelerometer == null) {
+                stop();
+                return false;
+            }
+
+            return true;
+        }
+
+        void stop () {
+            if (sensorManager == null) {
+                return;
+            }
+            sensorManager.unregisterListener(this);
+            magneticField = accelerometer = null;
+            Arrays.fill(accelerometerReading, 0.f);
+            Arrays.fill(magnetometerReading, 0.f);
+            Arrays.fill(rotationMatrix, 0.f);
+            Arrays.fill(orientationAngles, 0.f);
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                System.arraycopy(event.values, 0, accelerometerReading,
+                        0, accelerometerReading.length);
+            } else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                System.arraycopy(event.values, 0, magnetometerReading,
+                        0, magnetometerReading.length);
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged (Sensor sensor, int accuracy) {
+        }
+
+        float [] getCurrentValue() {
+            SensorManager.getRotationMatrix(rotationMatrix, null,
+                    accelerometerReading, magnetometerReading);
+
+            SensorManager.getOrientation(rotationMatrix, orientationAngles);
+            return orientationAngles;
+        }
+    }
+
 
     class LocListen implements LocationListener {
         @Override
@@ -726,6 +831,11 @@ public class GPS extends Service {
                 GPS.this.am.cancel(GPS.this.tointent);
 
                 GPS.this.locationUpdate();
+
+                // Stop sensors
+                if (GPS.this.orientation != null) {
+                    GPS.this.orientation.stop();
+                }
             }
         }
     }

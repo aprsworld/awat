@@ -116,6 +116,11 @@
             android:key="send_screen"
             android:summary="Send wethor the screen is on in POST request"
             android:title="Send screen state" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_orientation"
+            android:summary="Send orientation of device."
+            android:title="Send orientation state" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Battery Info">
