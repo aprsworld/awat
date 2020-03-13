@@ -114,7 +114,7 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="send_screen"
-            android:summary="Send wethor the screen is on in POST request"
+            android:summary="Send whether the screen is on in POST request"
             android:title="Send screen state" />
         <CheckBoxPreference
             android:defaultValue="true"
@@ -131,9 +131,32 @@
             android:title="Send battery status" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:key="send_temp"
+            android:key="send_batt_temp"
             android:summary="Sends battery temperature data in POST request"
+            android:title="Send battery temperature" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Environment Info">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_ambient_temp"
+            android:summary="Sends the ambient temperature."
             android:title="Send temperature" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_ambient_light"
+            android:summary="Sends the ambient light level."
+            android:title="Send light level" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_pressure"
+            android:summary="Sends the ambient pressure."
+            android:title="Send pressure" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="send_humidity"
+            android:summary="Sends the ambient relative humidity."
+            android:title="Send humidity" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Cellular Info">
