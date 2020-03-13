@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 
 class Preferences {
     private final Context ctx;
+    SharedPreferences prefs;
 
     /* The preference values */
     String target_url;
@@ -27,7 +28,7 @@ class Preferences {
     boolean send_batt_status;
     boolean send_devid;
     boolean send_subscrid;
-    boolean send_temp;
+    boolean send_batt_temp;
     boolean send_uptime;
     boolean send_freespace;
     boolean send_signal;
@@ -41,35 +42,23 @@ class Preferences {
     boolean send_build_git_hash;
     boolean send_build_git_clean;
 
-
     Preferences(Context ctx) {
         this.ctx = ctx;
     }
 
     void load() {
-        String tmp;
-
-        SharedPreferences prefs =
-                PreferenceManager.getDefaultSharedPreferences(this.ctx);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this.ctx);
 
         this.target_url = prefs.getString("target_url", "");
+        this.update_interval = Integer.parseInt(prefs.getString("update_interval", "10")) * 60 * 1000;
 
-        tmp = prefs.getString("update_interval", "10");
-        this.update_interval = Integer.parseInt(tmp) * 60 * 1000;
-
-        boolean tb = prefs.getBoolean("provider", true);
-        if (tb)
+        if (prefs.getBoolean("provider", true))
             this.provider = 1;
         else
             this.provider = 0;
-
         this.improve_accuracy = prefs.getBoolean("improve_accuracy", true);
         this.continuous_mode = prefs.getBoolean("continuous_mode", false);
-
-        tmp = prefs.getString("gps_timeout", "30");
-        this.gps_timeout = Integer.parseInt(tmp);
-        this.gps_timeout *= 1000;
-
+        this.gps_timeout = Integer.parseInt(prefs.getString("gps_timeout", "30")) * 1000;
         if (this.gps_timeout + 1000 > this.update_interval) {
             this.continuous_mode = true;
         }
@@ -81,8 +70,7 @@ class Preferences {
         if (secret == null || secret.length() < 1)
             secret = null;
 
-        tmp = prefs.getString("coordinate_format", "1");
-        this.coordinate_format = Integer.parseInt(tmp);
+        this.coordinate_format = Integer.parseInt(prefs.getString("coordinate_format", "1"));
 
         this.send_provider = prefs.getBoolean("send_provider", true);
         this.send_altitude = prefs.getBoolean("send_altitude", true);
@@ -92,7 +80,7 @@ class Preferences {
         this.send_batt_status = prefs.getBoolean("send_batt_status", true);
         this.send_devid = prefs.getBoolean("send_devid", true);
         this.send_subscrid = prefs.getBoolean("send_subscrid", true);
-        this.send_temp = prefs.getBoolean("send_temp", true);
+        this.send_batt_temp = prefs.getBoolean("send_batt_temp", true);
         this.send_uptime = prefs.getBoolean("send_uptime", true);
         this.send_freespace = prefs.getBoolean("send_freespace", true);
         this.send_signal = prefs.getBoolean("send_signal", true);

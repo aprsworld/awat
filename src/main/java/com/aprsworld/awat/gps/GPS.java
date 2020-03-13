@@ -69,7 +69,10 @@ public class GPS extends Service {
     @SuppressWarnings("FieldCanBeLocal")
     private SignalState signal_rcvr;
 
-    OrientationState orientation;
+    private OrientationState orientation;
+
+    /* Environment Sensors */
+    private Map<String, SensorState> sensors;
 
     /* Prefs */
     private Preferences prefs;
@@ -89,6 +92,14 @@ public class GPS extends Service {
         setupBattery();
 
         setupSignal();
+
+        // Setup sensors;
+        SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensors = new HashMap<>();
+        sensors.put("ambient_temp", new SensorState(sensorManager, Sensor.TYPE_AMBIENT_TEMPERATURE));
+        sensors.put("ambient_light", new SensorState(sensorManager, Sensor.TYPE_LIGHT));
+        sensors.put("pressure", new SensorState(sensorManager, Sensor.TYPE_PRESSURE));
+        sensors.put("humidity", new SensorState(sensorManager, Sensor.TYPE_RELATIVE_HUMIDITY));
 
         /* Get prefs */
         this.prefs = new Preferences(this);
@@ -119,6 +130,9 @@ public class GPS extends Service {
         if (orientation != null) {
             orientation.stop();
             orientation = null;
+        }
+        for (SensorState sensor : sensors.values()) {
+            sensor.stop();
         }
 
         if (this.notman != null) {
@@ -152,6 +166,9 @@ public class GPS extends Service {
         // start sensors
         if (this.orientation != null) {
             this.orientation.start();
+        }
+        for (SensorState sensor : sensors.values()) {
+            sensor.start();
         }
     }
 
@@ -282,8 +299,7 @@ public class GPS extends Service {
         if (System.currentTimeMillis() >= this.timeout) {
             System.out.println("AWAT: Doing timeout");
 
-            // TODO: Or if no update has been sent because no location data has arrived.
-            if (this.prefs.improve_accuracy) {
+            if (this.prefs.improve_accuracy || this.location == null) {
                 locationUpdate();
             }
 
@@ -291,6 +307,9 @@ public class GPS extends Service {
             this.lm.removeUpdates(this.ll);
             if (this.orientation != null) {
                 this.orientation.stop();
+            }
+            for (SensorState sensor : sensors.values()) {
+                sensor.stop();
             }
         }
     }
@@ -320,6 +339,9 @@ public class GPS extends Service {
         } else {
             orientation.stop();
             orientation = null;
+        }
+        for (Map.Entry<String, SensorState> entry : sensors.entrySet()) {
+            entry.getValue().enable(this.prefs.prefs.getBoolean("send_" + entry.getKey(), false));
         }
 
         /* Set URL */
@@ -524,9 +546,8 @@ public class GPS extends Service {
             }
         }
 
-        // DAR
         /* Add temperature */
-        if (this.prefs.send_temp) {
+        if (this.prefs.send_batt_temp) {
             req.append("&temperatureBatteryC=");
             req.append(this.bat_temp);
         }
@@ -561,7 +582,18 @@ public class GPS extends Service {
                 }
             }
         }
-        // !DAR
+
+        /* Sensors */
+        for (Map.Entry<String, SensorState> entry : sensors.entrySet()) {
+            String name = entry.getKey();
+            SensorState sensor = entry.getValue();
+            if (this.prefs.prefs.getBoolean("send_" + name, false)) {
+                req.append("&");
+                req.append(name);
+                req.append("=");
+                req.append(sensor.value);
+            }
+        }
 
         con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         con.setRequestProperty("Content-Length", "" + req.length());
@@ -709,14 +741,92 @@ public class GPS extends Service {
         }
     }
 
+    static class SensorState implements SensorEventListener {
+        private boolean enabled, updating;
+        private final SensorManager sensorManager;
+        private final int sensorType;
+        private Sensor sensor;
+        float value;
+
+        SensorState (SensorManager manager, int type) {
+            sensorManager = manager;
+            sensorType = type;
+            sensor = sensorManager.getDefaultSensor(sensorType);
+        }
+
+        boolean isInvalid() {
+            return (sensor == null);
+        }
+
+        void enable(boolean enable) {
+            if (enable && !enabled) {
+                if (sensor == null)
+                    sensor = sensorManager.getDefaultSensor(sensorType);
+                enabled = true;
+            } else if (!enable && enabled) {
+                stop();
+                enabled = false;
+            }
+        }
+
+        @SuppressWarnings("UnusedReturnValue")
+        boolean start() {
+            // already updating?
+            if (updating) {
+                return true;
+            }
+
+            // reset state
+            value = Float.NaN;
+
+            // enabled?
+            if (!enabled)
+                return false;
+
+            // valid sensor?
+            if (isInvalid()) {
+                return false;
+            }
+
+            // listen for changes
+            updating = sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+            return updating;
+        }
+
+        void stop() {
+            // actually updating?
+            if (!updating) {
+                return;
+            }
+
+            // valid sensor?
+            if (isInvalid()) {
+                return;
+            }
+
+            // stop listening for changes
+            sensorManager.unregisterListener(this);
+            updating = false;
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            value = event.values[0];
+        }
+
+        @Override
+        public void onAccuracyChanged (Sensor sensor, int accuracy) {}
+    }
+
     class OrientationState implements SensorEventListener {
         private SensorManager sensorManager;
         private Sensor accelerometer, magneticField;
-        private float[] accelerometerReading = new float[3];
-        private float[] magnetometerReading = new float[3];
-        private float[] rotationMatrix = new float[9];
-        private float[] orientationAngles = new float[3];
+        private final float[] accelerometerReading = new float[3];
+        private final float[] magnetometerReading = new float[3];
+        private final float[] rotationMatrix = new float[9];
+        private final float[] orientationAngles = new float[3];
 
+        @SuppressWarnings("UnusedReturnValue")
         boolean start() {
             if (sensorManager == null) {
                 sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -835,6 +945,9 @@ public class GPS extends Service {
                 // Stop sensors
                 if (GPS.this.orientation != null) {
                     GPS.this.orientation.stop();
+                }
+                for (SensorState sensor : GPS.this.sensors.values()) {
+                    sensor.stop();
                 }
             }
         }
