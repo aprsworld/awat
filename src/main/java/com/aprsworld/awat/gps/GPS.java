@@ -932,7 +932,7 @@ public class GPS extends Service {
         @Override
         public void onLocationChanged(Location loc) {
             System.out.println("AWAT got loc from "
-                    + loc.getProvider());
+                    + loc.getProvider() + " (~" + loc.getAccuracy() + "m)");
             GPS.this.location = loc;
 
             if (!GPS.this.prefs.continuous_mode && !GPS.this.prefs.improve_accuracy) {
