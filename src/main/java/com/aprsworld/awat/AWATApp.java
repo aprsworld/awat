@@ -8,7 +8,7 @@ import org.acra.data.StringFormat;
 
 @AcraCore(buildConfigClass = BuildConfig.class,
         reportFormat = StringFormat.JSON)
-//@AcraMailSender(mailTo = "david@aprsworld.com")
+//@AcraMailSender(mailTo = "")
 @AcraLimiter
 public class AWATApp extends Application {
     @Override
