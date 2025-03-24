@@ -1,4 +1,4 @@
-package com.aprsworld.awat.gps;
+package com.aprsworld.awat;
 
 import android.app.Activity;
 import android.os.Bundle;

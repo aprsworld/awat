@@ -1,4 +1,4 @@
-package com.aprsworld.awat.gps;
+package com.aprsworld.awat;
 
 import java.util.*;
 
@@ -20,8 +20,6 @@ import android.widget.TextView;
 import android.widget.Button;
 
 import android.location.*;
-
-import com.aprsworld.android.Helper;
 
 public class AWAT extends Activity {
     @SuppressWarnings("unused")
@@ -86,7 +84,7 @@ public class AWAT extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add(0, 0, 0, "Update location now");
         menu.add(0, 1, 1, "Changelog");
-        menu.add(0, 100, 100, "Settings")
+        menu.add(0, 2, 2, "Settings")
                 .setIcon(android.R.drawable.ic_menu_preferences);
         return true;
     }
@@ -102,7 +100,7 @@ public class AWAT extends Activity {
                 Intent changelog = new Intent(this, Changelog.class);
                 startActivity(changelog);
                 break;
-            case 100:
+            case 2:
                 Intent prefA = new Intent(this, PreferencesActivity.class);
                 startActivityForResult(prefA, 0);
                 break;
@@ -113,6 +111,8 @@ public class AWAT extends Activity {
 
     @Override
     public void onActivityResult(int req, int res, Intent i) {
+        super.onActivityResult(req, res, i);
+
         /* Get prefs */
         this.prefs.load();
 

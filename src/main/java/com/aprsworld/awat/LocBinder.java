@@ -1,4 +1,4 @@
-package com.aprsworld.awat.gps;
+package com.aprsworld.awat;
 
 import android.location.*;
 import android.os.Binder;

@@ -1,4 +1,4 @@
-package com.aprsworld.awat.gps;
+package com.aprsworld.awat;
 
 import android.preference.PreferenceManager;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.aprsworld.awat.gps;
+package com.aprsworld.awat;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
@@ -156,12 +156,17 @@ public class GPS extends Service {
 
     private void startLocator()
             throws IllegalArgumentException {
-        if (this.prefs.provider == 1)
-            this.lm.requestLocationUpdates(this.lm.GPS_PROVIDER, 0, 0,
-                    this.ll);
-        else
-            this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 0, 0,
-                    this.ll);
+
+        try {
+            if (this.prefs.provider == 1)
+                this.lm.requestLocationUpdates(this.lm.GPS_PROVIDER, 0, 0,
+                        this.ll);
+            else
+                this.lm.requestLocationUpdates(this.lm.NETWORK_PROVIDER, 0, 0,
+                        this.ll);
+        } catch (SecurityException se) {
+            // XXX TODO
+        }
 
         // start sensors
         if (this.orientation != null) {
@@ -222,8 +227,8 @@ public class GPS extends Service {
         this.notman = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
         this.notintent =
-                PendingIntent.getActivity(this, 0,
-                        new Intent(this, AWAT.class), 0);
+                PendingIntent.getActivity(this, 0, new Intent(this,
+                        AWAT.class), 0);
         Notification.Builder builder = new Notification.Builder(this);
         this.notif = builder.setContentIntent(this.notintent)
                 .setSmallIcon(R.drawable.notif_icon)
@@ -369,7 +374,7 @@ public class GPS extends Service {
 
     /* Send a request to the URL and post some data */
     @SuppressLint("HardwareIds")
-    private void postLocation() {
+    private void postLocation()  {
         boolean do_notif = false;
 
         /* No url, don't do anything */
@@ -398,9 +403,13 @@ public class GPS extends Service {
             return;
         }
 
-        con.setUseCaches(false);
-        con.setDoOutput(true);
-        con.setDoInput(true);
+        try {
+            con.setUseCaches(false);
+            con.setDoOutput(true);
+            con.setDoInput(true);
+        } catch (Exception e) {
+            return;
+        }
 
         /* If HTTP response is to be used in notif bar */
         if (this.prefs.http_resp_in_notif_bar) {
@@ -533,7 +542,11 @@ public class GPS extends Service {
             TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
             if (tm != null) {
                 req.append("&deviceid=");
-                req.append(tm.getDeviceId());
+                try {
+                    req.append(tm.getDeviceId());
+                } catch (SecurityException se) {
+                    req.append("");
+                }
             }
         }
 
@@ -542,7 +555,11 @@ public class GPS extends Service {
             TelephonyManager tm = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
             if (tm != null) {
                 req.append("&subscriberid=");
-                req.append(tm.getSubscriberId());
+                try {
+                    req.append(tm.getSubscriberId());
+                } catch (SecurityException se) {
+                    req.append("");
+                }
             }
         }
 
@@ -576,7 +593,8 @@ public class GPS extends Service {
             if (pm != null) {
                 req.append("&screen=");
                 if (Build.VERSION.SDK_INT >= 21) {
-                    req.append(pm.isInteractive());
+                    //req.append(pm.isInteractive()); XXX
+                    req.append(false);
                 } else {
                     req.append(pm.isScreenOn());
                 }
@@ -595,8 +613,12 @@ public class GPS extends Service {
             }
         }
 
-        con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-        con.setRequestProperty("Content-Length", "" + req.length());
+        try {
+            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+            con.setRequestProperty("Content-Length", "" + req.length());
+        } catch (Exception e) {
+            return;
+        }
 
         /* Connect and write */
         StringBuilder response = new StringBuilder();
@@ -614,13 +636,18 @@ public class GPS extends Service {
                 response.append(br.readLine());
             }
             br.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             System.out.println("AWAT: " + e.toString());
             if (this.rpc_if != null)
                 this.rpc_if.onError(e.toString());
             return;
         }
-        con.disconnect();
+
+        try {
+            con.disconnect();
+        } catch (Exception e) {
+            return;
+        }
 
         System.out.println("AWAT sent HTTP poke");
 
@@ -638,6 +665,9 @@ public class GPS extends Service {
         }
 
         this.location = null;
+
+        // XXX TODO XXX TODO Testing ACRA
+        //throw new RuntimeException("Test");
     }
 
     private void locationUpdate() {
@@ -652,7 +682,7 @@ public class GPS extends Service {
         if (Build.VERSION.SDK_INT >= 18) {
             this.freespace = stats.getAvailableBlocksLong() * stats.getBlockSizeLong() / 1024 / 1024;
         } else {
-            this.freespace = stats.getAvailableBlocks() * stats.getBlockSize() / 1024 / 1024;
+            this.freespace = (long)stats.getAvailableBlocks() * (long)stats.getBlockSize() / 1024 / 1024;
         }
 
         /* Change notification */
@@ -734,7 +764,8 @@ public class GPS extends Service {
         public void onSignalStrengthsChanged(SignalStrength strength) {
             super.onSignalStrengthsChanged(strength);
             if (Build.VERSION.SDK_INT >= 23) {
-                GPS.this.signal = strength.getLevel();
+                //GPS.this.signal = strength.getLevel();
+                GPS.this.signal = -1; // XXX TODO
             } else {
                 GPS.this.signal = -1;
             }
@@ -931,8 +962,8 @@ public class GPS extends Service {
 
         @Override
         public void onLocationChanged(Location loc) {
-            System.out.println("AWAT got loc from "
-                    + loc.getProvider() + " (~" + loc.getAccuracy() + "m)");
+            //System.out.println("AWAT got loc from "
+            //        + loc.getProvider() + " (~" + loc.getAccuracy() + "m)");
             GPS.this.location = loc;
 
             if (!GPS.this.prefs.continuous_mode && !GPS.this.prefs.improve_accuracy) {
